@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
+import os
 import mysql.connector
 
 app = Flask(__name__)
@@ -11,7 +12,7 @@ db = mysql.connector.connect(
    host="mysql-125897c4-luz098133-dbf2.e.aivencloud.com",
     port=14585,
     user="avnadmin",
-    password="<redacted>",  # Borra esto y pon la contraseña real que te dio Aiven
+    password=os.environ.get("PASSWORD_SECRETA"),  # Borra esto y pon la contraseña real que te dio Aiven
     database="defaultdb"            # Usa 'defaultdb' en inglés como dice la URI
 )
 cursor = db.cursor()
