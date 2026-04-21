@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Iluminación por Pisos</title>
+    <link rel="stylesheet" href="css/pisos.css"> 
+</head>
+<body>
+
+<header class="header">
+    <span class="header-icon">🏢</span>
+    <h1>Directorio por Pisos</h1>
+</header>
+
+<div class="container">
+    <p class="section-title">Personal asignado por piso</p>
+
+    <div class="pisos-grid">
+
+        <div class="piso-card piso-1">
+            <div class="piso-header" id="header-piso-1" onclick="toggleTodoElPiso(1)" role="button" tabindex="0">
+                <div class="piso-numero">1</div>
+                <div class="piso-nombre" onclick="toggleDesplegable(event, 1)">
+                    Mercadeo <span class="flechita">🔽</span>
+                </div>
+            </div>
+            <div class="piso-body">
+                <div class="persona">
+                    <div class="avatar" data-luz="1" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Luis</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Ingeniero</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="2" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Lobo</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Soporte Técnico</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="3" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Mario</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Seguridad</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="4" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Inovación 4</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Implementador</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="5" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Sergio</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Implementador</div>
+                    </div>
+                </div> 
+
+                <div class="persona">
+                    <div class="avatar" data-luz="6" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Inovación 6</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Implementador</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="7" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Sandra</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Implementador</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="8" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Teran</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Implementador</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="piso-card piso-2">
+            <div class="piso-header" id="header-piso-2" onclick="toggleTodoElPiso(2)" role="button" tabindex="0">
+                <div class="piso-numero">2</div>
+                <div class="piso-nombre" onclick="toggleDesplegable(event, 2)">
+                    Compras <span class="flechita">🔽</span>
+                </div>
+            </div>
+            <div class="piso-body">
+                <div class="persona">
+                    <div class="avatar" data-luz="11" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Nicolas</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Compras</div>
+                    </div>
+                </div>
+                <div class="persona">
+                    <div class="avatar" data-luz="12" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Julieta</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">compras</div>
+                    </div>
+                </div>
+                <div class="persona">
+                    <div class="avatar" data-luz="13" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Karen</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Compras</div>
+                    </div>
+                </div>
+                <div class="persona">
+                    <div class="avatar" data-luz="14" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Oswaldo</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Compras</div>
+                    </div>
+                </div>
+                <div class="persona">
+                    <div class="avatar" data-luz="15" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">sergio</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Compras</div>
+                    </div>
+                </div> 
+                <div class="persona">
+                    <div class="avatar" data-luz="16" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Emilse</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Compras</div>
+                    </div>
+                </div>
+                <div class="persona">
+                    <div class="avatar" data-luz="17" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">juan</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Compras</div>
+                    </div>
+                </div>
+                <div class="persona">
+                    <div class="avatar" data-luz="18" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">princesa</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Compras</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="piso-card piso-3">
+            <div class="piso-header" id="header-piso-3" onclick="toggleTodoElPiso(3)" role="button" tabindex="0">
+                <div class="piso-numero">3</div>
+                <div class="piso-nombre" onclick="toggleDesplegable(event, 3)">
+                    Gestión Humana <span class="flechita">🔽</span>
+                </div>
+            </div>
+            <div class="piso-body">
+                <div class="persona">
+                    <div class="avatar" data-luz="31" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Camila Ruiz</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Dev</div>
+                    </div>
+                </div>
+                
+                <div class="persona">
+                    <div class="avatar" data-luz="32" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Andrés Gómez</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Reclutamiento</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="33" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Laura Pineda</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Analista HR</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="34" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Diego Torres</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Bienestar</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="35" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Sofía Vargas</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Nómina</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="36" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Mateo Ríos</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Capacitación</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="37" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Valentina Castro</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Psicóloga</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="38" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Felipe Mora</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Asistente</div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+        <div class="piso-card piso-4">
+            <div class="piso-header" id="header-piso-4" onclick="toggleTodoElPiso(4)" role="button" tabindex="0">
+                <div class="piso-numero">4</div>
+                <div class="piso-nombre" onclick="toggleDesplegable(event, 4)">
+                    Huawei <span class="flechita">🔽</span>
+                </div>
+            </div>
+            
+            <div class="piso-body">
+                <div class="persona">
+                    <div class="avatar" data-luz="41" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Roberto Silva</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Director</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="42" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Valeria Rojas</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Ingeniera de Redes</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="43" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Miguel Ángel</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Soporte TI</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="44" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Diana Ortiz</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Gerente de Proyectos</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="45" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Sebastián Cruz</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Desarrollador</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="46" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Lucía Méndez</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Analista QA</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="47" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Alejandro Vega</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Especialista Telecom</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="48" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Natalia Herrera</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Scrum Master</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="piso-card piso-5">
+            <div class="piso-header" id="header-piso-5" onclick="toggleTodoElPiso(5)" role="button" tabindex="0">
+                <div class="piso-numero">5</div>
+                <div class="piso-nombre" onclick="toggleDesplegable(event, 5)">
+                    AIDC <span class="flechita">🔽</span>
+                </div>
+            </div>
+            
+            <div class="piso-body">
+                <div class="persona">
+                    <div class="avatar" data-luz="51" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Ana García</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Recepcionista</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="52" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Carlos López</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Seguridad</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="53" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Martín Fernández</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Técnico AIDC</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="54" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Elena Morales</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Especialista RFID</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="55" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Javier Blanco</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Ingeniero de Datos</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="56" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Paula Navarro</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Consultora Logística</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="57" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Tomás Aguilar</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Soporte Hardware</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="58" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Carmen Ruiz</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Auditora de Sistemas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="piso-card piso-6">
+            <div class="piso-header" id="header-piso-6" onclick="toggleTodoElPiso(6)" role="button" tabindex="0">
+                <div class="piso-numero">6</div>
+                <div class="piso-nombre" onclick="toggleDesplegable(event, 6)">
+                    Motorola <span class="flechita">🔽</span>
+                </div>
+            </div>
+            
+            <div class="piso-body">
+                <div class="persona">
+                    <div class="avatar" data-luz="61" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Ana García</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Recepcionista</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="62" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Carlos López</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Seguridad</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="63" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Pedro Gómez</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Ingeniero RF</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="64" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Sofía Castro</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Ventas Corporativas</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="65" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Luis Martínez</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Soporte Técnico</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="66" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Camila Torres</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Gestor de Cuentas</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="67" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">Jorge Silva</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Técnico de Campo</div>
+                    </div>
+                </div>
+
+                <div class="persona">
+                    <div class="avatar" data-luz="68" onclick="toggleLuz(this)">💡</div>
+                    <div class="persona-info">
+                        <div class="nombre-container">
+                            <div class="persona-nombre">María Fernanda</div>
+                            <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                        </div>
+                        <div class="persona-cargo">Coordinadora Logística</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       
+<script src="./js/script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+flask   oido que escucha 
+flask-cors   permisos de seguridad
+requestsm  mandar mensajes de python
+requests
+mysql-connector-python
+gunicorn

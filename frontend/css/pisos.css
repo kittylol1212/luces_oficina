@@ -1,0 +1,201 @@
+/* --- CONFIGURACIÓN DE CONTENEDOR Y GRID --- */
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: block;
+}
+
+.pisos-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 25px;
+  width: 100% !important;
+  align-items: start;
+}
+
+.section-title {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 30px;
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* --- ESTILOS DE TARJETAS --- */
+
+.piso-card {
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.piso-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+}
+
+/* --- MODIFICACIÓN: PISO-HEADER COMO BOTÓN --- */
+
+.piso-header {
+  padding: 16px 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;              /* Indica que es un botón */
+  transition: all 0.2s ease;    /* Transición suave para los efectos */
+  user-select: none;            /* Evita seleccionar texto al hacer clic */
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+/* Efecto al pasar el mouse: Brillo sutil */
+.piso-header:hover {
+  filter: brightness(1.1);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Efecto al hacer clic: Sensación de hundimiento */
+.piso-header:active {
+  transform: scale(0.98);
+  filter: brightness(0.9);
+}
+
+/* Colores específicos por piso (Manteniendo tu paleta) */
+#header-piso-1, .piso-1 .piso-header { background: #178db3; }
+#header-piso-2, .piso-2 .piso-header { background: #1a7a9e; }
+#header-piso-3, .piso-3 .piso-header { background: #1d678a; }
+#header-piso-4, .piso-4 .piso-header { background: #205576; }
+#header-piso-5, .piso-5 .piso-header { background: #244a66; }
+#header-piso-6, .piso-6 .piso-header { background: #273f56; }
+#header-piso-7, .piso-7 .piso-header { background: #2a3447; }
+
+.piso-numero {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.piso-nombre {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* --- ELEMENTOS INTERNOS (PERSONAS Y AVATARES) --- */
+
+.piso-body {
+  padding: 16px 20px;
+}
+
+.persona {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.persona:last-child { border-bottom: none; }
+
+.persona-nombre {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #A32D2D;
+  border: 2px solid #791F1F;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.avatar.encendido {
+  background: #3B6D11;
+  border-color: #27500A;
+}
+
+/* --- GENERALES --- */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f0f4f8;
+  min-height: 100vh;
+}
+
+.header {
+  background: #178db3;
+  color: white;
+  padding: 18px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+}
+
+/* Contenedor para alinear el nombre y el lápiz horizontalmente */
+.nombre-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio entre el nombre y el lápiz */
+}
+
+/* Estilo del lapicito */
+.btn-editar {
+    cursor: pointer;
+    font-size: 0.85em;
+    opacity: 0.4; /* Medio transparente para que no llame tanto la atención */
+    transition: opacity 0.3s ease;
+}
+
+/* Que brille cuando pasas el mouse por encima */
+.btn-editar:hover {
+    opacity: 1;
+}
+
+/* Clase para ocultar todo el bloque de personas */
+.piso-body.oculto {
+    display: none;
+}
+
+/* Estilo para que la flechita se vea bien y pueda girar */
+.flechita {
+    font-size: 0.8em;
+    margin-left: 8px;
+    display: inline-block;
+    transition: transform 0.3s ease; /* Hace que el giro sea suave */
+}
+
+/* Clase para girar la flechita cuando el menú está cerrado */
+.flechita.cerrada {
+    transform: rotate(-90deg);
+}
+
+/* Cambiar el cursor a la manito para que sepan que se puede hacer clic ahí */
+.piso-nombre {
+    cursor: pointer;
+}

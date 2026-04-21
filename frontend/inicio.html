@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Luces</title>
+<link rel="stylesheet" href="css/inicio.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="menu" id="menuContainer">
+      <button class="dropbtn" id="menuBtn">☰ Menú</button>
+
+      <ul class="submenu">
+
+        <li class="dropdown-sub">
+      <button id="miBoton">pisos </button>
+      <script>
+  document.getElementById('miBoton').addEventListener('click', () => {
+    window.location.href = 'pisos.html';
+  });
+</script>
+  <link rel="stylesheet" href="pisos.html">
+
+
+        </li>
+
+        <li class="dropdown-sub">
+          <span>Puntos ▶</span>
+          <ul class="submenu2">
+            <li>Punto 1</li>
+            <li>Punto 2</li>
+            <li>Punto 3</li>
+          </ul>
+        </li>
+
+        <li class="dropdown-sub">
+          <span>nose ▶</span>
+          <ul class="submenu2">
+            <li>Opción 1</li>
+            <li>Opción 2</li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+    <span class="header-title">proyecto luces</span>
+  </header>
+
+
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const menuContainer = document.getElementById('menuContainer');
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menuContainer.classList.toggle('active');
+    });
+
+    document.addEventListener('click', () => {
+      menuContainer.classList.remove('active');
+    });
+    
+  </script>
+  <script src="js/scrip.js"></script>
+
+</body>
+</html>
