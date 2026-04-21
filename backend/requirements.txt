@@ -1,6 +1,6 @@
 flask   
 flask-cors   
-requestsm  
+requests  
 requests
 mysql-connector-python
 gunicorn
