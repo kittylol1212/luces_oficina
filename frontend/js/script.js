@@ -84,3 +84,39 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error("Error al obtener el estado inicial:", err));
 });
+
+// ==========================================
+// 5. BUCLE: MANTENER EL ESTADO SINCRONIZADO
+// ==========================================
+
+// Metemos la consulta en una función para poder repetirla
+function actualizarEstadoSilencioso() {
+    fetch(`${BASE_URL}/api/estado_luces`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                const lucesOn = data.encendidas; 
+
+                document.querySelectorAll('.avatar').forEach(avatar => {
+                    const idLuz = parseInt(avatar.getAttribute('data-luz'));
+                    
+                    // Actualiza el color según lo que diga la base de datos
+                    if (lucesOn.includes(idLuz)) {
+                        avatar.classList.add('encendido');
+                    } else {
+                        avatar.classList.remove('encendido');
+                    }
+                });
+            }
+        })
+        .catch(err => console.log("Buscando conexión con el servidor..."));
+}
+
+// Cuando la página carga, hacemos dos cosas:
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Preguntamos inmediatamente apenas se abre la página
+    actualizarEstadoSilencioso();
+    
+    // 2. Activamos el BUCLE: Repetir la función cada 3000 milisegundos (3 segundos)
+    setInterval(actualizarEstadoSilencioso, 3000); 
+});
