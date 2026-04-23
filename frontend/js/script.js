@@ -1,4 +1,4 @@
-const BASE_URL = " https://teaches-contemporary-habits-comparison.trycloudflare.com"
+const BASE_URL = "https://teaches-contemporary-habits-comparison.trycloudflare.com";
 // 1. FUNCIÓN GRUPAL: PISO
 function toggleTodoElPiso(numeroPiso) {
     const card = document.querySelector(`.piso-${numeroPiso}`);
@@ -55,52 +55,25 @@ function toggleDesplegable(event, numeroPiso) {
     flecha.classList.toggle('cerrada', body.classList.contains('oculto'));
 }
 
-// ==========================================
-// 5. CARGAR ESTADO INICIAL AL ABRIR LA PÁGINA
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("Preguntando al servidor qué luces están prendidas...");
 
-    // Hace una petición GET a nuestra nueva ruta
-    fetch(`${BASE_URL}/api/estado_luces`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'ok') {
-                const lucesOn = data.encendidas; // Lista de IDs que están prendidos
-                console.log("Luces prendidas en la base de datos:", lucesOn);
-
-                // Recorre todos los foquitos en la pantalla
-                document.querySelectorAll('.avatar').forEach(avatar => {
-                    const idLuz = parseInt(avatar.getAttribute('data-luz'));
-                    
-                    // Si el ID del foquito está en la lista de los prendidos, lo enciende visualmente
-                    if (lucesOn.includes(idLuz)) {
-                        avatar.classList.add('encendido');
-                    } else {
-                        avatar.classList.remove('encendido');
-                    }
-                });
-            }
-        })
-        .catch(err => console.error("Error al obtener el estado inicial:", err));
-});
 
 // ==========================================
 // 5. BUCLE: MANTENER EL ESTADO SINCRONIZADO
 // ==========================================
 
-// Metemos la consulta en una función para poder repetirla
 function actualizarEstadoSilencioso() {
+    // Hace una petición GET a nuestra ruta de Python
     fetch(`${BASE_URL}/api/estado_luces`)
         .then(res => res.json())
         .then(data => {
             if (data.status === 'ok') {
-                const lucesOn = data.encendidas; 
+                const lucesOn = data.encendidas; // Lista de IDs prendidos
 
+                // Recorre todos los foquitos en la pantalla
                 document.querySelectorAll('.avatar').forEach(avatar => {
                     const idLuz = parseInt(avatar.getAttribute('data-luz'));
                     
-                    // Actualiza el color según lo que diga la base de datos
+                    // Si la luz está en la base de datos, la enciende visualmente
                     if (lucesOn.includes(idLuz)) {
                         avatar.classList.add('encendido');
                     } else {
@@ -109,14 +82,19 @@ function actualizarEstadoSilencioso() {
                 });
             }
         })
-        .catch(err => console.log("Buscando conexión con el servidor..."));
+        .catch(err => {
+            // Ponemos un mensaje silencioso para que no llene la consola de rojo si parpadea el internet
+            console.log("Sondeando estado de luces..."); 
+        });
 }
 
-// Cuando la página carga, hacemos dos cosas:
+// Cuando la página carga, hacemos arrancar el motor:
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Preguntamos inmediatamente apenas se abre la página
+    console.log("Iniciando conexión con el servidor...");
+    
+    // 1. Preguntamos inmediatamente al abrir la página
     actualizarEstadoSilencioso();
     
-    // 2. Activamos el BUCLE: Repetir la función cada 3000 milisegundos (3 segundos)
+    // 2. Activamos el bucle: Repetir cada 3 segundos (3000 ms)
     setInterval(actualizarEstadoSilencioso, 3000); 
 });
