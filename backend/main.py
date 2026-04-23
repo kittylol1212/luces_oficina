@@ -70,9 +70,8 @@ def recibir_piso():
     db.commit()
     return jsonify({"status": "ok", "mensaje": f"Piso {numero_piso} actualizado"})
 
-if __name__ == '__main__':
-    app.run(port=5000, debug=True)
-    # ==========================================
+
+# ==========================================
 # 🔍 CONSULTAR ESTADO AL ABRIR LA PÁGINA
 # ==========================================
 @app.route('/api/estado_luces', methods=['GET'])
@@ -88,3 +87,7 @@ def obtener_estado():
         return jsonify({"status": "ok", "encendidas": lista_encendidas})
     except Exception as e:
         return jsonify({"status": "error", "mensaje": str(e)})
+
+if __name__ == '__main__':
+    app.run(port=5000, debug=True)
+   
