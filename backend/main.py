@@ -72,3 +72,19 @@ def recibir_piso():
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
+    # ==========================================
+# 🔍 CONSULTAR ESTADO AL ABRIR LA PÁGINA
+# ==========================================
+@app.route('/api/estado_luces', methods=['GET'])
+def obtener_estado():
+    try:
+        # Busca las luces que están encendidas (hora_apagado es NULL)
+        cursor.execute("SELECT luz_id FROM sesiones_luz WHERE hora_apagado IS NULL")
+        luces_encendidas = cursor.fetchall()
+        
+        # Convierte el resultado en una lista simple de números (ej: [101, 102, 201])
+        lista_encendidas = [luz[0] for luz in luces_encendidas]
+        
+        return jsonify({"status": "ok", "encendidas": lista_encendidas})
+    except Exception as e:
+        return jsonify({"status": "error", "mensaje": str(e)})
