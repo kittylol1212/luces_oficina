@@ -1,4 +1,4 @@
-const BASE_URL = "https://treatment-dozens-petite-andrews.trycloudflare.com";
+const BASE_URL = "https://asking-rna-holders-addressing.trycloudflare.com";
 
 // 1. FUNCIÓN GRUPAL: PISO
 function toggleTodoElPiso(numeroPiso) {
