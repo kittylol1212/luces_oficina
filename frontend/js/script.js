@@ -1,4 +1,4 @@
-const BASE_URL = "https://teaches-contemporary-habits-comparison.trycloudflare.com";
+const BASE_URL = " https://labor-estimate-outputs-scholarships.trycloudflare.com ";
 // 1. FUNCIÓN GRUPAL: PISO
 function toggleTodoElPiso(numeroPiso) {
     const card = document.querySelector(`.piso-${numeroPiso}`);
