@@ -214,40 +214,31 @@ body {
 }
 
 .header {
-    background: #178db3;
+    background-color: #178db3;
     color: white;
-    padding: 10px 32px; /* Reduje un poco el padding para que el logo quepa mejor */
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* ESTO envia el logo a la derecha */
-    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+    padding: 15px 40px; /* Más espacio interno */
+    display: flex !important;
+    justify-content: space-between !important; /* Esto empuja el logo a la derecha */
+    align-items: center !important;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.header-left {
+.header-content-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
+.header h1 {
+    margin: 0;
+    font-size: 24px;
 }
 
+/* AQUÍ CORREGIMOS EL TAMAÑO */
 .logo-meltec {
-    height: 45px; /* Tamaño ideal para el logo */
-    width: auto;
+    height: 60px; /* Aumenté el tamaño (estaba muy pequeño) */
+    width: auto;  /* Mantiene la proporción */
     object-fit: contain;
-    /* Este filtro es por si el logo tiene fondo negro, lo vuelve blanco */
-    filter: brightness(0) invert(1); 
-}
-
-/* Ajuste para que el título no se vea gigante en móvil con el logo al lado */
-@media (max-width: 600px) {
-    .header h1 {
-        font-size: 18px;
-    }
-    .logo-meltec {
-        height: 30px;
-    }
+    display: block;
 }
