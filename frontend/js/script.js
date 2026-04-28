@@ -1,4 +1,4 @@
-const BASE_URL = "https://vendors-occupational-differ-women.trycloudflare.com";
+const BASE_URL = "https://participation-parallel-restrict-promoting.trycloudflare.com";
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
