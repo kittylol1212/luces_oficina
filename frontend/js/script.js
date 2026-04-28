@@ -1,5 +1,40 @@
 const BASE_URL = "https://vendors-occupational-differ-women.trycloudflare.com";
-// 1. FUNCIÓN GRUPAL: PISO
+
+// ==========================================
+// 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
+// ==========================================
+function toggleTodoElEdificio(encender) {
+    const accion = encender ? "encender" : "apagar";
+    if (!confirm(`¿Estás seguro de que quieres ${accion} todas las luces del edificio?`)) return;
+
+    const todasLasLuces = document.querySelectorAll('.avatar');
+    todasLasLuces.forEach(luz => {
+        if (encender) {
+            luz.classList.add('encendido');
+        } else {
+            luz.classList.remove('encendido');
+        }
+    });
+
+    fetch(`${BASE_URL}/api/luz/piso`, { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            piso: 0, 
+            estado: encender 
+        })
+    })
+    .then(res => res.json())
+    .then(data => console.log("✅ Comando maestro procesado:", data.mensaje))
+    .catch(err => {
+        console.error("❌ Error en comando maestro:", err);
+        alert("Error al conectar con el servidor.");
+    });
+}
+
+// ==========================================
+// 2. FUNCIÓN GRUPAL: POR PISO (Alternar/Toggle)
+// ==========================================
 function toggleTodoElPiso(numeroPiso) {
     const card = document.querySelector(`.piso-${numeroPiso}`);
     if (!card) return;
@@ -17,7 +52,34 @@ function toggleTodoElPiso(numeroPiso) {
     }).catch(err => console.error("Error en comando grupal:", err));
 }
 
-// 2. FUNCIÓN INDIVIDUAL: BOMBILLA
+// ========================================================
+// NUEVA: FORZAR ESTADO DE UN PISO ESPECÍFICO (Botones ON/OFF)
+// ========================================================
+function forzarEncendidoPiso(numeroPiso, encender) {
+    const card = document.querySelector(`.piso-${numeroPiso}`);
+    if (!card) return;
+
+    const luces = card.querySelectorAll('.avatar');
+    luces.forEach(luz => {
+        luz.classList.toggle('encendido', encender);
+    });
+
+    fetch(`${BASE_URL}/api/luz/piso`, { 
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+            piso: numeroPiso, 
+            estado: encender 
+        })
+    })
+    .then(res => res.json())
+    .then(data => console.log(`Piso ${numeroPiso} actualizado correctamente`))
+    .catch(err => console.error("Error al controlar el piso:", err));
+}
+
+// ==========================================
+// 3. FUNCIÓN INDIVIDUAL: BOMBILLA
+// ==========================================
 function toggleLuz(el) {
     el.classList.toggle("encendido");
     const estaEncendido = el.classList.contains("encendido");
@@ -33,7 +95,9 @@ function toggleLuz(el) {
     });
 }
 
-// 3. EDITAR NOMBRE
+// ==========================================
+// 4. FUNCIONES DE INTERFAZ (EDITAR Y DESPLEGAR)
+// ==========================================
 function editarNombre(elementoLapiz) {
     const contenedor = elementoLapiz.parentElement;
     const divNombre = contenedor.querySelector('.persona-nombre');
@@ -44,7 +108,6 @@ function editarNombre(elementoLapiz) {
     }
 }
 
-// 4. DESPLEGABLE
 function toggleDesplegable(event, numeroPiso) {
     event.stopPropagation();
     const card = document.querySelector(`.piso-${numeroPiso}`);
@@ -55,25 +118,17 @@ function toggleDesplegable(event, numeroPiso) {
     flecha.classList.toggle('cerrada', body.classList.contains('oculto'));
 }
 
-
-
 // ==========================================
 // 5. BUCLE: MANTENER EL ESTADO SINCRONIZADO
 // ==========================================
-
 function actualizarEstadoSilencioso() {
-    // Hace una petición GET a nuestra ruta de Python
     fetch(`${BASE_URL}/api/estado_luces`)
         .then(res => res.json())
         .then(data => {
             if (data.status === 'ok') {
-                const lucesOn = data.encendidas; // Lista de IDs prendidos
-
-                // Recorre todos los foquitos en la pantalla
+                const lucesOn = data.encendidas;
                 document.querySelectorAll('.avatar').forEach(avatar => {
                     const idLuz = parseInt(avatar.getAttribute('data-luz'));
-                    
-                    // Si la luz está en la base de datos, la enciende visualmente
                     if (lucesOn.includes(idLuz)) {
                         avatar.classList.add('encendido');
                     } else {
@@ -83,18 +138,13 @@ function actualizarEstadoSilencioso() {
             }
         })
         .catch(err => {
-            // Ponemos un mensaje silencioso para que no llene la consola de rojo si parpadea el internet
             console.log("Sondeando estado de luces..."); 
         });
 }
 
-// Cuando la página carga, hacemos arrancar el motor:
+// Inicio del sistema
 document.addEventListener('DOMContentLoaded', () => {
     console.log("Iniciando conexión con el servidor...");
-    
-    // 1. Preguntamos inmediatamente al abrir la página
     actualizarEstadoSilencioso();
-    
-    // 2. Activamos el bucle: Repetir cada 3 segundos (3000 ms)
     setInterval(actualizarEstadoSilencioso, 3000); 
 });
