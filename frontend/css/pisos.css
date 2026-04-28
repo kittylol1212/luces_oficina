@@ -213,53 +213,41 @@ body {
     transform: rotate(-90deg);
 }
 
-/* Contenedor principal azul */
-.header-azul {
-    background-color: #1a8fb4; /* El color azul de tu módulo */
-    display: flex;
-    justify-content: space-between; /* Empuja el título a la izquierda y el logo a la derecha */
-    align-items: center;           /* Centra ambos verticalmente */
-    padding: 10px 25px;            /* Espaciado interno */
+.header {
+    background: #178db3;
     color: white;
-    font-family: sans-serif;
-}
-
-/* Grupo del título e icono */
-.header-izquierdo {
+    padding: 10px 32px; /* Reduje un poco el padding para que el logo quepa mejor */
     display: flex;
     align-items: center;
-    gap: 12px; /* Espacio entre el icono y el texto */
+    justify-content: space-between; /* ESTO envia el logo a la derecha */
+    box-shadow: 0 3px 12px rgba(0,0,0,0.15);
 }
 
-.titulo-directorio {
-    margin: 0;
-    font-size: 24px;
-    font-weight: bold;
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-/* Grupo del logo */
-.header-derecho {
+.header-right {
     display: flex;
     align-items: center;
 }
 
 .logo-meltec {
-    height: 35px; /* Ajusta la altura para que no toque los bordes */
-    width: auto;  /* Mantiene la proporción original */
+    height: 45px; /* Tamaño ideal para el logo */
+    width: auto;
     object-fit: contain;
-    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1)); /* Sombra suave opcional */
+    /* Este filtro es por si el logo tiene fondo negro, lo vuelve blanco */
+    filter: brightness(0) invert(1); 
 }
 
-/* Ajuste para móviles */
+/* Ajuste para que el título no se vea gigante en móvil con el logo al lado */
 @media (max-width: 600px) {
-    .header-azul {
-        flex-direction: row;
-        padding: 10px 15px;
-    }
-    .titulo-directorio {
+    .header h1 {
         font-size: 18px;
     }
     .logo-meltec {
-        height: 25px;
+        height: 30px;
     }
 }
