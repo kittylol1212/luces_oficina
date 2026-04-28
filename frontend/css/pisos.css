@@ -212,3 +212,54 @@ body {
 .flechita.cerrada {
     transform: rotate(-90deg);
 }
+
+/* Contenedor principal azul */
+.header-azul {
+    background-color: #1a8fb4; /* El color azul de tu módulo */
+    display: flex;
+    justify-content: space-between; /* Empuja el título a la izquierda y el logo a la derecha */
+    align-items: center;           /* Centra ambos verticalmente */
+    padding: 10px 25px;            /* Espaciado interno */
+    color: white;
+    font-family: sans-serif;
+}
+
+/* Grupo del título e icono */
+.header-izquierdo {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio entre el icono y el texto */
+}
+
+.titulo-directorio {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Grupo del logo */
+.header-derecho {
+    display: flex;
+    align-items: center;
+}
+
+.logo-meltec {
+    height: 35px; /* Ajusta la altura para que no toque los bordes */
+    width: auto;  /* Mantiene la proporción original */
+    object-fit: contain;
+    filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1)); /* Sombra suave opcional */
+}
+
+/* Ajuste para móviles */
+@media (max-width: 600px) {
+    .header-azul {
+        flex-direction: row;
+        padding: 10px 15px;
+    }
+    .titulo-directorio {
+        font-size: 18px;
+    }
+    .logo-meltec {
+        height: 25px;
+    }
+}
