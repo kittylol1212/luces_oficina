@@ -1,71 +1,39 @@
 const BASE_URL = "https://vendors-occupational-differ-women.trycloudflare.com";
 
-// Variable global para evitar conflictos
-let bloqueoSincronizacion = false;
-
 // ==========================================
-// 1. BOTONES MAESTROS (ARRIBA)
+// 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
 // ==========================================
-function forzarEncendidoPisosGlobal(listaPisos, encender) {
-    bloqueoSincronizacion = true; 
+function toggleTodoElEdificio(encender) {
+    const accion = encender ? "encender" : "apagar";
+    if (!confirm(`¿Estás seguro de que quieres ${accion} todas las luces del edificio?`)) return;
 
-    listaPisos.forEach((numeroPiso, index) => {
-        setTimeout(() => {
-            const card = document.querySelector(`.piso-${numeroPiso}`);
-            if (card) {
-                card.querySelectorAll('.avatar').forEach(luz => {
-                    luz.classList.toggle('encendido', encender);
-                });
-            }
-
-            fetch(`${BASE_URL}/api/luz/piso`, { 
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ piso: numeroPiso, estado: encender })
-            })
-            .then(() => {
-                if (index === listaPisos.length - 1) {
-                    setTimeout(() => { bloqueoSincronizacion = false; }, 2000);
-                }
-            })
-            .catch(err => {
-                console.error("Error en maestro:", err);
-                bloqueoSincronizacion = false;
-            });
-        }, index * 150); 
+    const todasLasLuces = document.querySelectorAll('.avatar');
+    todasLasLuces.forEach(luz => {
+        if (encender) {
+            luz.classList.add('encendido');
+        } else {
+            luz.classList.remove('encendido');
+        }
     });
-}
 
-// ==========================================
-// 2. FUNCIÓN INDIVIDUAL (ESTA ES LA QUE TE FALLABA)
-// ==========================================
-function toggleLuz(el) {
-    // Cambio visual inmediato
-    el.classList.toggle("encendido");
-    const estaEncendido = el.classList.contains("encendido");
-    const idLuz = el.getAttribute('data-luz'); 
-
-    if (!idLuz) {
-        console.error("Error: No se encontró el ID de la luz en el atributo data-luz");
-        return;
-    }
-
-    fetch(`${BASE_URL}/api/luz`, {
+    fetch(`${BASE_URL}/api/luz/piso`, { 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ luz_id: parseInt(idLuz), estado: estaEncendido })
+        body: JSON.stringify({ 
+            piso: 0, 
+            estado: encender 
+        })
     })
     .then(res => res.json())
-    .then(data => console.log("Luz individual actualizada"))
+    .then(data => console.log("✅ Comando maestro procesado:", data.mensaje))
     .catch(err => {
-        console.error("Error al conectar:", err);
-        // Si falla, revertimos el color
-        el.classList.toggle("encendido", !estaEncendido);
+        console.error("❌ Error en comando maestro:", err);
+        alert("Error al conectar con el servidor.");
     });
 }
 
 // ==========================================
-// 3. FUNCIÓN POR PISO (BOTÓN EN TÍTULO AZUL)
+// 2. FUNCIÓN GRUPAL: POR PISO (Alternar/Toggle)
 // ==========================================
 function toggleTodoElPiso(numeroPiso) {
     const card = document.querySelector(`.piso-${numeroPiso}`);
@@ -81,17 +49,69 @@ function toggleTodoElPiso(numeroPiso) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ piso: numeroPiso, estado: nuevoEstado })
-    }).catch(err => console.error("Error grupal:", err));
+    }).catch(err => console.error("Error en comando grupal:", err));
+}
+
+// ========================================================================
+// 3. NUEVA: FORZAR VARIOS PISOS A LA VEZ (Ej: Botones para Pisos 1, 2 y 3)
+// ========================================================================
+function forzarEncendidoPisosGlobal(listaPisos, encender) {
+    // Recorremos cada piso de la lista que le enviamos (ej: [1, 2, 3])
+    listaPisos.forEach(numeroPiso => {
+        
+        // Cambio visual en la pantalla para el piso actual del bucle
+        const card = document.querySelector(`.piso-${numeroPiso}`);
+        if (card) {
+            const luces = card.querySelectorAll('.avatar');
+            luces.forEach(luz => {
+                luz.classList.toggle('encendido', encender);
+            });
+        }
+
+        // Envío de la orden al servidor para el piso actual del bucle
+        fetch(`${BASE_URL}/api/luz/piso`, { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                piso: numeroPiso, 
+                estado: encender 
+            })
+        })
+        .then(res => res.json())
+        .then(data => console.log(`Piso ${numeroPiso} sincronizado`))
+        .catch(err => console.error(`Error en piso ${numeroPiso}:`, err));
+    });
 }
 
 // ==========================================
-// 4. INTERFAZ Y DESPLEGABLES
+// 4. FUNCIÓN INDIVIDUAL: BOMBILLA
+// ==========================================
+function toggleLuz(el) {
+    el.classList.toggle("encendido");
+    const estaEncendido = el.classList.contains("encendido");
+    const idLuz = el.getAttribute('data-luz'); 
+
+    fetch(`${BASE_URL}/api/luz`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ luz_id: parseInt(idLuz), estado: estaEncendido })
+    }).catch(err => {
+        console.error("Error al conectar con el servidor:", err);
+        el.classList.toggle("encendido", !estaEncendido);
+    });
+}
+
+// ==========================================
+// 5. FUNCIONES DE INTERFAZ (EDITAR Y DESPLEGAR)
 // ==========================================
 function editarNombre(elementoLapiz) {
     const contenedor = elementoLapiz.parentElement;
     const divNombre = contenedor.querySelector('.persona-nombre');
-    const nuevoNombre = prompt("Ingresa el nuevo nombre:", divNombre.innerText);
-    if (nuevoNombre) divNombre.innerText = nuevoNombre.trim();
+    const nombreActual = divNombre.innerText;
+    const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
+    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
+        divNombre.innerText = nuevoNombre.trim();
+    }
 }
 
 function toggleDesplegable(event, numeroPiso) {
@@ -101,15 +121,13 @@ function toggleDesplegable(event, numeroPiso) {
     const body = card.querySelector('.piso-body');
     const flecha = card.querySelector('.flechita');
     body.classList.toggle('oculto');
-    if (flecha) flecha.classList.toggle('cerrada');
+    flecha.classList.toggle('cerrada', body.classList.contains('oculto'));
 }
 
 // ==========================================
-// 5. ACTUALIZACIÓN AUTOMÁTICA
+// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO
 // ==========================================
 function actualizarEstadoSilencioso() {
-    if (bloqueoSincronizacion) return;
-    
     fetch(`${BASE_URL}/api/estado_luces`)
         .then(res => res.json())
         .then(data => {
@@ -125,10 +143,14 @@ function actualizarEstadoSilencioso() {
                 });
             }
         })
-        .catch(() => console.log("Reintentando conexión..."));
+        .catch(err => {
+            console.log("Sondeando estado de luces..."); 
+        });
 }
 
+// Inicio del sistema
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("Iniciando conexión con el servidor...");
     actualizarEstadoSilencioso();
     setInterval(actualizarEstadoSilencioso, 3000); 
 });
