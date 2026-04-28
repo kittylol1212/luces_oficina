@@ -52,33 +52,39 @@ function toggleTodoElPiso(numeroPiso) {
     }).catch(err => console.error("Error en comando grupal:", err));
 }
 
-// ========================================================
-// NUEVA: FORZAR ESTADO DE UN PISO ESPECÍFICO (Botones ON/OFF)
-// ========================================================
-function forzarEncendidoPiso(numeroPiso, encender) {
-    const card = document.querySelector(`.piso-${numeroPiso}`);
-    if (!card) return;
+// ========================================================================
+// 3. NUEVA: FORZAR VARIOS PISOS A LA VEZ (Ej: Botones para Pisos 1, 2 y 3)
+// ========================================================================
+function forzarEncendidoPisosGlobal(listaPisos, encender) {
+    // Recorremos cada piso de la lista que le enviamos (ej: [1, 2, 3])
+    listaPisos.forEach(numeroPiso => {
+        
+        // Cambio visual en la pantalla para el piso actual del bucle
+        const card = document.querySelector(`.piso-${numeroPiso}`);
+        if (card) {
+            const luces = card.querySelectorAll('.avatar');
+            luces.forEach(luz => {
+                luz.classList.toggle('encendido', encender);
+            });
+        }
 
-    const luces = card.querySelectorAll('.avatar');
-    luces.forEach(luz => {
-        luz.classList.toggle('encendido', encender);
-    });
-
-    fetch(`${BASE_URL}/api/luz/piso`, { 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            piso: numeroPiso, 
-            estado: encender 
+        // Envío de la orden al servidor para el piso actual del bucle
+        fetch(`${BASE_URL}/api/luz/piso`, { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                piso: numeroPiso, 
+                estado: encender 
+            })
         })
-    })
-    .then(res => res.json())
-    .then(data => console.log(`Piso ${numeroPiso} actualizado correctamente`))
-    .catch(err => console.error("Error al controlar el piso:", err));
+        .then(res => res.json())
+        .then(data => console.log(`Piso ${numeroPiso} sincronizado`))
+        .catch(err => console.error(`Error en piso ${numeroPiso}:`, err));
+    });
 }
 
 // ==========================================
-// 3. FUNCIÓN INDIVIDUAL: BOMBILLA
+// 4. FUNCIÓN INDIVIDUAL: BOMBILLA
 // ==========================================
 function toggleLuz(el) {
     el.classList.toggle("encendido");
@@ -96,7 +102,7 @@ function toggleLuz(el) {
 }
 
 // ==========================================
-// 4. FUNCIONES DE INTERFAZ (EDITAR Y DESPLEGAR)
+// 5. FUNCIONES DE INTERFAZ (EDITAR Y DESPLEGAR)
 // ==========================================
 function editarNombre(elementoLapiz) {
     const contenedor = elementoLapiz.parentElement;
@@ -119,7 +125,7 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // ==========================================
-// 5. BUCLE: MANTENER EL ESTADO SINCRONIZADO
+// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO
 // ==========================================
 function actualizarEstadoSilencioso() {
     fetch(`${BASE_URL}/api/estado_luces`)
