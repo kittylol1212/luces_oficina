@@ -38,7 +38,10 @@ def recibir_luz():
     print(f"📡 Luz {id_luz} -> {'ON' if estado else 'OFF'}")
 
     if estado:
-        cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
+        # Verificamos si ya existe una sesión abierta para esta luz
+        cursor.execute("SELECT id FROM sesiones_luz WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
+        if not cursor.fetchone():
+            cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
     else:
         cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
 
@@ -66,13 +69,15 @@ def recibir_piso():
     for luz in luces_a_procesar:
         id_luz = luz[0]
         if estado:
-            # Para evitar duplicados en 'encendidos', primero cerramos sesiones abiertas si existieran
-            cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
-            cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
+            # Primero verificamos si YA está encendida para no duplicar registros
+            cursor.execute("SELECT id FROM sesiones_luz WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
+            if not cursor.fetchone():
+                cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
         else:
+            # Si apagamos, cerramos cualquier sesión que no tenga hora de apagado
             cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
         
-        # Enviamos la señal a Node-RED para cada luz
+        # Enviamos la señal a Node-RED para cada luz procesada
         enviar_a_nodered({"luz_id": id_luz, "estado": estado})
 
     db.commit()
@@ -91,12 +96,14 @@ def obtener_estado():
         cursor.execute("SELECT luz_id FROM sesiones_luz WHERE hora_apagado IS NULL")
         luces_encendidas = cursor.fetchall()
         
-        # Convierte el resultado en una lista simple
+        # Convierte el resultado en una lista simple de IDs
         lista_encendidas = [luz[0] for luz in luces_encendidas]
         
         return jsonify({"status": "ok", "encendidas": lista_encendidas})
     except Exception as e:
+        print(f"❌ Error en obtener_estado: {e}")
         return jsonify({"status": "error", "mensaje": str(e)})
 
 if __name__ == '__main__':
+    # Ejecutamos el servidor en el puerto 5000
     app.run(port=5000, debug=True)

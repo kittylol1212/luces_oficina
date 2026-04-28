@@ -1,34 +1,42 @@
 const BASE_URL = "https://vendors-occupational-differ-women.trycloudflare.com";
 
-// ==========================================
-// 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
-// ==========================================
-function toggleTodoElEdificio(encender) {
-    const accion = encender ? "encender" : "apagar";
-    if (!confirm(`¿Estás seguro de que quieres ${accion} todas las luces del edificio?`)) return;
+// 🛑 Variable global para evitar que el bucle de 3 segundos interfiera con los botones
+let bloqueoSincronizacion = false;
 
-    const todasLasLuces = document.querySelectorAll('.avatar');
-    todasLasLuces.forEach(luz => {
-        if (encender) {
-            luz.classList.add('encendido');
-        } else {
-            luz.classList.remove('encendido');
-        }
-    });
+// ========================================================================
+// 1. FUNCIÓN MAESTRA GLOBAL (BOTONES DE ARRIBA PARA VARIOS PISOS)
+// ========================================================================
+function forzarEncendidoPisosGlobal(listaPisos, encender) {
+    bloqueoSincronizacion = true; // Pausamos el bucle de actualización
 
-    fetch(`${BASE_URL}/api/luz/piso`, { 
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            piso: 0, 
-            estado: encender 
-        })
-    })
-    .then(res => res.json())
-    .then(data => console.log("✅ Comando maestro procesado:", data.mensaje))
-    .catch(err => {
-        console.error("❌ Error en comando maestro:", err);
-        alert("Error al conectar con el servidor.");
+    listaPisos.forEach((numeroPiso, index) => {
+        // Retrasamos cada petición un poco (100ms) para no saturar el servidor Python
+        setTimeout(() => {
+            const card = document.querySelector(`.piso-${numeroPiso}`);
+            if (card) {
+                card.querySelectorAll('.avatar').forEach(luz => {
+                    luz.classList.toggle('encendido', encender);
+                });
+            }
+
+            fetch(`${BASE_URL}/api/luz/piso`, { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ piso: numeroPiso, estado: encender })
+            })
+            .then(res => res.json())
+            .then(() => {
+                console.log(`Piso ${numeroPiso} sincronizado`);
+                // Si es el último piso de la lista, esperamos 1.5s y reactivamos el bucle
+                if (index === listaPisos.length - 1) {
+                    setTimeout(() => { 
+                        bloqueoSincronizacion = false; 
+                        console.log("Sincronización reactivada");
+                    }, 1500);
+                }
+            })
+            .catch(err => console.error(`Error en piso ${numeroPiso}:`, err));
+        }, index * 100); 
     });
 }
 
@@ -52,39 +60,8 @@ function toggleTodoElPiso(numeroPiso) {
     }).catch(err => console.error("Error en comando grupal:", err));
 }
 
-// ========================================================================
-// 3. NUEVA: FORZAR VARIOS PISOS A LA VEZ (Ej: Botones para Pisos 1, 2 y 3)
-// ========================================================================
-function forzarEncendidoPisosGlobal(listaPisos, encender) {
-    // Recorremos cada piso de la lista que le enviamos (ej: [1, 2, 3])
-    listaPisos.forEach(numeroPiso => {
-        
-        // Cambio visual en la pantalla para el piso actual del bucle
-        const card = document.querySelector(`.piso-${numeroPiso}`);
-        if (card) {
-            const luces = card.querySelectorAll('.avatar');
-            luces.forEach(luz => {
-                luz.classList.toggle('encendido', encender);
-            });
-        }
-
-        // Envío de la orden al servidor para el piso actual del bucle
-        fetch(`${BASE_URL}/api/luz/piso`, { 
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                piso: numeroPiso, 
-                estado: encender 
-            })
-        })
-        .then(res => res.json())
-        .then(data => console.log(`Piso ${numeroPiso} sincronizado`))
-        .catch(err => console.error(`Error en piso ${numeroPiso}:`, err));
-    });
-}
-
 // ==========================================
-// 4. FUNCIÓN INDIVIDUAL: BOMBILLA
+// 3. FUNCIÓN INDIVIDUAL: BOMBILLA
 // ==========================================
 function toggleLuz(el) {
     el.classList.toggle("encendido");
@@ -102,7 +79,7 @@ function toggleLuz(el) {
 }
 
 // ==========================================
-// 5. FUNCIONES DE INTERFAZ (EDITAR Y DESPLEGAR)
+// 4. FUNCIONES DE INTERFAZ (EDITAR Y DESPLEGAR)
 // ==========================================
 function editarNombre(elementoLapiz) {
     const contenedor = elementoLapiz.parentElement;
@@ -125,9 +102,12 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // ==========================================
-// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO
+// 5. BUCLE: MANTENER EL ESTADO SINCRONIZADO
 // ==========================================
 function actualizarEstadoSilencioso() {
+    // Si estamos mandando una orden maestra, ignoramos la actualización
+    if (bloqueoSincronizacion) return; 
+    
     fetch(`${BASE_URL}/api/estado_luces`)
         .then(res => res.json())
         .then(data => {
