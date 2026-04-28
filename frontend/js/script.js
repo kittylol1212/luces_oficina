@@ -1,4 +1,4 @@
-const BASE_URL = " https://patch-implement-application-responsibility.trycloudflare.com";
+const BASE_URL = "https://pound-values-ranger-teacher.trycloudflare.com";
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
