@@ -116,8 +116,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #A32D2D;
-  border: 2px solid #791F1F;
+  background:#e74c3c;
+  border: 2px solid #e74c3c;
   cursor: pointer;
   transition: 0.3s;
   display: flex;
@@ -127,8 +127,8 @@
 }
 
 .avatar.encendido {
-  background: #3B6D11;
-  border-color: #27500A;
+  background:#2ecc71;
+  border-color: #2ecc71;
 }
 
 /* --- GENERALES --- */
