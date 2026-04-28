@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
@@ -7,13 +8,13 @@ app = Flask(__name__)
 CORS(app)
 
 # 🔌 CONEXIÓN A MYSQL LOCAL
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="Luz2710*", 
-    database="luces_oficina"
-)
-cursor = db.cursor(buffered=True)
+def obtener_conexion():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Luz2710*", 
+        database="luces_oficina"
+    )
 
 # 🔁 ENVÍO A NODE-RED
 def enviar_a_nodered(datos_json):
@@ -21,8 +22,8 @@ def enviar_a_nodered(datos_json):
     try:
         requests.post(url, json=datos_json, timeout=2)
         print(f"✅ Enviado a Node-RED: {datos_json}")
-    except:
-        print("❌ Error conectando a Node-RED")
+    except Exception as e:
+        print(f"❌ Error conectando a Node-RED: {e}")
 
 @app.route('/')
 def inicio():
@@ -37,12 +38,20 @@ def recibir_luz():
 
     print(f"📡 Luz {id_luz} -> {'ON' if estado else 'OFF'}")
 
+    db = obtener_conexion()
+    cursor = db.cursor()
+
     if estado:
-        cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
+        cursor.execute("SELECT id FROM sesiones_luz WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
+        if not cursor.fetchone():
+            cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
     else:
         cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
 
     db.commit()
+    cursor.close()
+    db.close()
+
     enviar_a_nodered({"luz_id": id_luz, "estado": estado})
     return jsonify({"status": "ok"})
 
@@ -53,9 +62,11 @@ def recibir_piso():
     numero_piso = datos.get('piso')
     estado = datos.get('estado')
 
-    # Si el número de piso es 0, seleccionamos TODAS las luces, si no, solo las del piso
+    db = obtener_conexion()
+    cursor = db.cursor()
+
     if numero_piso == 0:
-        print(f"🚨 COMANDO MAESTRO -> {'ENCENDER' if estado else 'APAGAR'} TODO EL EDIFICIO")
+        print(f"🚨 COMANDO MAESTRO -> {'ENCENDER' if estado else 'APAGAR'}")
         cursor.execute("SELECT id FROM luces")
     else:
         print(f"📡 Piso {numero_piso} -> {'ON' if estado else 'OFF'}")
@@ -66,37 +77,44 @@ def recibir_piso():
     for luz in luces_a_procesar:
         id_luz = luz[0]
         if estado:
-            # Para evitar duplicados en 'encendidos', primero cerramos sesiones abiertas si existieran
-            cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
-            cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
+            cursor.execute("SELECT id FROM sesiones_luz WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
+            if not cursor.fetchone():
+                cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
         else:
             cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
         
-        # Enviamos la señal a Node-RED para cada luz
         enviar_a_nodered({"luz_id": id_luz, "estado": estado})
 
     db.commit()
+    cursor.close()
+    db.close()
     
     msg = "Edificio completo actualizado" if numero_piso == 0 else f"Piso {numero_piso} actualizado"
     return jsonify({"status": "ok", "mensaje": msg})
 
-
 # ==========================================
-# 🔍 CONSULTAR ESTADO AL ABRIR LA PÁGINA
+# 🔍 CONSULTAR ESTADO (GET ARREGLADO)
 # ==========================================
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
     try:
-        # Busca las luces que están encendidas (hora_apagado es NULL)
-        cursor.execute("SELECT luz_id FROM sesiones_luz WHERE hora_apagado IS NULL")
-        luces_encendidas = cursor.fetchall()
+        db = obtener_conexion()
+        cursor = db.cursor()
         
-        # Convierte el resultado en una lista simple
-        lista_encendidas = [luz[0] for luz in luces_encendidas]
+        cursor.execute("SELECT DISTINCT luz_id FROM sesiones_luz WHERE hora_apagado IS NULL")
+        resultados = cursor.fetchall()
+        lista_encendidas = [fila[0] for fila in resultados]
         
+        cursor.close()
+        db.close()
+        
+        print(f"🔍 Estado consultado: {len(lista_encendidas)} luces ON.")
         return jsonify({"status": "ok", "encendidas": lista_encendidas})
+        
     except Exception as e:
+        print(f"❌ Error en GET estado_luces: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)})
 
 if __name__ == '__main__':
+    print("🚀 Iniciando servidor Flask en el puerto 5000...")
     app.run(port=5000, debug=True)

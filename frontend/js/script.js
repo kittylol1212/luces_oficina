@@ -1,4 +1,4 @@
-const BASE_URL = "https://guns-crystal-trek-sum.trycloudflare.com";
+const BASE_URL = " https://patch-implement-application-responsibility.trycloudflare.com";
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
