@@ -1,16 +1,15 @@
 const BASE_URL = "https://vendors-occupational-differ-women.trycloudflare.com";
 
-// 🛑 Variable global para evitar que el bucle de 3 segundos interfiera con los botones
+// Variable global para evitar conflictos
 let bloqueoSincronizacion = false;
 
-// ========================================================================
-// 1. FUNCIÓN MAESTRA GLOBAL (BOTONES DE ARRIBA PARA VARIOS PISOS)
-// ========================================================================
+// ==========================================
+// 1. BOTONES MAESTROS (ARRIBA)
+// ==========================================
 function forzarEncendidoPisosGlobal(listaPisos, encender) {
-    bloqueoSincronizacion = true; // Pausamos el bucle de actualización
+    bloqueoSincronizacion = true; 
 
     listaPisos.forEach((numeroPiso, index) => {
-        // Retrasamos cada petición un poco (100ms) para no saturar el servidor Python
         setTimeout(() => {
             const card = document.querySelector(`.piso-${numeroPiso}`);
             if (card) {
@@ -24,24 +23,49 @@ function forzarEncendidoPisosGlobal(listaPisos, encender) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ piso: numeroPiso, estado: encender })
             })
-            .then(res => res.json())
             .then(() => {
-                console.log(`Piso ${numeroPiso} sincronizado`);
-                // Si es el último piso de la lista, esperamos 1.5s y reactivamos el bucle
                 if (index === listaPisos.length - 1) {
-                    setTimeout(() => { 
-                        bloqueoSincronizacion = false; 
-                        console.log("Sincronización reactivada");
-                    }, 1500);
+                    setTimeout(() => { bloqueoSincronizacion = false; }, 2000);
                 }
             })
-            .catch(err => console.error(`Error en piso ${numeroPiso}:`, err));
-        }, index * 100); 
+            .catch(err => {
+                console.error("Error en maestro:", err);
+                bloqueoSincronizacion = false;
+            });
+        }, index * 150); 
     });
 }
 
 // ==========================================
-// 2. FUNCIÓN GRUPAL: POR PISO (Alternar/Toggle)
+// 2. FUNCIÓN INDIVIDUAL (ESTA ES LA QUE TE FALLABA)
+// ==========================================
+function toggleLuz(el) {
+    // Cambio visual inmediato
+    el.classList.toggle("encendido");
+    const estaEncendido = el.classList.contains("encendido");
+    const idLuz = el.getAttribute('data-luz'); 
+
+    if (!idLuz) {
+        console.error("Error: No se encontró el ID de la luz en el atributo data-luz");
+        return;
+    }
+
+    fetch(`${BASE_URL}/api/luz`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ luz_id: parseInt(idLuz), estado: estaEncendido })
+    })
+    .then(res => res.json())
+    .then(data => console.log("Luz individual actualizada"))
+    .catch(err => {
+        console.error("Error al conectar:", err);
+        // Si falla, revertimos el color
+        el.classList.toggle("encendido", !estaEncendido);
+    });
+}
+
+// ==========================================
+// 3. FUNCIÓN POR PISO (BOTÓN EN TÍTULO AZUL)
 // ==========================================
 function toggleTodoElPiso(numeroPiso) {
     const card = document.querySelector(`.piso-${numeroPiso}`);
@@ -57,38 +81,17 @@ function toggleTodoElPiso(numeroPiso) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ piso: numeroPiso, estado: nuevoEstado })
-    }).catch(err => console.error("Error en comando grupal:", err));
+    }).catch(err => console.error("Error grupal:", err));
 }
 
 // ==========================================
-// 3. FUNCIÓN INDIVIDUAL: BOMBILLA
-// ==========================================
-function toggleLuz(el) {
-    el.classList.toggle("encendido");
-    const estaEncendido = el.classList.contains("encendido");
-    const idLuz = el.getAttribute('data-luz'); 
-
-    fetch(`${BASE_URL}/api/luz`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ luz_id: parseInt(idLuz), estado: estaEncendido })
-    }).catch(err => {
-        console.error("Error al conectar con el servidor:", err);
-        el.classList.toggle("encendido", !estaEncendido);
-    });
-}
-
-// ==========================================
-// 4. FUNCIONES DE INTERFAZ (EDITAR Y DESPLEGAR)
+// 4. INTERFAZ Y DESPLEGABLES
 // ==========================================
 function editarNombre(elementoLapiz) {
     const contenedor = elementoLapiz.parentElement;
     const divNombre = contenedor.querySelector('.persona-nombre');
-    const nombreActual = divNombre.innerText;
-    const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
-    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
-        divNombre.innerText = nuevoNombre.trim();
-    }
+    const nuevoNombre = prompt("Ingresa el nuevo nombre:", divNombre.innerText);
+    if (nuevoNombre) divNombre.innerText = nuevoNombre.trim();
 }
 
 function toggleDesplegable(event, numeroPiso) {
@@ -98,15 +101,14 @@ function toggleDesplegable(event, numeroPiso) {
     const body = card.querySelector('.piso-body');
     const flecha = card.querySelector('.flechita');
     body.classList.toggle('oculto');
-    flecha.classList.toggle('cerrada', body.classList.contains('oculto'));
+    if (flecha) flecha.classList.toggle('cerrada');
 }
 
 // ==========================================
-// 5. BUCLE: MANTENER EL ESTADO SINCRONIZADO
+// 5. ACTUALIZACIÓN AUTOMÁTICA
 // ==========================================
 function actualizarEstadoSilencioso() {
-    // Si estamos mandando una orden maestra, ignoramos la actualización
-    if (bloqueoSincronizacion) return; 
+    if (bloqueoSincronizacion) return;
     
     fetch(`${BASE_URL}/api/estado_luces`)
         .then(res => res.json())
@@ -123,14 +125,10 @@ function actualizarEstadoSilencioso() {
                 });
             }
         })
-        .catch(err => {
-            console.log("Sondeando estado de luces..."); 
-        });
+        .catch(() => console.log("Reintentando conexión..."));
 }
 
-// Inicio del sistema
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Iniciando conexión con el servidor...");
     actualizarEstadoSilencioso();
     setInterval(actualizarEstadoSilencioso, 3000); 
 });
