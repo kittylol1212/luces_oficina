@@ -156,56 +156,38 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// 1. FUNCIÓN PARA EDITAR
 function editarNombre(elemento) {
-    // 1. Buscar el div que contiene el nombre (está al lado del botón editar)
-    const contenedorNombre = elemento.parentElement.querySelector('.persona-nombre');
-    const nombreActual = contenedorNombre.innerText;
+    const contenedorPersona = elemento.closest('.persona');
+    const idPersona = contenedorPersona.getAttribute('data-id');
+    const divNombre = contenedorPersona.querySelector('.persona-nombre');
+    const nombreActual = divNombre.innerText;
 
-    // 2. Pedir el nuevo nombre
     const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
 
-    // 3. Si el usuario escribió algo y no es vacío
     if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
-        contenedorNombre.innerText = nuevoNombre;
-        
-        // 4. GUARDAR AUTOMÁTICAMENTE
-        guardarNombresEnStorage();
+        divNombre.innerText = nuevoNombre;
+        // Guardar inmediatamente este nombre específico
+        localStorage.setItem('nombre_' + idPersona, nuevoNombre);
     }
 }
 
-function guardarNombresEnStorage() {
-    const todosLosNombres = [];
+// 2. FUNCIÓN PARA CARGAR LOS NOMBRES AL ABRIR LA PÁGINA
+function cargarNombresGuardados() {
+    const todasLasPersonas = document.querySelectorAll('.persona');
     
-    // Seleccionamos todos los divs que tienen nombres de personas
-    document.querySelectorAll('.persona-nombre').forEach((el, index) => {
-        todosLosNombres.push({
-            id: index, // Usamos el índice para saber cuál es cuál
-            nombre: el.innerText
-        });
-    });
-
-    // Guardamos el arreglo convertido en texto en el navegador
-    localStorage.setItem('nombresDirectorio', JSON.stringify(todosLosNombres));
-    console.log("Nombres guardados con éxito.");
-}
-
-function cargarNombresDeStorage() {
-    const datosGuardados = localStorage.getItem('nombresDirectorio');
-
-    if (datosGuardados) {
-        const nombresJSON = JSON.parse(datosGuardados);
+    todasLasPersonas.forEach(persona => {
+        const id = persona.getAttribute('data-id');
+        const nombreGuardado = localStorage.getItem('nombre_' + id);
         
-        // Buscamos todos los espacios de nombres y les ponemos lo que guardamos
-        document.querySelectorAll('.persona-nombre').forEach((el, index) => {
-            if (nombresJSON[index]) {
-                el.innerText = nombresJSON[index].nombre;
-            }
-        });
-    }
+        if (nombreGuardado) {
+            const divNombre = persona.querySelector('.persona-nombre');
+            divNombre.innerText = nombreGuardado;
+        }
+    });
 }
 
-// ESTO ES VITAL: Ejecutar la carga apenas abra la página
-window.onload = function() {
-    cargarNombresDeStorage();
-    // Aquí puedes llamar otras funciones que necesites al iniciar
-};
+// 3. ASEGURAR QUE SE EJECUTE AL CARGAR
+document.addEventListener('DOMContentLoaded', () => {
+    cargarNombresGuardados();
+});
