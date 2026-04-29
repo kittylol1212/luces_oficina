@@ -156,44 +156,35 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Función para pedir los nombres al servidor
-async function actualizarNombresGlobales() {
-    try {
-        // REEMPLAZA ESTA URL por la de tu servidor real
-        const respuesta = await fetch('https://tu-api.com/obtener-nombres');
-        const nombres = await respuesta.json();
+function editarNombre(elemento) {
+    // 1. Buscar el div que contiene el nombre (está al lado del botón editar)
+    const contenedorNombre = elemento.parentElement.querySelector('.persona-nombre');
+    const nombreActual = contenedorNombre.innerText;
 
-        nombres.forEach(persona => {
-            const divNombre = document.querySelector(`[data-id="${persona.id}"] .persona-nombre`);
-            if (divNombre && divNombre.innerText !== persona.nombre) {
-                divNombre.innerText = persona.nombre;
-            }
-        });
-    } catch (e) {
-        console.error("Error sincronizando:", e);
+    // 2. Pedir el nuevo nombre
+    const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
+
+    // 3. Si el usuario escribió algo y no es vacío
+    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
+        contenedorNombre.innerText = nuevoNombre;
+        
+        // 4. GUARDAR AUTOMÁTICAMENTE
+        guardarNombresEnStorage();
     }
 }
 
-// Preguntar al servidor cada 5 segundos
-setInterval(actualizarNombresGlobales, 5000);
-
-function editarNombre(elemento) {
-    const contenedorPersona = elemento.closest('.persona');
-    const idPersona = contenedorPersona.getAttribute('data-id');
-    const divNombre = contenedorPersona.querySelector('.persona-nombre');
-    const nombreActual = divNombre.innerText;
-
-    const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
-
-    if (nuevoNombre) {
-        // ENVIAR AL BACKEND
-        fetch('https://tu-api.com/guardar-nombre', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ id: idPersona, nombre: nuevoNombre })
-        })
-        .then(() => {
-            divNombre.innerText = nuevoNombre; // Actualiza tu pantalla
+function guardarNombresEnStorage() {
+    const todosLosNombres = [];
+    
+    // Seleccionamos todos los divs que tienen nombres de personas
+    document.querySelectorAll('.persona-nombre').forEach((el, index) => {
+        todosLosNombres.push({
+            id: index, // Usamos el índice para saber cuál es cuál
+            nombre: el.innerText
         });
-    }
+    });
+
+    // Guardamos el arreglo convertido en texto en el navegador
+    localStorage.setItem('nombresDirectorio', JSON.stringify(todosLosNombres));
+    console.log("Nombres guardados con éxito.");
 }
