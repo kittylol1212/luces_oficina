@@ -218,7 +218,7 @@ body {
     display: flex !important;
     justify-content: space-between !important; /* Lo manda a la derecha */
     align-items: center !important;
-    padding: 20px 40px !important;
+    padding: 35px 40px !important;
     min-height: 80px; /* Le damos altura a la franja azul */
 }
 
