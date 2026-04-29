@@ -156,44 +156,38 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Función para pedir los nombres al servidor
-async function actualizarNombresGlobales() {
-    try {
-        // REEMPLAZA ESTA URL por la de tu servidor real
-        const respuesta = await fetch('https://tu-api.com/obtener-nombres');
-        const nombres = await respuesta.json();
-
-        nombres.forEach(persona => {
-            const divNombre = document.querySelector(`[data-id="${persona.id}"] .persona-nombre`);
-            if (divNombre && divNombre.innerText !== persona.nombre) {
-                divNombre.innerText = persona.nombre;
-            }
-        });
-    } catch (e) {
-        console.error("Error sincronizando:", e);
-    }
-}
-
-// Preguntar al servidor cada 5 segundos
-setInterval(actualizarNombresGlobales, 5000);
-
 function editarNombre(elemento) {
+    // 1. Encontrar a todas las personas y saber cuál es esta
+    const todasLasPersonas = Array.from(document.querySelectorAll('.persona'));
     const contenedorPersona = elemento.closest('.persona');
-    const idPersona = contenedorPersona.getAttribute('data-id');
+    const indice = todasLasPersonas.indexOf(contenedorPersona);
+
     const divNombre = contenedorPersona.querySelector('.persona-nombre');
     const nombreActual = divNombre.innerText;
 
+    // 2. Pedir el nuevo nombre
     const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
 
-    if (nuevoNombre) {
-        // ENVIAR AL BACKEND
-        fetch('https://tu-api.com/guardar-nombre', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ id: idPersona, nombre: nuevoNombre })
-        })
-        .then(() => {
-            divNombre.innerText = nuevoNombre; // Actualiza tu pantalla
-        });
+    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
+        divNombre.innerText = nuevoNombre;
+        
+        // 3. Guardar usando el índice único
+        localStorage.setItem('persona_nombre_' + indice, nuevoNombre);
     }
 }
+
+function cargarNombres() {
+    const todasLasPersonas = document.querySelectorAll('.persona');
+    
+    todasLasPersonas.forEach((persona, indice) => {
+        const nombreGuardado = localStorage.getItem('persona_nombre_' + indice);
+        
+        if (nombreGuardado) {
+            const divNombre = persona.querySelector('.persona-nombre');
+            divNombre.innerText = nombreGuardado;
+        }
+    });
+}
+
+// Ejecutar cuando la página esté lista
+document.addEventListener('DOMContentLoaded', cargarNombres);
