@@ -1,4 +1,4 @@
-const BASE_URL = "https://beta-housing-contacted-wrote.trycloudflare.com";
+const BASE_URL = "https://eligible-suggests-ipaq-roads.trycloudflare.com";
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
@@ -41,8 +41,8 @@ function toggleTodoElPiso(numeroPiso) {
 
     const luces = card.querySelectorAll('.avatar');
     const algunaApagada = Array.from(luces).some(luz => !luz.classList.contains('encendido'));
-    const nuevoEstado = algunaApagada; 
-
+    const nuevoEstado = algunaApagada;
+    
     luces.forEach(luz => luz.classList.toggle('encendido', nuevoEstado));
 
     fetch(`${BASE_URL}/api/luz/piso`, { 
@@ -53,13 +53,10 @@ function toggleTodoElPiso(numeroPiso) {
 }
 
 // ========================================================================
-// 3. NUEVA: FORZAR VARIOS PISOS A LA VEZ (Ej: Botones para Pisos 1, 2 y 3)
+// 3. FORZAR VARIOS PISOS A LA VEZ (Ej: Botones para Pisos 1, 2 y 3)
 // ========================================================================
 function forzarEncendidoPisosGlobal(listaPisos, encender) {
-    // Recorremos cada piso de la lista que le enviamos (ej: [1, 2, 3])
     listaPisos.forEach(numeroPiso => {
-        
-        // Cambio visual en la pantalla para el piso actual del bucle
         const card = document.querySelector(`.piso-${numeroPiso}`);
         if (card) {
             const luces = card.querySelectorAll('.avatar');
@@ -68,7 +65,6 @@ function forzarEncendidoPisosGlobal(listaPisos, encender) {
             });
         }
 
-        // Envío de la orden al servidor para el piso actual del bucle
         fetch(`${BASE_URL}/api/luz/piso`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -87,31 +83,62 @@ function forzarEncendidoPisosGlobal(listaPisos, encender) {
 // 4. FUNCIÓN INDIVIDUAL: BOMBILLA
 // ==========================================
 function toggleLuz(el) {
+    // 1. Cambio visual instantáneo
     el.classList.toggle("encendido");
     const estaEncendido = el.classList.contains("encendido");
     const idLuz = el.getAttribute('data-luz'); 
 
+    // 2. Notificar al backend (Python)
     fetch(`${BASE_URL}/api/luz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ luz_id: parseInt(idLuz), estado: estaEncendido })
-    }).catch(err => {
-        console.error("Error al conectar con el servidor:", err);
+        body: JSON.stringify({ 
+            luz_id: parseInt(idLuz), 
+            estado: estaEncendido 
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error("El servidor no respondió correctamente");
+        console.log(`📡 Luz ${idLuz} sincronizada con estado: ${estaEncendido}`);
+    })
+    .catch(err => {
+        console.error("❌ Error de comunicación con el servidor:", err);
+        // Si hay error en la red, revertimos el color del botón
         el.classList.toggle("encendido", !estaEncendido);
     });
 }
 
 // ==========================================
-// 5. FUNCIONES DE INTERFAZ (EDITAR Y DESPLEGAR)
+// 5. FUNCIONES DE INTERFAZ (NOMBRES Y DESPLEGABLES)
 // ==========================================
-function editarNombre(elementoLapiz) {
-    const contenedor = elementoLapiz.parentElement;
-    const divNombre = contenedor.querySelector('.persona-nombre');
+function editarNombre(elemento) {
+    // 1. Encontrar a todas las personas para obtener un índice único
+    const todasLasPersonas = Array.from(document.querySelectorAll('.persona'));
+    const contenedorPersona = elemento.closest('.persona');
+    const indice = todasLasPersonas.indexOf(contenedorPersona);
+
+    const divNombre = contenedorPersona.querySelector('.persona-nombre');
     const nombreActual = divNombre.innerText;
+
+    // 2. Solicitar cambio
     const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
+
+    // 3. Validar y Guardar localmente
     if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
         divNombre.innerText = nuevoNombre.trim();
+        localStorage.setItem('persona_nombre_' + indice, nuevoNombre.trim());
     }
+}
+
+function cargarNombres() {
+    const todasLasPersonas = document.querySelectorAll('.persona');
+    todasLasPersonas.forEach((persona, indice) => {
+        const nombreGuardado = localStorage.getItem('persona_nombre_' + indice);
+        if (nombreGuardado) {
+            const divNombre = persona.querySelector('.persona-nombre');
+            divNombre.innerText = nombreGuardado;
+        }
+    });
 }
 
 function toggleDesplegable(event, numeroPiso) {
@@ -132,9 +159,10 @@ function actualizarEstadoSilencioso() {
         .then(res => res.json())
         .then(data => {
             if (data.status === 'ok') {
-                const lucesOn = data.encendidas;
+                const lucesOn = data.encendidas || [];
                 document.querySelectorAll('.avatar').forEach(avatar => {
                     const idLuz = parseInt(avatar.getAttribute('data-luz'));
+                    // Verificamos si el ID de la luz está en el arreglo de las encendidas
                     if (lucesOn.includes(idLuz)) {
                         avatar.classList.add('encendido');
                     } else {
@@ -144,50 +172,22 @@ function actualizarEstadoSilencioso() {
             }
         })
         .catch(err => {
-            console.log("Sondeando estado de luces..."); 
+            // Error silencioso para evitar molestar en consola si la conexión parpadea
         });
 }
 
-// Inicio del sistema
+// ==========================================
+// 7. INICIO DEL SISTEMA
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Iniciando conexión con el servidor...");
+    console.log("🚀 Iniciando interfaz...");
+    
+    // 1. Restaurar los nombres modificados localmente
+    cargarNombres();
+    
+    // 2. Traer el estado inicial de las luces desde la Base de Datos
     actualizarEstadoSilencioso();
+    
+    // 3. Consultar a la base de datos cada 3 segundos por si otro usuario cambió una luz
     setInterval(actualizarEstadoSilencioso, 3000); 
 });
-
-
-function editarNombre(elemento) {
-    // 1. Encontrar a todas las personas y saber cuál es esta
-    const todasLasPersonas = Array.from(document.querySelectorAll('.persona'));
-    const contenedorPersona = elemento.closest('.persona');
-    const indice = todasLasPersonas.indexOf(contenedorPersona);
-
-    const divNombre = contenedorPersona.querySelector('.persona-nombre');
-    const nombreActual = divNombre.innerText;
-
-    // 2. Pedir el nuevo nombre
-    const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
-
-    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
-        divNombre.innerText = nuevoNombre;
-        
-        // 3. Guardar usando el índice único
-        localStorage.setItem('persona_nombre_' + indice, nuevoNombre);
-    }
-}
-
-function cargarNombres() {
-    const todasLasPersonas = document.querySelectorAll('.persona');
-    
-    todasLasPersonas.forEach((persona, indice) => {
-        const nombreGuardado = localStorage.getItem('persona_nombre_' + indice);
-        
-        if (nombreGuardado) {
-            const divNombre = persona.querySelector('.persona-nombre');
-            divNombre.innerText = nombreGuardado;
-        }
-    });
-}
-
-// Ejecutar cuando la página esté lista
-document.addEventListener('DOMContentLoaded', cargarNombres);
