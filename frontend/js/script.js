@@ -156,29 +156,31 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// 1. FUNCIÓN PARA EDITAR
 function editarNombre(elemento) {
+    // 1. Encontrar a todas las personas y saber cuál es esta
+    const todasLasPersonas = Array.from(document.querySelectorAll('.persona'));
     const contenedorPersona = elemento.closest('.persona');
-    const idPersona = contenedorPersona.getAttribute('data-id');
+    const indice = todasLasPersonas.indexOf(contenedorPersona);
+
     const divNombre = contenedorPersona.querySelector('.persona-nombre');
     const nombreActual = divNombre.innerText;
 
+    // 2. Pedir el nuevo nombre
     const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
 
     if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
         divNombre.innerText = nuevoNombre;
-        // Guardar inmediatamente este nombre específico
-        localStorage.setItem('nombre_' + idPersona, nuevoNombre);
+        
+        // 3. Guardar usando el índice único
+        localStorage.setItem('persona_nombre_' + indice, nuevoNombre);
     }
 }
 
-// 2. FUNCIÓN PARA CARGAR LOS NOMBRES AL ABRIR LA PÁGINA
-function cargarNombresGuardados() {
+function cargarNombres() {
     const todasLasPersonas = document.querySelectorAll('.persona');
     
-    todasLasPersonas.forEach(persona => {
-        const id = persona.getAttribute('data-id');
-        const nombreGuardado = localStorage.getItem('nombre_' + id);
+    todasLasPersonas.forEach((persona, indice) => {
+        const nombreGuardado = localStorage.getItem('persona_nombre_' + indice);
         
         if (nombreGuardado) {
             const divNombre = persona.querySelector('.persona-nombre');
@@ -187,7 +189,5 @@ function cargarNombresGuardados() {
     });
 }
 
-// 3. ASEGURAR QUE SE EJECUTE AL CARGAR
-document.addEventListener('DOMContentLoaded', () => {
-    cargarNombresGuardados();
-});
+// Ejecutar cuando la página esté lista
+document.addEventListener('DOMContentLoaded', cargarNombres);
