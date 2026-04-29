@@ -1,4 +1,4 @@
-const BASE_URL = "https://televisions-innovations-savings-cet.trycloudflare.com";
+const BASE_URL = "https://shoot-permission-theory-theaters.trycloudflare.com";
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
