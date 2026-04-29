@@ -220,16 +220,16 @@ body {
     align-items: center !important;
     
     /* Padding generoso para que el logo respire dentro del azul */
-    padding: 10px 40px !important; 
+    padding: 10px 60px !important; 
     
     /* Importante: height en auto permite que la franja crezca según el logo */
     height: auto !important; 
-    width: 100%;
+    width: 80%;
     box-sizing: border-box;
 }
 .logo-meltec {
     /* Subimos a 120px para que destaque */
-    height: 140px !important; 
+    height: 0px !important; 
     width: auto !important;
     display: block !important;
     
