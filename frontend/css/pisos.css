@@ -216,21 +216,30 @@ body {
 .header {
     background-color: #178db3 !important;
     display: flex !important;
-    justify-content: space-between !important; /* Lo manda a la derecha */
+    justify-content: space-between !important;
     align-items: center !important;
-    padding: 10px 40px !important;
-    min-height: 80px; /* Le damos altura a la franja azul */
+    
+    /* Padding generoso para que el logo respire dentro del azul */
+    padding: 10px 40px !important; 
+    
+    /* Importante: height en auto permite que la franja crezca según el logo */
+    height: auto !important; 
+    width: 100%;
+    box-sizing: border-box;
 }
-
 .logo-meltec {
-    height: 80px !important; /* Tamaño más grande */
+    /* Subimos a 120px para que destaque */
+    height: 120px !important; 
     width: auto !important;
     display: block !important;
     
-    /* MAGIA: Esto convierte tu logo negro en blanco puro */
+    /* Mantenemos el filtro blanco */
     filter: brightness(0) invert(1) !important;
     
-    /* Esto asegura que el logo no se salga si la pantalla es pequeña */
-    max-width: 200px;
+    /* Aumentamos el max-width para que el logo pueda ensancharse al crecer */
+    max-width: 300px !important; 
     object-fit: contain;
+    
+    /* Un pequeño margen para que no toque los bordes superior/inferior */
+    margin: 5px 0;
 }
