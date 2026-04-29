@@ -154,3 +154,58 @@ document.addEventListener('DOMContentLoaded', () => {
     actualizarEstadoSilencioso();
     setInterval(actualizarEstadoSilencioso, 3000); 
 });
+
+
+function editarNombre(elemento) {
+    // 1. Buscar el div que contiene el nombre (está al lado del botón editar)
+    const contenedorNombre = elemento.parentElement.querySelector('.persona-nombre');
+    const nombreActual = contenedorNombre.innerText;
+
+    // 2. Pedir el nuevo nombre
+    const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
+
+    // 3. Si el usuario escribió algo y no es vacío
+    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
+        contenedorNombre.innerText = nuevoNombre;
+        
+        // 4. GUARDAR AUTOMÁTICAMENTE
+        guardarNombresEnStorage();
+    }
+}
+
+function guardarNombresEnStorage() {
+    const todosLosNombres = [];
+    
+    // Seleccionamos todos los divs que tienen nombres de personas
+    document.querySelectorAll('.persona-nombre').forEach((el, index) => {
+        todosLosNombres.push({
+            id: index, // Usamos el índice para saber cuál es cuál
+            nombre: el.innerText
+        });
+    });
+
+    // Guardamos el arreglo convertido en texto en el navegador
+    localStorage.setItem('nombresDirectorio', JSON.stringify(todosLosNombres));
+    console.log("Nombres guardados con éxito.");
+}
+
+function cargarNombresDeStorage() {
+    const datosGuardados = localStorage.getItem('nombresDirectorio');
+
+    if (datosGuardados) {
+        const nombresJSON = JSON.parse(datosGuardados);
+        
+        // Buscamos todos los espacios de nombres y les ponemos lo que guardamos
+        document.querySelectorAll('.persona-nombre').forEach((el, index) => {
+            if (nombresJSON[index]) {
+                el.innerText = nombresJSON[index].nombre;
+            }
+        });
+    }
+}
+
+// ESTO ES VITAL: Ejecutar la carga apenas abra la página
+window.onload = function() {
+    cargarNombresDeStorage();
+    // Aquí puedes llamar otras funciones que necesites al iniciar
+};
