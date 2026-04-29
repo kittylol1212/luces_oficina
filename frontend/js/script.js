@@ -156,66 +156,44 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-async function editarNombre(elemento) {
-    const contenedorPersona = elemento.closest('.persona');
-    const idPersona = contenedorPersona.getAttribute('data-id'); // Asegúrate de tener IDs únicos
-    const divNombre = contenedorPersona.querySelector('.persona-nombre');
-    const nombreActual = divNombre.innerText;
+// Función para pedir los nombres al servidor
+async function actualizarNombresGlobales() {
+    try {
+        // REEMPLAZA ESTA URL por la de tu servidor real
+        const respuesta = await fetch('https://tu-api.com/obtener-nombres');
+        const nombres = await respuesta.json();
 
-    const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
-
-    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
-        // 1. Cambiar visualmente en el momento
-        divNombre.innerText = nuevoNombre;
-
-        // 2. ENVIAR A TU BASE DE DATOS
-        try {
-            const respuesta = await fetch('URL_DE_TU_API/actualizar-nombre', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: idPersona,
-                    nombre: nuevoNombre
-                })
-            });
-            
-            if (respuesta.ok) {
-                console.log("Guardado en la base de datos global");
+        nombres.forEach(persona => {
+            const divNombre = document.querySelector(`[data-id="${persona.id}"] .persona-nombre`);
+            if (divNombre && divNombre.innerText !== persona.nombre) {
+                divNombre.innerText = persona.nombre;
             }
-        } catch (error) {
-            console.error("Error al conectar con la base de datos:", error);
-        }
+        });
+    } catch (e) {
+        console.error("Error sincronizando:", e);
     }
 }
 
-async function editarNombre(elemento) {
+// Preguntar al servidor cada 5 segundos
+setInterval(actualizarNombresGlobales, 5000);
+
+function editarNombre(elemento) {
     const contenedorPersona = elemento.closest('.persona');
-    const idPersona = contenedorPersona.getAttribute('data-id'); // Asegúrate de tener IDs únicos
+    const idPersona = contenedorPersona.getAttribute('data-id');
     const divNombre = contenedorPersona.querySelector('.persona-nombre');
     const nombreActual = divNombre.innerText;
 
     const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
 
-    if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
-        // 1. Cambiar visualmente en el momento
-        divNombre.innerText = nuevoNombre;
-
-        // 2. ENVIAR A TU BASE DE DATOS
-        try {
-            const respuesta = await fetch('URL_DE_TU_API/actualizar-nombre', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: idPersona,
-                    nombre: nuevoNombre
-                })
-            });
-            
-            if (respuesta.ok) {
-                console.log("Guardado en la base de datos global");
-            }
-        } catch (error) {
-            console.error("Error al conectar con la base de datos:", error);
-        }
+    if (nuevoNombre) {
+        // ENVIAR AL BACKEND
+        fetch('https://tu-api.com/guardar-nombre', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id: idPersona, nombre: nuevoNombre })
+        })
+        .then(() => {
+            divNombre.innerText = nuevoNombre; // Actualiza tu pantalla
+        });
     }
 }
