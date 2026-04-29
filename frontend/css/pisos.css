@@ -243,3 +243,17 @@ body {
     /* Un pequeño margen para que no toque los bordes superior/inferior */
     margin: 5px 0;
 }
+
+
+.logo-meltec {
+    height: 90px !important; 
+    width: auto !important;
+    display: block !important;
+    
+    /* BORRAMOS O COMENTAMOS EL FILTRO PARA QUE NO LO VUELVA UN CUADRO BLANCO */
+    /* filter: brightness(0) invert(1) !important; */
+    
+    max-width: 300px !important; 
+    object-fit: contain;
+    margin: 5px 0;
+}
