@@ -156,38 +156,34 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function editarNombre(elemento) {
-    // 1. Encontrar a todas las personas y saber cuál es esta
-    const todasLasPersonas = Array.from(document.querySelectorAll('.persona'));
+async function editarNombre(elemento) {
     const contenedorPersona = elemento.closest('.persona');
-    const indice = todasLasPersonas.indexOf(contenedorPersona);
-
+    const idPersona = contenedorPersona.getAttribute('data-id'); // Asegúrate de tener IDs únicos
     const divNombre = contenedorPersona.querySelector('.persona-nombre');
     const nombreActual = divNombre.innerText;
 
-    // 2. Pedir el nuevo nombre
     const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
 
     if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
+        // 1. Cambiar visualmente en el momento
         divNombre.innerText = nuevoNombre;
-        
-        // 3. Guardar usando el índice único
-        localStorage.setItem('persona_nombre_' + indice, nuevoNombre);
+
+        // 2. ENVIAR A TU BASE DE DATOS
+        try {
+            const respuesta = await fetch('URL_DE_TU_API/actualizar-nombre', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    id: idPersona,
+                    nombre: nuevoNombre
+                })
+            });
+            
+            if (respuesta.ok) {
+                console.log("Guardado en la base de datos global");
+            }
+        } catch (error) {
+            console.error("Error al conectar con la base de datos:", error);
+        }
     }
 }
-
-function cargarNombres() {
-    const todasLasPersonas = document.querySelectorAll('.persona');
-    
-    todasLasPersonas.forEach((persona, indice) => {
-        const nombreGuardado = localStorage.getItem('persona_nombre_' + indice);
-        
-        if (nombreGuardado) {
-            const divNombre = persona.querySelector('.persona-nombre');
-            divNombre.innerText = nombreGuardado;
-        }
-    });
-}
-
-// Ejecutar cuando la página esté lista
-document.addEventListener('DOMContentLoaded', cargarNombres);
