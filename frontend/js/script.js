@@ -1,4 +1,4 @@
-const BASE_URL = "https://anonymous-plugins-postal-architects.trycloudflare.com                             |";
+const BASE_URL = "https://beta-housing-contacted-wrote.trycloudflare.com";
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
