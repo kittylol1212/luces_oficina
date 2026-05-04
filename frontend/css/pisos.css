@@ -224,19 +224,22 @@ body {
     
     /* Importante: height en auto permite que la franja crezca según el logo */
     height: auto !important; 
-    width: 80%;
+    width: 0%;
     box-sizing: border-box;
 }
-
 .logo-meltec {
-    height: 90px !important; 
+    /* Subimos a 120px para que destaque */
+    height: 0px !important; 
     width: auto !important;
     display: block !important;
     
-    /* BORRAMOS O COMENTAMOS EL FILTRO PARA QUE NO LO VUELVA UN CUADRO BLANCO */
-    /* filter: brightness(0) invert(1) !important; */
+    /* Mantenemos el filtro blanco */
+    filter: brightness(0) invert(1) !important;
     
+    /* Aumentamos el max-width para que el logo pueda ensancharse al crecer */
     max-width: 300px !important; 
     object-fit: contain;
+    
+    /* Un pequeño margen para que no toque los bordes superior/inferior */
     margin: 5px 0;
 }
