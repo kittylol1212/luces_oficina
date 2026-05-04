@@ -240,3 +240,22 @@ body {
     object-fit: contain;
     margin: 5px 0;
 }
+
+.circulo-derecho {
+    width: 25px; /* Qué tan ancho es el círculo */
+    height: 25px; /* Qué tan alto es el círculo */
+    border-radius: 50%; /* Esto es lo que lo hace totalmente redondo */
+    background-color: #ccc; /* Color gris por defecto (cámbialo al que quieras) */
+    
+    /* El secreto para empujarlo a la derecha: */
+    margin-left: auto; 
+    
+    /* Un pequeño margen para que no se pegue al borde de la tarjeta */
+    margin-right: 15px; 
+}
+
+/* Solo para asegurar que la tarjeta alinee todo bien */
+.persona {
+    display: flex;
+    align-items: center;
+}
