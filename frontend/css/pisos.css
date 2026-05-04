@@ -248,3 +248,37 @@ body {
     /* Un pequeño margen para que no toque los bordes superior/inferior */
     margin: 5px 0;
 }
+
+
+/* --- SEMÁFORO DE ESTADOS (CÍRCULOS A LA DERECHA) --- */
+.estado-indicadores {
+    display: flex;
+    gap: 8px; /* Espacio entre cada círculo */
+    margin-left: auto; /* El truco mágico: empuja todo el bloque a la extrema derecha */
+}
+
+.circulo {
+    width: 22px; /* Ancho del círculo */
+    height: 22px; /* Alto del círculo */
+    border-radius: 50%; /* Esto los hace perfectamente redondos */
+    cursor: pointer; /* Cambia el cursor a una manito al pasar por encima */
+    transition: transform 0.2s ease; /* Efecto suave al pasar el mouse */
+}
+
+/* Efecto al pasar el mouse por encima (opcional pero se ve bien) */
+.circulo:hover {
+    transform: scale(1.2);
+}
+
+/* Los 3 colores exactos que dibujaste */
+.circulo.verde { 
+    background-color: #39FF14; /* Verde neón */
+}
+
+.circulo.amarillo { 
+    background-color: #FFE600; /* Amarillo brillante */
+}
+
+.circulo.rojo { 
+    background-color: #FF3B30; /* Rojo intenso */
+}
