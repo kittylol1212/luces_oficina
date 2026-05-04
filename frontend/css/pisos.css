@@ -243,3 +243,18 @@ body {
     /* Un pequeño margen para que no toque los bordes superior/inferior */
     margin: 5px 0;
 }
+
+
+.header {
+    background-color: #178db3 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 40px !important; 
+    height: auto !important; 
+    
+    /* 🚨 ESTAS TRES LÍNEAS ARREGLAN EL CORTE 🚨 */
+    width: 100% !important;
+    max-width: none !important; 
+    box-sizing: border-box !important;
+}
