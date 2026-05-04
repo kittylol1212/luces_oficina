@@ -213,6 +213,7 @@ body {
     transform: rotate(-90deg);
 }
 
+/* --- ENCABEZADO Y LOGO (CORREGIDO) --- */
 .header {
     background-color: #178db3 !important;
     display: flex !important;
@@ -224,12 +225,16 @@ body {
     
     /* Importante: height en auto permite que la franja crezca según el logo */
     height: auto !important; 
-    width: 0%;
-    box-sizing: border-box;
+    
+    /* 🚨 ESTO ARREGLA EL CORTE DE LA FRANJA AZUL 🚨 */
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
 }
+
 .logo-meltec {
-    /* Subimos a 120px para que destaque */
-    height: 0px !important; 
+    /* 🚨 ESTO HACE QUE EL LOGO VUELVA A APARECER 🚨 */
+    height: 90px !important; 
     width: auto !important;
     display: block !important;
     
@@ -243,4 +248,3 @@ body {
     /* Un pequeño margen para que no toque los bordes superior/inferior */
     margin: 5px 0;
 }
-
