@@ -240,14 +240,3 @@ body {
     object-fit: contain;
     margin: 5px 0;
 }
-
-.header {
-    background-color: #178db3 !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 10px 40px !important; 
-    height: auto !important; 
-    
-
-}
