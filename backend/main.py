@@ -101,11 +101,10 @@ def obtener_estado():
         db = obtener_conexion()
         cursor = db.cursor()
         
-        # Solo consultamos el tiempo de las que están prendidas
+        # Consultamos el tiempo de las que están prendidas
         cursor.execute("SELECT luz_id, TIMESTAMPDIFF(MINUTE, hora_encendido, NOW()) / 60.0 FROM sesiones_luz WHERE hora_apagado IS NULL AND luz_id IS NOT NULL")
         resultados = cursor.fetchall()
         
-        # Armamos el diccionario seguro {"1": 2.5, "2": 0.1}
         dict_encendidas = {}
         for fila in resultados:
             id_str = str(fila[0]).strip()
@@ -115,8 +114,14 @@ def obtener_estado():
         cursor.close()
         db.close()
         
+        print(f"🔍 Estado consultado: {len(dict_encendidas)} luces ON (con tiempos).")
         return jsonify({"status": "ok", "encendidas": dict_encendidas})
         
     except Exception as e:
         print(f"❌ Error en GET: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)})
+
+# 🚨 ESTA PARTE ES LA QUE HACE QUE EL SERVIDOR ARRANQUE 🚨
+if __name__ == '__main__':
+    print("🚀 Iniciando servidor Flask en el puerto 5000...")
+    app.run(port=5000, debug=True)
