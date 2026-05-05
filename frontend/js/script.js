@@ -191,3 +191,56 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Consultar a la base de datos cada 3 segundos por si otro usuario cambió una luz
     setInterval(actualizarEstadoSilencioso, 3000); 
 });
+
+
+
+#nuevo
+// ==========================================
+// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFOROS
+// ==========================================
+function actualizarEstadoSilencioso() {
+    fetch(`${BASE_URL}/api/estado_luces`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                const lucesOn = data.encendidas || {}; // Ahora es un objeto { "ID": Horas }
+
+                // Recorremos cada persona (para tener acceso a su luz y a sus círculos)
+                document.querySelectorAll('.persona').forEach(persona => {
+                    const avatar = persona.querySelector('.avatar');
+                    const idLuz = avatar.getAttribute('data-luz');
+                    
+                    // Buscamos los 3 círculos de esta persona
+                    const verde = persona.querySelector('.circulo.verde');
+                    const amarillo = persona.querySelector('.circulo.amarillo');
+                    const rojo = persona.querySelector('.circulo.rojo');
+
+                    // Apagamos los 3 círculos por defecto (quitando la clase activo)
+                    if(verde) verde.classList.remove('activo');
+                    if(amarillo) amarillo.classList.remove('activo');
+                    if(rojo) rojo.classList.remove('activo');
+
+                    // Verificamos si la luz está en el objeto de luces encendidas
+                    if (lucesOn[idLuz] !== undefined) {
+                        avatar.classList.add('encendido'); // Prende el bombillo
+                        
+                        const horas = lucesOn[idLuz]; // Obtenemos las horas
+                        
+                        // LÓGICA DEL SEMÁFORO
+                        if (horas < 4) {
+                            if(verde) verde.classList.add('activo');
+                        } else if (horas >= 4 && horas < 8) {
+                            if(amarillo) amarillo.classList.add('activo');
+                        } else { // 8 o más horas
+                            if(rojo) rojo.classList.add('activo');
+                        }
+                    } else {
+                        avatar.classList.remove('encendido'); // Apaga el bombillo si no está en BD
+                    }
+                });
+            }
+        })
+        .catch(err => {
+            // Error silencioso
+        });
+}

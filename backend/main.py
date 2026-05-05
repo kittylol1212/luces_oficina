@@ -118,3 +118,30 @@ def obtener_estado():
 if __name__ == '__main__':
     print("🚀 Iniciando servidor Flask en el puerto 5000...")
     app.run(port=5000, debug=True)
+
+#nuevo
+
+    # ==========================================
+# 🔍 CONSULTAR ESTADO Y HORAS (NUEVO)
+# ==========================================
+@app.route('/api/estado_luces', methods=['GET'])
+def obtener_estado():
+    try:
+        db = obtener_conexion()
+        cursor = db.cursor()
+        
+        # TIMESTAMPDIFF calcula los minutos desde que se encendió, y lo dividimos por 60 para sacar las horas exactas
+        cursor.execute("SELECT luz_id, TIMESTAMPDIFF(MINUTE, hora_encendido, NOW()) / 60.0 FROM sesiones_luz WHERE hora_apagado IS NULL")
+        resultados = cursor.fetchall()
+        
+        # Esto crea un diccionario. Ej: {"1": 2.5, "2": 0.1} (La luz 1 lleva 2.5 horas)
+        dict_encendidas = {str(fila[0]): fila[1] for fila in resultados}
+        
+        cursor.close()
+        db.close()
+        
+        return jsonify({"status": "ok", "encendidas": dict_encendidas})
+        
+    except Exception as e:
+        print(f"❌ Error en GET estado_luces: {str(e)}")
+        return jsonify({"status": "error", "mensaje": str(e)})

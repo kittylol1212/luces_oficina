@@ -282,3 +282,34 @@ body {
 .circulo.rojo { 
     background-color: #FF3B30; /* Rojo intenso */
 }
+
+
+#NUEVO
+/* --- SEMÁFORO DE ESTADOS --- */
+.estado-indicadores {
+    display: flex;
+    gap: 8px; 
+    margin-left: auto; 
+}
+
+.circulo {
+    width: 22px; 
+    height: 22px; 
+    border-radius: 50%; 
+    transition: all 0.3s ease; 
+    
+    /* ESTADO APAGADO: Medio transparentes y grises por defecto */
+    opacity: 0.2;
+    filter: grayscale(80%);
+}
+
+/* ESTADO PRENDIDO: Solo brillan si JavaScript les pone esta clase */
+.circulo.activo {
+    opacity: 1;
+    filter: grayscale(0%);
+    box-shadow: 0 0 8px currentColor;
+}
+
+.circulo.verde { background-color: #39FF14; }
+.circulo.amarillo { background-color: #FFE600; }
+.circulo.rojo { background-color: #FF3B30; }
