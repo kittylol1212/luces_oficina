@@ -93,7 +93,7 @@ def recibir_piso():
     return jsonify({"status": "ok", "mensaje": msg})
 
 # ==========================================
-# 🔍 CONSULTAR ESTADO Y HORAS (BLINDADO)
+# 🔍 CONSULTAR ESTADO Y HORAS (EL ÚNICO Y CORRECTO)
 # ==========================================
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
@@ -101,19 +101,12 @@ def obtener_estado():
         db = obtener_conexion()
         cursor = db.cursor()
         
-        # Le agregamos un "WHERE luz_id IS NOT NULL" para ignorar luces fantasmas o corruptas
-        cursor.execute("SELECT luz_id, TIMESTAMPDIFF(MINUTE, hora_encendido, NOW()) / 60.0 FROM sesiones_luz WHERE hora_apagado IS NULL AND luz_id IS NOT NULL")
+        # TIMESTAMPDIFF calcula los minutos desde que se encendió, y lo dividimos por 60 para sacar las horas exactas
+        cursor.execute("SELECT luz_id, TIMESTAMPDIFF(MINUTE, hora_encendido, NOW()) / 60.0 FROM sesiones_luz WHERE hora_apagado IS NULL")
         resultados = cursor.fetchall()
         
-        # Filtramos estrictamente: aseguramos que el ID sea string y descartamos cualquier None que se haya colado
-        dict_encendidas = {}
-        for fila in resultados:
-            if fila[0] is not None:
-                # Convertimos explícitamente el ID a string para que coincida perfecto con JavaScript
-                id_str = str(fila[0]).strip()
-                # Si el tiempo es nulo, le ponemos 0.0
-                tiempo = float(fila[1]) if fila[1] is not None else 0.0
-                dict_encendidas[id_str] = tiempo
+        # Esto crea un diccionario. Ej: {"1": 2.5, "2": 0.1}
+        dict_encendidas = {str(fila[0]): float(fila[1]) if fila[1] is not None else 0.0 for fila in resultados}
         
         cursor.close()
         db.close()
@@ -122,7 +115,7 @@ def obtener_estado():
         return jsonify({"status": "ok", "encendidas": dict_encendidas})
         
     except Exception as e:
-        print(f"❌ Error crítico en GET estado_luces: {str(e)}")
+        print(f"❌ Error en GET estado_luces: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)})
 
 # 🚨 ESTO SIEMPRE DEBE IR AL FINAL DEL ARCHIVO 🚨
