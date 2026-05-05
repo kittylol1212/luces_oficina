@@ -154,71 +154,68 @@ function toggleDesplegable(event, numeroPiso) {
 // ==========================================
 // 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFOROS
 // ==========================================
+// ==========================================
+// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFOROS (TODO TERRENO)
+// ==========================================
 function actualizarEstadoSilencioso() {
-    // Evadimos el caché agregando un timestamp único
     fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
         .then(res => res.json())
         .then(data => {
             if (data.status === 'ok') {
-                const lucesOn = data.encendidas || {}; 
+                const lucesOn = data.encendidas; 
+                
+                // Saber si Python mandó una lista vieja [1, 2] o un diccionario nuevo {"1": 2.5}
+                const esListaVieja = Array.isArray(lucesOn);
 
-                // 🕵️ MODO ESPÍA ACTIVO:
-                console.log("💡 Estado en vivo desde Python:", lucesOn);
-
-                // Recorremos cada persona
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
-                    // Forzamos que idLuz sea string (texto) para compararlo bien con el diccionario de Python
                     const idLuz = String(avatar.getAttribute('data-luz')); 
+                    const idLuzNumero = parseInt(idLuz);
                     
-                    // Buscamos los 3 círculos
                     const verde = persona.querySelector('.circulo.verde');
                     const amarillo = persona.querySelector('.circulo.amarillo');
                     const rojo = persona.querySelector('.circulo.rojo');
 
-                    // Apagamos los 3 por defecto
+                    // 1. Apagamos todo por defecto visualmente
                     if(verde) verde.classList.remove('activo');
                     if(amarillo) amarillo.classList.remove('activo');
                     if(rojo) rojo.classList.remove('activo');
+                    avatar.classList.remove('encendido');
 
-                    // Verificamos si la luz está encendida
-                    if (lucesOn[idLuz] !== undefined) {
+                    let estaPrendida = false;
+                    let horas = 0;
+
+                    // 2. Verificamos si la luz está prendida según el idioma de Python
+                    if (esListaVieja) {
+                        // Si Python mandó el formato viejo
+                        if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
+                            estaPrendida = true;
+                            horas = 0; // Como no hay horas en el formato viejo, lo dejamos en verde por defecto
+                        }
+                    } else {
+                        // Si Python mandó el formato nuevo con horas
+                        if (lucesOn && lucesOn[idLuz] !== undefined) {
+                            estaPrendida = true;
+                            horas = parseFloat(lucesOn[idLuz]); 
+                        }
+                    }
+
+                    // 3. Si descubrimos que estaba prendida, encendemos el bombillo y el semáforo
+                    if (estaPrendida) {
                         avatar.classList.add('encendido'); 
                         
-                        // Parseamos a Float por si Python lo manda en otro formato
-                        const horas = parseFloat(lucesOn[idLuz]); 
-                        
-                        // LÓGICA DEL SEMÁFORO
                         if (horas < 4) {
                             if(verde) verde.classList.add('activo');
                         } else if (horas >= 4 && horas < 8) {
                             if(amarillo) amarillo.classList.add('activo');
-                        } else { // 8 o más horas
+                        } else { 
                             if(rojo) rojo.classList.add('activo');
                         }
-                    } else {
-                        avatar.classList.remove('encendido'); 
                     }
                 });
             }
         })
         .catch(err => {
-            console.error("❌ Error de red en actualización silenciosa:", err);
+            // Error silencioso de red
         });
 }
-
-// ==========================================
-// 7. INICIO DEL SISTEMA
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 Iniciando interfaz...");
-    
-    // 1. Restaurar los nombres modificados localmente
-    cargarNombres();
-    
-    // 2. Traer el estado inicial
-    actualizarEstadoSilencioso();
-    
-    // 3. Consultar a la base de datos cada 3 segundos
-    setInterval(actualizarEstadoSilencioso, 3000); 
-});
