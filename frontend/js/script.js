@@ -1,4 +1,4 @@
-const BASE_URL = "https://eligible-suggests-ipaq-roads.trycloudflare.com";
+const BASE_URL = "https://until-dat-promo-chevy.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
@@ -100,6 +100,9 @@ function toggleLuz(el) {
     .then(res => {
         if (!res.ok) throw new Error("El servidor no respondió correctamente");
         console.log(`📡 Luz ${idLuz} sincronizada con estado: ${estaEncendido}`);
+        
+        // Hacemos una llamada rápida silenciosa para actualizar el semáforo de inmediato
+        actualizarEstadoSilencioso();
     })
     .catch(err => {
         console.error("❌ Error de comunicación con el servidor:", err);
@@ -112,7 +115,6 @@ function toggleLuz(el) {
 // 5. FUNCIONES DE INTERFAZ (NOMBRES Y DESPLEGABLES)
 // ==========================================
 function editarNombre(elemento) {
-    // 1. Encontrar a todas las personas para obtener un índice único
     const todasLasPersonas = Array.from(document.querySelectorAll('.persona'));
     const contenedorPersona = elemento.closest('.persona');
     const indice = todasLasPersonas.indexOf(contenedorPersona);
@@ -120,10 +122,8 @@ function editarNombre(elemento) {
     const divNombre = contenedorPersona.querySelector('.persona-nombre');
     const nombreActual = divNombre.innerText;
 
-    // 2. Solicitar cambio
     const nuevoNombre = prompt("Ingresa el nuevo nombre:", nombreActual);
 
-    // 3. Validar y Guardar localmente
     if (nuevoNombre !== null && nuevoNombre.trim() !== "") {
         divNombre.innerText = nuevoNombre.trim();
         localStorage.setItem('persona_nombre_' + indice, nuevoNombre.trim());
@@ -151,50 +151,6 @@ function toggleDesplegable(event, numeroPiso) {
     flecha.classList.toggle('cerrada', body.classList.contains('oculto'));
 }
 
-// ==========================================
-// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO
-// ==========================================
-function actualizarEstadoSilencioso() {
-    fetch(`${BASE_URL}/api/estado_luces`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'ok') {
-                const lucesOn = data.encendidas || [];
-                document.querySelectorAll('.avatar').forEach(avatar => {
-                    const idLuz = parseInt(avatar.getAttribute('data-luz'));
-                    // Verificamos si el ID de la luz está en el arreglo de las encendidas
-                    if (lucesOn.includes(idLuz)) {
-                        avatar.classList.add('encendido');
-                    } else {
-                        avatar.classList.remove('encendido');
-                    }
-                });
-            }
-        })
-        .catch(err => {
-            // Error silencioso para evitar molestar en consola si la conexión parpadea
-        });
-}
-
-// ==========================================
-// 7. INICIO DEL SISTEMA
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 Iniciando interfaz...");
-    
-    // 1. Restaurar los nombres modificados localmente
-    cargarNombres();
-    
-    // 2. Traer el estado inicial de las luces desde la Base de Datos
-    actualizarEstadoSilencioso();
-    
-    // 3. Consultar a la base de datos cada 3 segundos por si otro usuario cambió una luz
-    setInterval(actualizarEstadoSilencioso, 3000); 
-});
-
-
-
-#nuevo
 // ==========================================
 // 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFOROS
 // ==========================================
@@ -244,3 +200,19 @@ function actualizarEstadoSilencioso() {
             // Error silencioso
         });
 }
+
+// ==========================================
+// 7. INICIO DEL SISTEMA
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("🚀 Iniciando interfaz...");
+    
+    // 1. Restaurar los nombres modificados localmente
+    cargarNombres();
+    
+    // 2. Traer el estado inicial de las luces desde la Base de Datos
+    actualizarEstadoSilencioso();
+    
+    // 3. Consultar a la base de datos cada 3 segundos
+    setInterval(actualizarEstadoSilencioso, 3000); 
+});
