@@ -93,36 +93,7 @@ def recibir_piso():
     return jsonify({"status": "ok", "mensaje": msg})
 
 # ==========================================
-# 🔍 CONSULTAR ESTADO (GET ARREGLADO)
-# ==========================================
-@app.route('/api/estado_luces', methods=['GET'])
-def obtener_estado():
-    try:
-        db = obtener_conexion()
-        cursor = db.cursor()
-        
-        cursor.execute("SELECT DISTINCT luz_id FROM sesiones_luz WHERE hora_apagado IS NULL")
-        resultados = cursor.fetchall()
-        lista_encendidas = [fila[0] for fila in resultados]
-        
-        cursor.close()
-        db.close()
-        
-        print(f"🔍 Estado consultado: {len(lista_encendidas)} luces ON.")
-        return jsonify({"status": "ok", "encendidas": lista_encendidas})
-        
-    except Exception as e:
-        print(f"❌ Error en GET estado_luces: {str(e)}")
-        return jsonify({"status": "error", "mensaje": str(e)})
-
-if __name__ == '__main__':
-    print("🚀 Iniciando servidor Flask en el puerto 5000...")
-    app.run(port=5000, debug=True)
-
-#nuevo
-
-    # ==========================================
-# 🔍 CONSULTAR ESTADO Y HORAS (NUEVO)
+# 🔍 CONSULTAR ESTADO Y HORAS (EL ÚNICO Y CORRECTO)
 # ==========================================
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
@@ -134,14 +105,20 @@ def obtener_estado():
         cursor.execute("SELECT luz_id, TIMESTAMPDIFF(MINUTE, hora_encendido, NOW()) / 60.0 FROM sesiones_luz WHERE hora_apagado IS NULL")
         resultados = cursor.fetchall()
         
-        # Esto crea un diccionario. Ej: {"1": 2.5, "2": 0.1} (La luz 1 lleva 2.5 horas)
-        dict_encendidas = {str(fila[0]): fila[1] for fila in resultados}
+        # Esto crea un diccionario. Ej: {"1": 2.5, "2": 0.1}
+        dict_encendidas = {str(fila[0]): float(fila[1]) if fila[1] is not None else 0.0 for fila in resultados}
         
         cursor.close()
         db.close()
         
+        print(f"🔍 Estado consultado: {len(dict_encendidas)} luces ON (con tiempos).")
         return jsonify({"status": "ok", "encendidas": dict_encendidas})
         
     except Exception as e:
         print(f"❌ Error en GET estado_luces: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)})
+
+# 🚨 ESTO SIEMPRE DEBE IR AL FINAL DEL ARCHIVO 🚨
+if __name__ == '__main__':
+    print("🚀 Iniciando servidor Flask en el puerto 5000...")
+    app.run(port=5000, debug=True)
