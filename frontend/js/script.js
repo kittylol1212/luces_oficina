@@ -155,32 +155,38 @@ function toggleDesplegable(event, numeroPiso) {
 // 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFOROS
 // ==========================================
 function actualizarEstadoSilencioso() {
-    fetch(`${BASE_URL}/api/estado_luces`)
+    // Evadimos el caché agregando un timestamp único
+    fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
         .then(res => res.json())
         .then(data => {
             if (data.status === 'ok') {
-                const lucesOn = data.encendidas || {}; // Ahora es un objeto { "ID": Horas }
+                const lucesOn = data.encendidas || {}; 
 
-                // Recorremos cada persona (para tener acceso a su luz y a sus círculos)
+                // 🕵️ MODO ESPÍA ACTIVO:
+                console.log("💡 Estado en vivo desde Python:", lucesOn);
+
+                // Recorremos cada persona
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
-                    const idLuz = avatar.getAttribute('data-luz');
+                    // Forzamos que idLuz sea string (texto) para compararlo bien con el diccionario de Python
+                    const idLuz = String(avatar.getAttribute('data-luz')); 
                     
-                    // Buscamos los 3 círculos de esta persona
+                    // Buscamos los 3 círculos
                     const verde = persona.querySelector('.circulo.verde');
                     const amarillo = persona.querySelector('.circulo.amarillo');
                     const rojo = persona.querySelector('.circulo.rojo');
 
-                    // Apagamos los 3 círculos por defecto (quitando la clase activo)
+                    // Apagamos los 3 por defecto
                     if(verde) verde.classList.remove('activo');
                     if(amarillo) amarillo.classList.remove('activo');
                     if(rojo) rojo.classList.remove('activo');
 
-                    // Verificamos si la luz está en el objeto de luces encendidas
+                    // Verificamos si la luz está encendida
                     if (lucesOn[idLuz] !== undefined) {
-                        avatar.classList.add('encendido'); // Prende el bombillo
+                        avatar.classList.add('encendido'); 
                         
-                        const horas = lucesOn[idLuz]; // Obtenemos las horas
+                        // Parseamos a Float por si Python lo manda en otro formato
+                        const horas = parseFloat(lucesOn[idLuz]); 
                         
                         // LÓGICA DEL SEMÁFORO
                         if (horas < 4) {
@@ -191,13 +197,13 @@ function actualizarEstadoSilencioso() {
                             if(rojo) rojo.classList.add('activo');
                         }
                     } else {
-                        avatar.classList.remove('encendido'); // Apaga el bombillo si no está en BD
+                        avatar.classList.remove('encendido'); 
                     }
                 });
             }
         })
         .catch(err => {
-            // Error silencioso
+            console.error("❌ Error de red en actualización silenciosa:", err);
         });
 }
 
@@ -210,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Restaurar los nombres modificados localmente
     cargarNombres();
     
-    // 2. Traer el estado inicial de las luces desde la Base de Datos
+    // 2. Traer el estado inicial
     actualizarEstadoSilencioso();
     
     // 3. Consultar a la base de datos cada 3 segundos
