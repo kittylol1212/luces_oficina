@@ -93,7 +93,7 @@ def recibir_piso():
     return jsonify({"status": "ok", "mensaje": msg})
 
 # ==========================================
-# 🔍 CONSULTAR ESTADO Y HORAS (EL ÚNICO Y CORRECTO)
+# 🔍 CONSULTAR ESTADO Y HORAS (SEGURO)
 # ==========================================
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
@@ -101,24 +101,22 @@ def obtener_estado():
         db = obtener_conexion()
         cursor = db.cursor()
         
-        # TIMESTAMPDIFF calcula los minutos desde que se encendió, y lo dividimos por 60 para sacar las horas exactas
-        cursor.execute("SELECT luz_id, TIMESTAMPDIFF(MINUTE, hora_encendido, NOW()) / 60.0 FROM sesiones_luz WHERE hora_apagado IS NULL")
+        # Solo consultamos el tiempo de las que están prendidas
+        cursor.execute("SELECT luz_id, TIMESTAMPDIFF(MINUTE, hora_encendido, NOW()) / 60.0 FROM sesiones_luz WHERE hora_apagado IS NULL AND luz_id IS NOT NULL")
         resultados = cursor.fetchall()
         
-        # Esto crea un diccionario. Ej: {"1": 2.5, "2": 0.1}
-        dict_encendidas = {str(fila[0]): float(fila[1]) if fila[1] is not None else 0.0 for fila in resultados}
+        # Armamos el diccionario seguro {"1": 2.5, "2": 0.1}
+        dict_encendidas = {}
+        for fila in resultados:
+            id_str = str(fila[0]).strip()
+            tiempo = float(fila[1]) if fila[1] is not None else 0.0
+            dict_encendidas[id_str] = tiempo
         
         cursor.close()
         db.close()
         
-        print(f"🔍 Estado consultado: {len(dict_encendidas)} luces ON (con tiempos).")
         return jsonify({"status": "ok", "encendidas": dict_encendidas})
         
     except Exception as e:
-        print(f"❌ Error en GET estado_luces: {str(e)}")
+        print(f"❌ Error en GET: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)})
-
-# 🚨 ESTO SIEMPRE DEBE IR AL FINAL DEL ARCHIVO 🚨
-if __name__ == '__main__':
-    print("🚀 Iniciando servidor Flask en el puerto 5000...")
-    app.run(port=5000, debug=True)
