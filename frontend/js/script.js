@@ -233,4 +233,23 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarNombres();
     actualizarEstadoSilencioso();
     setInterval(actualizarEstadoSilencioso, 3000); 
+
+    // --- LÓGICA DEL MENÚ HAMBURGUESA ---
+    const btnHamburguesa = document.getElementById('btn-hamburguesa');
+    const menuLateral = document.getElementById('menu-lateral');
+
+    if (btnHamburguesa && menuLateral) {
+        // Abrir/Cerrar menú al hacer clic en las barritas
+        btnHamburguesa.addEventListener('click', (evento) => {
+            evento.stopPropagation(); 
+            menuLateral.classList.toggle('mostrar');
+        });
+
+        // Cerrar el menú si hacemos clic afuera
+        document.addEventListener('click', (evento) => {
+            if (!menuLateral.contains(evento.target) && evento.target !== btnHamburguesa) {
+                menuLateral.classList.remove('mostrar');
+            }
+        });
+    }
 });
