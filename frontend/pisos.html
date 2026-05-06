@@ -7,18 +7,26 @@
     <link rel="stylesheet" href="css/pisos.css"> 
 </head>
 <body>
-
 <header class="header">
-    <div class="header-left">
+    <div class="header-left" style="display: flex; align-items: center; position: relative;">
+        <button id="btn-hamburguesa" class="menu-hamburguesa">&#9776;</button>
+        
         <span class="header-icon"></span>
-        <h1>Directorio por Pisos</h1>
+        <h1 style="margin-left: 10px;">Directorio por Pisos</h1>
+
+        <nav id="menu-lateral" class="menu-oculto">
+            <ul>
+                <li><a href="#">🏠 Inicio</a></li>
+                <li><a href="#">⚙️ Configuración</a></li>
+                <li><a href="#">📊 Reportes</a></li>
+            </ul>
+        </nav>
     </div>
 
     <div class="header-right">
-<img src="logo_meltec.png" alt="Logo Meltec" style="height: 90px; width: auto; filter: none; object-fit: contain;">
+        <img src="logo_meltec.png" alt="Logo Meltec" style="height: 90px; width: auto; filter: none; object-fit: contain;">
     </div>
 </header>
-
 
 <div class="controles-maestros">
     <button class="btn-maestro on" onclick="forzarEncendidoPisosGlobal([1, 2, 3, 4, 5, 6], true)">
