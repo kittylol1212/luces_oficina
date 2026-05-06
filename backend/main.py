@@ -93,7 +93,7 @@ def recibir_piso():
     return jsonify({"status": "ok", "mensaje": msg})
 
 # ==========================================
-# 🔍 CONSULTAR ESTADO Y HORAS (SEGURO)
+# 🔍 CONSULTAR ESTADO Y HORAS (SOLO HOY)
 # ==========================================
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
@@ -101,27 +101,41 @@ def obtener_estado():
         db = obtener_conexion()
         cursor = db.cursor()
         
-        # Consultamos el tiempo de las que están prendidas
-        cursor.execute("SELECT luz_id, TIMESTAMPDIFF(MINUTE, hora_encendido, NOW()) / 60.0 FROM sesiones_luz WHERE hora_apagado IS NULL AND luz_id IS NOT NULL")
+        # Esta consulta es la clave: 
+        # 1. Filtra solo las luces que NO tienen hora de apagado.
+        # 2. Solo toma sesiones que ocurrieron HOY (CURDATE()).
+        # 3. Calcula la diferencia entre (el inicio o la medianoche) y el momento actual.
+        
+        sql = """
+            SELECT luz_id, 
+            TIMESTAMPDIFF(MINUTE, GREATEST(hora_encendido, CURDATE()), NOW()) / 60.0 
+            FROM sesiones_luz 
+            WHERE hora_apagado IS NULL 
+            AND luz_id IS NOT NULL 
+            AND (DATE(hora_encendido) = CURDATE() OR hora_encendido < CURDATE())
+        """
+        
+        cursor.execute(sql)
         resultados = cursor.fetchall()
         
         dict_encendidas = {}
         for fila in resultados:
             id_str = str(fila[0]).strip()
-            tiempo = float(fila[1]) if fila[1] is not None else 0.0
-            dict_encendidas[id_str] = tiempo
+            # Si la luz se prendió ayer, GREATEST hará que empiece a contar desde las 0:00 de hoy
+            tiempo_hoy = float(fila[1]) if fila[1] is not None else 0.0
+            dict_encendidas[id_str] = tiempo_hoy
         
         cursor.close()
         db.close()
         
-        print(f"🔍 Estado consultado: {len(dict_encendidas)} luces ON (con tiempos).")
+        print(f"📅 Sincronizado para el día: {len(dict_encendidas)} luces activas hoy.")
         return jsonify({"status": "ok", "encendidas": dict_encendidas})
         
     except Exception as e:
-        print(f"❌ Error en GET: {str(e)}")
+        print(f"❌ Error en GET estado: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)})
 
-# 🚨 ESTA PARTE ES LA QUE HACE QUE EL SERVIDOR ARRANQUE 🚨
+# 🚨 ESTO SIEMPRE AL FINAL 🚨
 if __name__ == '__main__':
-    print("🚀 Iniciando servidor Flask en el puerto 5000...")
+    print("🚀 Servidor Reiniciable Iniciado...")
     app.run(port=5000, debug=True)
