@@ -289,3 +289,79 @@ body {
 .avatar.apagado {
     background-color: #ff3333 !important; /* Rojo */
 }
+
+
+
+
+        /* El botón de las 3 barritas */
+        .menu-hamburguesa {
+            font-size: 30px;
+            color: white; 
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: transform 0.2s ease;
+            z-index: 1001; /* Para que quede por encima */
+        }
+
+        .menu-hamburguesa:hover {
+            transform: scale(1.1); 
+        }
+
+        /* El cuadro del menú desplegable */
+        #menu-lateral {
+            display: none; /* Esto es lo que lo oculta por defecto */
+            position: absolute;
+            top: 60px; 
+            left: 10px;
+            background-color: white;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.3); 
+            border-radius: 8px;
+            z-index: 1000;
+            min-width: 200px;
+            overflow: hidden;
+            text-align: left; /* Alinea el texto a la izquierda */
+        }
+
+        /* Clase para mostrar el menú mediante JavaScript */
+        #menu-lateral.mostrar {
+            display: block;
+            animation: aparecer 0.3s ease;
+        }
+
+        /* Estilo de la lista de opciones */
+        #menu-lateral ul {
+            list-style: none; /* Quita los puntos feos */
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu-lateral ul li {
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        #menu-lateral ul li:last-child {
+            border-bottom: none;
+        }
+
+        #menu-lateral ul li a {
+            display: block;
+            padding: 15px 20px;
+            text-decoration: none; /* Quita la raya azul de abajo */
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        #menu-lateral ul li a:hover {
+            background-color: #f1f1f1;
+            color: #008CBA; 
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    
