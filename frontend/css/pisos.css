@@ -279,3 +279,13 @@ body {
 .circulo.verde { background-color: #39FF14; }
 .circulo.amarillo { background-color: #FFE600; }
 .circulo.rojo { background-color: #FF3B30; }
+
+/* Color del bombillo cuando está PRENDIDO */
+.avatar.encendido {
+    background-color: #39ff14 !important; /* Verde brillante */
+}
+
+/* Color del bombillo cuando está APAGADO */
+.avatar.apagado {
+    background-color: #ff3333 !important; /* Rojo */
+}
