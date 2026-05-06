@@ -152,9 +152,6 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // ==========================================
-// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFOROS
-// ==========================================
-// ==========================================
 // 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFOROS (TODO TERRENO)
 // ==========================================
 function actualizarEstadoSilencioso() {
@@ -164,11 +161,17 @@ function actualizarEstadoSilencioso() {
             if (data.status === 'ok') {
                 const lucesOn = data.encendidas; 
                 
+                // MODO ESPÍA: Descomenta la siguiente línea si necesitas ver qué manda Python
+                console.log("💡 Estado desde Python:", lucesOn);
+                
                 // Saber si Python mandó una lista vieja [1, 2] o un diccionario nuevo {"1": 2.5}
                 const esListaVieja = Array.isArray(lucesOn);
 
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
+                    // Verificación de seguridad por si no hay avatar
+                    if (!avatar) return;
+
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
@@ -217,5 +220,17 @@ function actualizarEstadoSilencioso() {
         })
         .catch(err => {
             // Error silencioso de red
+            console.error("❌ Error de red en actualización silenciosa", err);
         });
 }
+
+// ==========================================
+// 7. INICIO DEL SISTEMA
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("🚀 Iniciando interfaz...");
+    
+    cargarNombres();
+    actualizarEstadoSilencioso();
+    setInterval(actualizarEstadoSilencioso, 3000); 
+});
