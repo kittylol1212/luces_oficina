@@ -1,4 +1,4 @@
-const BASE_URL = "https://deployment-skiing-radius-compare.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
+const BASE_URL = "https://telecharger-accordingly-sodium-promotion.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
