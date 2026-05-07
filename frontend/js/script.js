@@ -1,7 +1,7 @@
 // ==========================================
 // CONFIGURACIÓN GLOBAL
 // ==========================================
-const BASE_URL = "https://attach-mel-defined-ambient.trycloudflare.com"; 
+const BASE_URL = "https://wifi-honey-pictures-during.trycloudflare.com"; 
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
