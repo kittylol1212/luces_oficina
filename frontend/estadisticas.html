@@ -2,72 +2,41 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Estadísticas - Consumo</title>
-    <link rel="stylesheet" href="css/pisos.css"> <style>
-        .container-stats { padding: 40px; max-width: 900px; margin: auto; }
-        .tabla-stats { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .tabla-stats th { background: #008CBA; color: white; padding: 15px; text-align: left; }
-        .tabla-stats td { padding: 15px; border-bottom: 1px solid #eee; color: #333; }
-        .barra-consumo { background: #e0e0e0; border-radius: 5px; height: 10px; width: 100%; position: relative; }
-        .progreso { background: #39ff14; height: 100%; border-radius: 5px; transition: width 1s ease-in-out; }
-        .btn-volver { display: inline-block; margin-bottom: 20px; padding: 10px 20px; background: #333; color: white; text-decoration: none; border-radius: 5px; }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/estadisticas.css">
 </head>
-<body style="background: #f4f7f9;">
+<body>
 
     <div class="container-stats">
         <a href="pisos.html" class="btn-volver">⬅ Volver al Mapa</a>
-        <h1>📊 Reporte de Uso de Iluminación</h1>
-        <p>Total de horas acumuladas por cada puesto de trabajo.</p>
+        
+        <header>
+            <h1>📊 Reporte de Uso de Iluminación</h1>
+            <p>Monitoreo de horas acumuladas y tendencias de consumo.</p>
+        </header>
 
-        <table class="tabla-stats">
-            <thead>
-                <tr>
-                    <th>ID Luz</th>
-                    <th>Horas Totales</th>
-                    <th>Nivel de Uso</th>
-                </tr>
-            </thead>
-            <tbody id="cuerpo-tabla">
-                </tbody>
-        </table>
+        <div class="card">
+            <table class="tabla-stats">
+                <thead>
+                    <tr>
+                        <th>ID Luz</th>
+                        <th>Horas Totales</th>
+                        <th>Nivel de Uso (24h)</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo-tabla">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="card chart-container">
+            <h3>📈 Consumo Histórico (Últimos días)</h3>
+            <canvas id="canvasGrafico"></canvas>
+        </div>
     </div>
 
-    <script>
-        // Cambia esto por tu enlace de Cloudflare actual
-        const BASE_URL = "https://enrollment-playback-recording-interested.trycloudflare.com";
-
-        function cargarEstadisticas() {
-            fetch(`${BASE_URL}/api/estadisticas`)
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === 'ok') {
-                        const tbody = document.getElementById('cuerpo-tabla');
-                        tbody.innerHTML = ""; // Limpiar tabla
-
-                        data.datos.forEach(item => {
-                            // Calculamos un porcentaje simple para la barra (ej: max 24h)
-                            let porcentaje = Math.min((item.horas / 24) * 100, 100);
-                            
-                            const fila = `
-                                <tr>
-                                    <td><strong>Luz ${item.luz_id}</strong></td>
-                                    <td>${item.horas} h</td>
-                                    <td>
-                                        <div class="barra-consumo">
-                                            <div class="progreso" style="width: ${porcentaje}%"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            `;
-                            tbody.innerHTML += fila;
-                        });
-                    }
-                });
-        }
-
-        // Cargar al iniciar
-        document.addEventListener('DOMContentLoaded', cargarEstadisticas);
-    </script>
+    <script src="js/stats_logic.js"></script>
 </body>
 </html>
