@@ -145,40 +145,4 @@ if __name__ == '__main__':
 
 
 
-    # ==========================================
-# 📊 API PARA ESTADÍSTICAS GENERALES
-# ==========================================
-@app.route('/api/estadisticas', methods=['GET'])
-def obtener_estadisticas():
-    try:
-        db = obtener_conexion()
-        cursor = db.cursor()
-        
-        # Esta consulta suma TODOS los minutos registrados de cada luz
-        # y los convierte a horas redondeadas a 2 decimales.
-        sql = """
-            SELECT luz_id, 
-            ROUND(SUM(TIMESTAMPDIFF(MINUTE, hora_encendido, IFNULL(hora_apagado, NOW()))) / 60.0, 2) as total_horas 
-            FROM sesiones_luz 
-            WHERE luz_id IS NOT NULL
-            GROUP BY luz_id
-            ORDER BY total_horas DESC
-        """
-        
-        cursor.execute(sql)
-        resultados = cursor.fetchall()
-        
-        # Convertimos a una lista de diccionarios fácil de leer para JS
-        stats = []
-        for fila in resultados:
-            stats.append({
-                "luz_id": str(fila[0]),
-                "horas": fila[1]
-            })
-            
-        cursor.close()
-        db.close()
-        return jsonify({"status": "ok", "datos": stats})
-        
-    except Exception as e:
-        return jsonify({"status": "error", "mensaje": str(e)})
+ 
