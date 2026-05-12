@@ -1,7 +1,7 @@
 // ==========================================
 // CONFIGURACIÓN GLOBAL
 // ==========================================
-const BASE_URL = "https://resort-intended-kept-syntax.trycloudflare.com"; 
+const BASE_URL = "https://occurrence-apache-plots-detection.trycloudflare.com"; 
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
