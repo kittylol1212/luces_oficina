@@ -183,7 +183,7 @@ body {
 
 .avatar.encendido {
     /* ENCENDIDO: Verde esmeralda */
-    background: #39FF14;
+    background: #39FF14 !important;
     border-color: #39FF14;
     box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
 }
@@ -219,149 +219,123 @@ body {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    
-    /* Padding generoso para que el logo respire dentro del azul */
     padding: 10px 60px !important; 
-    
-    /* Importante: height en auto permite que la franja crezca según el logo */
     height: auto !important; 
-    
-    /* 🚨 ESTO ARREGLA EL CORTE DE LA FRANJA AZUL 🚨 */
     width: 100% !important;
     max-width: none !important;
     box-sizing: border-box !important;
 }
 
 .logo-meltec {
-    /* 🚨 ESTO HACE QUE EL LOGO VUELVA A APARECER 🚨 */
     height: 90px !important; 
     width: auto !important;
     display: block !important;
-    
-    /* Mantenemos el filtro blanco */
     filter: brightness(0) invert(1) !important;
-    
-    /* Aumentamos el max-width para que el logo pueda ensancharse al crecer */
     max-width: 300px !important; 
     object-fit: contain;
-    
-    /* Un pequeño margen para que no toque los bordes superior/inferior */
     margin: 5px 0;
 }
 
 
-#nuevo 
-/* --- SEMÁFORO DE ESTADOS --- */
-.estado-indicadores {
-    display: flex;
-    gap: 8px; 
-    margin-left: auto; 
+/* =========================================================================
+   NUEVO SEMÁFORO DE ESTADOS (ÚNICO CÍRCULO) 
+   ========================================================================= */
+.circulo-estado {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #e0e0e0; /* Color gris apagado por defecto */
+    margin-left: auto; /* ESTO ALINEA EL CÍRCULO PERFECTAMENTE A LA DERECHA */
+    margin-right: 15px; 
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    flex-shrink: 0; 
 }
 
-.circulo {
-    width: 22px; 
-    height: 22px; 
-    border-radius: 50%; 
-    transition: all 0.3s ease; 
-    
-    /* ESTADO APAGADO: Medio transparentes y grises por defecto */
-    opacity: 0.2;
-    filter: grayscale(80%);
+/* Clases de colores inyectadas por JavaScript */
+.circulo-estado.verde {
+    background-color: #39ff14; /* Verde neón */
+    box-shadow: 0 0 12px #39ff14, inset 0 0 5px rgba(255,255,255,0.6);
 }
 
-/* ESTADO PRENDIDO: Solo brillan si JavaScript les pone esta clase */
-.circulo.activo {
-    opacity: 1;
-    filter: grayscale(0%);
-    box-shadow: 0 0 8px currentColor;
+.circulo-estado.amarillo {
+    background-color: #ffeb3b; /* Amarillo brillante */
+    box-shadow: 0 0 12px #ffeb3b, inset 0 0 5px rgba(255,255,255,0.6);
 }
 
-.circulo.verde { background-color: #39FF14; }
-.circulo.amarillo { background-color: #FFE600; }
-.circulo.rojo { background-color: #FF3B30; }
+.circulo-estado.rojo {
+    background-color: #ff1744; /* Rojo alerta */
+    box-shadow: 0 0 12px #ff1744, inset 0 0 5px rgba(255,255,255,0.6);
+}
+/* ========================================================================= */
 
-/* Color del bombillo cuando está PRENDIDO */
-.avatar.encendido {
-    background-color: #39ff14 !important; /* Verde brillante */
+
+/* El botón de las 3 barritas */
+.menu-hamburguesa {
+    font-size: 30px;
+    color: white; 
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: transform 0.2s ease;
+    z-index: 1001; 
 }
 
-/* Color del bombillo cuando está APAGADO */
-.avatar.apagado {
-    background-color: #ff3333 !important; /* Rojo */
+.menu-hamburguesa:hover {
+    transform: scale(1.1); 
 }
 
+/* El cuadro del menú desplegable */
+#menu-lateral {
+    display: none; 
+    position: absolute;
+    top: 60px; 
+    left: 10px;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3); 
+    border-radius: 8px;
+    z-index: 1000;
+    min-width: 200px;
+    overflow: hidden;
+    text-align: left; 
+}
 
+#menu-lateral.mostrar {
+    display: block;
+    animation: aparecer 0.3s ease;
+}
 
+#menu-lateral ul {
+    list-style: none; 
+    margin: 0;
+    padding: 0;
+}
 
-        /* El botón de las 3 barritas */
-        .menu-hamburguesa {
-            font-size: 30px;
-            color: white; 
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            padding: 5px 10px;
-            transition: transform 0.2s ease;
-            z-index: 1001; /* Para que quede por encima */
-        }
+#menu-lateral ul li {
+    border-bottom: 1px solid #f1f1f1;
+}
 
-        .menu-hamburguesa:hover {
-            transform: scale(1.1); 
-        }
+#menu-lateral ul li:last-child {
+    border-bottom: none;
+}
 
-        /* El cuadro del menú desplegable */
-        #menu-lateral {
-            display: none; /* Esto es lo que lo oculta por defecto */
-            position: absolute;
-            top: 60px; 
-            left: 10px;
-            background-color: white;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.3); 
-            border-radius: 8px;
-            z-index: 1000;
-            min-width: 200px;
-            overflow: hidden;
-            text-align: left; /* Alinea el texto a la izquierda */
-        }
+#menu-lateral ul li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none; 
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
 
-        /* Clase para mostrar el menú mediante JavaScript */
-        #menu-lateral.mostrar {
-            display: block;
-            animation: aparecer 0.3s ease;
-        }
+#menu-lateral ul li a:hover {
+    background-color: #f1f1f1;
+    color: #008CBA; 
+}
 
-        /* Estilo de la lista de opciones */
-        #menu-lateral ul {
-            list-style: none; /* Quita los puntos feos */
-            margin: 0;
-            padding: 0;
-        }
-
-        #menu-lateral ul li {
-            border-bottom: 1px solid #f1f1f1;
-        }
-
-        #menu-lateral ul li:last-child {
-            border-bottom: none;
-        }
-
-        #menu-lateral ul li a {
-            display: block;
-            padding: 15px 20px;
-            text-decoration: none; /* Quita la raya azul de abajo */
-            color: #333;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-
-        #menu-lateral ul li a:hover {
-            background-color: #f1f1f1;
-            color: #008CBA; 
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
