@@ -339,3 +339,18 @@ body {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+/* Contenedor Flexbox para alinear los dos elementos a la derecha */
+.controles-derecha {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Separación entre el cuadrado y el círculo */
+}
+
+/* Diseño del nuevo cuadrado */
+.cuadrado-nuevo {
+  width: 24px;  /* Cambia esto si tu circulo-estado es más grande o más pequeño */
+  height: 24px; 
+  background-color: #e0e0e0; /* Color gris de base */
+  border-radius: 4px; /* Un ligero borde redondeado para estética */
+  cursor: pointer;
+}
