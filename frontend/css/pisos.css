@@ -347,13 +347,12 @@ body {
     margin-left: auto !important; /* ESTA ES LA CLAVE: Empuja todo a la derecha */
 }
 
-/* 2. Forzamos a que el cuadrado se dibuje y sea visible */
 .cuadrado-nuevo {
-    width: 22px !important;  /* Tamaño del cuadrado */
-    height: 22px !important; /* Mismo tamaño para que sea cuadrado */
-    background-color: #d9d9d9 !important; /* Color gris claro */
-    border-radius: 4px; /* Puntas un poco redondeadas */
-    display: block !important; /* Garantiza que exista en la pantalla */
+    width: 35px !important;  /* Aumenta o disminuye este número para hacerlo más ANCHO */
+    height: 55px !important; /* Aumenta o disminuye este número para cambiar el ALTO (largo) */
+    background-color: #d9d9d9 !important; 
+    border-radius: 4px; 
+    display: block !important; 
     cursor: pointer;
 }
 
