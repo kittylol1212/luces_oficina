@@ -348,10 +348,10 @@ body {
 }
 
 .cuadrado-nuevo {
-    width: 35px !important;  /* Aumenta o disminuye este número para hacerlo más ANCHO */
-    height: 55px !important; /* Aumenta o disminuye este número para cambiar el ALTO (largo) */
+    width: 40px !important;  /* Mucho más ancho */
+    height: 50px !important; /* Más largo, para casi llenar la casilla */
     background-color: #d9d9d9 !important; 
-    border-radius: 4px; 
+    border-radius: 6px; /* Borde un poquito más suave */
     display: block !important; 
     cursor: pointer;
 }
