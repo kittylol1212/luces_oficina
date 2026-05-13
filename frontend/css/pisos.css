@@ -339,18 +339,27 @@ body {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-/* Contenedor Flexbox para alinear los dos elementos a la derecha */
+/* 1. Obligamos al contenedor a irse al extremo derecho */
 .controles-derecha {
-  display: flex;
-  align-items: center;
-  gap: 12px; /* Separación entre el cuadrado y el círculo */
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Espacio de separación entre el cuadrado y el círculo */
+    margin-left: auto !important; /* ESTA ES LA CLAVE: Empuja todo a la derecha */
 }
 
-/* Diseño del nuevo cuadrado */
+/* 2. Forzamos a que el cuadrado se dibuje y sea visible */
 .cuadrado-nuevo {
-  width: 24px;  /* Cambia esto si tu circulo-estado es más grande o más pequeño */
-  height: 24px; 
-  background-color: #e0e0e0; /* Color gris de base */
-  border-radius: 4px; /* Un ligero borde redondeado para estética */
-  cursor: pointer;
+    width: 22px !important;  /* Tamaño del cuadrado */
+    height: 22px !important; /* Mismo tamaño para que sea cuadrado */
+    background-color: #d9d9d9 !important; /* Color gris claro */
+    border-radius: 4px; /* Puntas un poco redondeadas */
+    display: block !important; /* Garantiza que exista en la pantalla */
+    cursor: pointer;
+}
+
+/* 3. Aseguramos que tu círculo mantenga su forma original */
+.circulo-estado {
+    /* Si tu círculo ya tiene su propio CSS en tu archivo, 
+       solo asegúrate de que no tenga un 'margin-left: auto' 
+       porque ahora ese trabajo lo hace .controles-derecha */
 }
