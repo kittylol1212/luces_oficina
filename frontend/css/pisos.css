@@ -32,12 +32,28 @@ body {
     box-shadow: 0 3px 12px rgba(0,0,0,0.15);
 }
 
+/* =========================================
+   FORZAMOS EL GRID A 3 COLUMNAS (CORREGIDO)
+   ========================================= */
 .pisos-grid {
     display: grid !important;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+    /* Esto fuerza 3 columnas iguales */
+    grid-template-columns: repeat(3, 1fr) !important; 
     gap: 25px;
     width: 100% !important;
     align-items: start;
+}
+
+@media (max-width: 1100px) {
+    .pisos-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .pisos-grid {
+        grid-template-columns: 1fr !important;
+    }
 }
 
 .section-title {
@@ -75,8 +91,8 @@ body {
     transition: all 0.3s ease;
 }
 
-.btn-maestro.on { background-color: #39FF14; } /* Verde esmeralda */
-.btn-maestro.off { background-color: #e74c3c; } /* Rojo coral */
+.btn-maestro.on { background-color: #39FF14; } 
+.btn-maestro.off { background-color: #e74c3c; } 
 
 .btn-maestro:hover {
     transform: translateY(-3px);
@@ -121,7 +137,6 @@ body {
     filter: brightness(0.9);
 }
 
-/* Colores específicos por piso */
 #header-piso-1, .piso-1 .piso-header { background: #178db3; }
 #header-piso-2, .piso-2 .piso-header { background: #1a7a9e; }
 #header-piso-3, .piso-3 .piso-header { background: #1d678a; }
@@ -136,21 +151,34 @@ body {
 /* --- ELEMENTOS INTERNOS (PERSONAS Y AVATARES) --- */
 .piso-body {
     padding: 16px 20px;
+    display: flex !important;
+    flex-direction: column !important; /* Fuerza a que sea una lista vertical */
+    width: 100% !important;
 }
 
 .piso-body.oculto {
-    display: none;
+    display: none !important;
 }
 
+/* =========================================
+   DISEÑO DE LA FILA DE LA PERSONA (CORREGIDO)
+   ========================================= */
 .persona {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     gap: 12px;
     padding: 10px 0;
     border-bottom: 1px solid #f0f0f0;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 .persona:last-child { border-bottom: none; }
+
+.persona-info {
+    /* Empuja los controles a la derecha */
+    flex-grow: 1; 
+}
 
 .persona-nombre {
     font-size: 13px;
@@ -169,7 +197,6 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    /* APAGADO: Rojo coral */
     background: #e74c3c; 
     border: 2px solid #e74c3c; 
     cursor: pointer;
@@ -179,10 +206,10 @@ body {
     justify-content: center;
     font-size: 18px;
     color: white;
+    flex-shrink: 0; /* Evita que el bombillo se aplaste */
 }
 
 .avatar.encendido {
-    /* ENCENDIDO: Verde esmeralda */
     background: #39FF14 !important;
     border-color: #39FF14;
     box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
@@ -213,7 +240,7 @@ body {
     transform: rotate(-90deg);
 }
 
-/* --- ENCABEZADO Y LOGO (CORREGIDO) --- */
+/* --- ENCABEZADO Y LOGO --- */
 .header {
     background-color: #178db3 !important;
     display: flex !important;
@@ -236,38 +263,40 @@ body {
     margin: 5px 0;
 }
 
-
 /* =========================================================================
-   NUEVO SEMÁFORO DE ESTADOS (ÚNICO CÍRCULO) 
+   CONTROLES DERECHA (CUADRADO Y CÍRCULO)
    ========================================================================= */
+.controles-derecha {
+    display: flex;
+    align-items: center;
+    gap: 12px; 
+    margin-left: auto !important; /* Mantiene esto a la derecha */
+}
+
+.cuadrado-nuevo {
+    width: 80px !important;  
+    height: 30px !important; 
+    background-color: #d9d9d9 !important; 
+    border-radius: 6px; 
+    display: flex !important; /* Para centrar el texto del % */
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    flex-shrink: 0; /* Evita que se aplaste */
+}
+
 .circulo-estado {
-    width: 22px;
-    height: 22px;
+    width: 22px !important;
+    height: 22px !important;
     border-radius: 50%;
     background-color: #e0e0e0; /* Color gris apagado por defecto */
-    margin-left: auto; /* ESTO ALINEA EL CÍRCULO PERFECTAMENTE A LA DERECHA */
-    margin-right: 15px; 
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
     flex-shrink: 0; 
 }
-
-/* Clases de colores inyectadas por JavaScript */
-.circulo-estado.verde {
-    background-color: #39ff14; /* Verde neón */
-    box-shadow: 0 0 12px #39ff14, inset 0 0 5px rgba(255,255,255,0.6);
-}
-
-.circulo-estado.amarillo {
-    background-color: #ffeb3b; /* Amarillo brillante */
-    box-shadow: 0 0 12px #ffeb3b, inset 0 0 5px rgba(255,255,255,0.6);
-}
-
-.circulo-estado.rojo {
-    background-color: #ff1744; /* Rojo alerta */
-    box-shadow: 0 0 12px #ff1744, inset 0 0 5px rgba(255,255,255,0.6);
-}
-/* ========================================================================= */
 
 
 /* El botón de las 3 barritas */
@@ -338,27 +367,4 @@ body {
 @keyframes aparecer {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
-}
-/* 1. Obligamos al contenedor a irse al extremo derecho */
-.controles-derecha {
-    display: flex;
-    align-items: center;
-    gap: 12px; /* Espacio de separación entre el cuadrado y el círculo */
-    margin-left: auto !important; /* ESTA ES LA CLAVE: Empuja todo a la derecha */
-}
-
-.cuadrado-nuevo {
-    width: 80px !important;  /* Mucho más ancho */
-    height: 30px !important; /* Más largo, para casi llenar la casilla */
-    background-color: #d9d9d9 !important; 
-    border-radius: 6px; /* Borde un poquito más suave */
-    display: block !important; 
-    cursor: pointer;
-}
-
-/* 3. Aseguramos que tu círculo mantenga su forma original */
-.circulo-estado {
-    /* Si tu círculo ya tiene su propio CSS en tu archivo, 
-       solo asegúrate de que no tenga un 'margin-left: auto' 
-       porque ahora ese trabajo lo hace .controles-derecha */
 }
