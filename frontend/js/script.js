@@ -152,7 +152,7 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // ==========================================
-// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFOROS (TODO TERRENO)
+// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO, PORCENTAJES Y SEMÁFOROS
 // ==========================================
 function actualizarEstadoSilencioso() {
     fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
@@ -161,69 +161,74 @@ function actualizarEstadoSilencioso() {
             if (data.status === 'ok') {
                 const lucesOn = data.encendidas; 
                 
-                // MODO ESPÍA: Descomenta la siguiente línea si necesitas ver qué manda Python
                 console.log("💡 Estado desde Python:", lucesOn);
                 
-                // Saber si Python mandó una lista vieja [1, 2] o un diccionario nuevo {"1": 2.5}
                 const esListaVieja = Array.isArray(lucesOn);
 
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
-                    // Verificación de seguridad por si no hay avatar
                     if (!avatar) return;
 
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
-                    const verde = persona.querySelector('.circulo.verde');
-                    const amarillo = persona.querySelector('.circulo.amarillo');
-                    const rojo = persona.querySelector('.circulo.rojo');
+                    // Seleccionamos tus elementos reales del HTML
+                    const cuadradoNuevo = persona.querySelector('.cuadrado-nuevo');
+                    const circuloEstado = persona.querySelector('.circulo-estado');
 
-                    // 1. Apagamos todo por defecto visualmente
-                    if(verde) verde.classList.remove('activo');
-                    if(amarillo) amarillo.classList.remove('activo');
-                    if(rojo) rojo.classList.remove('activo');
+                    // Reset inicial por defecto (Apagado / Sin consumo)
                     avatar.classList.remove('encendido');
+                    if (cuadradoNuevo) cuadradoNuevo.innerText = "0%";
+                    if (circuloEstado) circuloEstado.style.backgroundColor = "#ccc"; // Gris si está apagado
 
                     let estaPrendida = false;
                     let horas = 0;
 
-                    // 2. Verificamos si la luz está prendida según el idioma de Python
+                    // Verificamos si la luz está prendida según el formato de Python
                     if (esListaVieja) {
-                        // Si Python mandó el formato viejo
                         if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
                             estaPrendida = true;
-                            horas = 0; // Como no hay horas en el formato viejo, lo dejamos en verde por defecto
+                            horas = 0; 
                         }
                     } else {
-                        // Si Python mandó el formato nuevo con horas
                         if (lucesOn && lucesOn[idLuz] !== undefined) {
                             estaPrendida = true;
                             horas = parseFloat(lucesOn[idLuz]); 
                         }
                     }
 
-                    // 3. Si descubrimos que estaba prendida, encendemos el bombillo y el semáforo
+                    // Si está encendida, hacemos los cálculos visuales
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
-                        
-                        if (horas < 4) {
-                            if(verde) verde.classList.add('activo');
-                        } else if (horas >= 4 && horas < 8) {
-                            if(amarillo) amarillo.classList.add('activo');
-                        } else { 
-                            if(rojo) rojo.classList.add('activo');
+
+                        // Supongamos que la jornada máxima son 8 horas para sacar el porcentaje
+                        const jornadaMaxima = 8;
+                        let porcentaje = (horas / jornadaMaxima) * 100;
+                        if (porcentaje > 100) porcentaje = 100; // Tope máximo 100%
+
+                        // 1. Mostrar el porcentaje en el cuadrado (sin decimales)
+                        if (cuadradoNuevo) {
+                            cuadradoNuevo.innerText = `${Math.round(porcentaje)}%`;
+                        }
+
+                        // 2. Cambiar el color del círculo único según las horas acumuladas
+                        if (circuloEstado) {
+                            if (horas < 4) {
+                                circuloEstado.style.backgroundColor = "#2ecc71"; // Verde (Bajo consumo)
+                            } else if (horas >= 4 && horas < 8) {
+                                circuloEstado.style.backgroundColor = "#f1c40f"; // Amarillo (Consumo medio)
+                            } else { 
+                                circuloEstado.style.backgroundColor = "#e74c3c"; // Rojo (Alto consumo / Límite)
+                            }
                         }
                     }
                 });
             }
         })
         .catch(err => {
-            // Error silencioso de red
             console.error("❌ Error de red en actualización silenciosa", err);
         });
 }
-
 // ==========================================
 // 7. INICIO DEL SISTEMA
 // ==========================================
