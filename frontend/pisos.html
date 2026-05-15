@@ -16,9 +16,7 @@
 
        <nav id="menu-lateral" class="menu-oculto">
             <ul style="list-style: none; padding: 0; margin: 0;">
-                <li onclick="window.location.href='pisos.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
-                    🏠 Inicio
-                </li>
+
                 
                 <li onclick="window.location.href='estadisticas.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
                     📊 Estadísticas de Uso
@@ -35,6 +33,7 @@
         <img src="logo_meltec.png" alt="Logo Meltec" style="height: 90px; width: auto; filter: none; object-fit: contain;">
     </div>
 </header>
+
 <div class="controles-maestros">
     <button class="btn-maestro on" onclick="forzarEncendidoPisosGlobal([1, 2, 3, 4, 5, 6], true)">
         <span>🌟</span> Encender Pisos 
@@ -43,6 +42,7 @@
         <span>🌑</span> Apagar Pisos 
     </button>
 </div>
+
 <p class="section-title">Personal asignado por piso</p>
 
 <div class="pisos-grid">
@@ -64,7 +64,10 @@
                     </div>
                     <div class="persona-cargo">Ingeniero</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+   <div class="circulo-estado" style="display: flex; align-items: center; justify-content: center; background: none;"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -76,7 +79,10 @@
                     </div>
                     <div class="persona-cargo">Soporte Técnico</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -88,7 +94,10 @@
                     </div>
                     <div class="persona-cargo">Seguridad</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -100,7 +109,10 @@
                     </div>
                     <div class="persona-cargo">Implementador</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -112,7 +124,10 @@
                     </div>
                         <div class="persona-cargo">Implementador</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div> 
 
             <div class="persona">
@@ -124,7 +139,10 @@
                     </div>
                     <div class="persona-cargo">Implementador</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -136,7 +154,10 @@
                     </div>
                     <div class="persona-cargo">Implementador</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -148,7 +169,10 @@
                     </div>
                     <div class="persona-cargo">Implementador</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -170,7 +194,10 @@
                     </div>
                     <div class="persona-cargo">Compras</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
             <div class="persona">
                 <div class="avatar" data-luz="12" onclick="toggleLuz(this)">💡</div>
@@ -181,7 +208,10 @@
                     </div>
                     <div class="persona-cargo">compras</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
             <div class="persona">
                 <div class="avatar" data-luz="13" onclick="toggleLuz(this)">💡</div>
@@ -192,7 +222,10 @@
                     </div>
                     <div class="persona-cargo">Compras</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
             <div class="persona">
                 <div class="avatar" data-luz="14" onclick="toggleLuz(this)">💡</div>
@@ -203,7 +236,10 @@
                     </div>
                     <div class="persona-cargo">Compras</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
             <div class="persona">
                 <div class="avatar" data-luz="15" onclick="toggleLuz(this)">💡</div>
@@ -214,7 +250,10 @@
                     </div>
                     <div class="persona-cargo">Compras</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div> 
             <div class="persona">
                 <div class="avatar" data-luz="16" onclick="toggleLuz(this)">💡</div>
@@ -225,7 +264,10 @@
                     </div>
                     <div class="persona-cargo">Compras</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
             <div class="persona">
                 <div class="avatar" data-luz="17" onclick="toggleLuz(this)">💡</div>
@@ -236,7 +278,10 @@
                     </div>
                     <div class="persona-cargo">Compras</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
             <div class="persona">
                 <div class="avatar" data-luz="18" onclick="toggleLuz(this)">💡</div>
@@ -247,7 +292,10 @@
                     </div>
                     <div class="persona-cargo">Compras</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -269,7 +317,10 @@
                     </div>
                     <div class="persona-cargo">Dev</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
             
             <div class="persona">
@@ -281,7 +332,10 @@
                     </div>
                     <div class="persona-cargo">Reclutamiento</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -293,7 +347,10 @@
                     </div>
                     <div class="persona-cargo">Analista HR</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -305,7 +362,10 @@
                     </div>
                     <div class="persona-cargo">Bienestar</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -317,7 +377,10 @@
                     </div>
                     <div class="persona-cargo">Nómina</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -329,7 +392,10 @@
                     </div>
                     <div class="persona-cargo">Capacitación</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -341,7 +407,10 @@
                     </div>
                     <div class="persona-cargo">Psicóloga</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -353,7 +422,10 @@
                     </div>
                     <div class="persona-cargo">Asistente</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
         </div> 
     </div>
@@ -376,7 +448,10 @@
                     </div>
                     <div class="persona-cargo">Director</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -388,7 +463,10 @@
                     </div>
                     <div class="persona-cargo">Ingeniera de Redes</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -400,7 +478,10 @@
                     </div>
                     <div class="persona-cargo">Soporte TI</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -412,7 +493,10 @@
                     </div>
                     <div class="persona-cargo">Gerente de Proyectos</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -424,7 +508,10 @@
                     </div>
                     <div class="persona-cargo">Desarrollador</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -436,7 +523,10 @@
                     </div>
                     <div class="persona-cargo">Analista QA</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -448,7 +538,10 @@
                     </div>
                     <div class="persona-cargo">Especialista Telecom</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -460,7 +553,10 @@
                     </div>
                     <div class="persona-cargo">Scrum Master</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -483,7 +579,10 @@
                     </div>
                     <div class="persona-cargo">Recepcionista</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -495,7 +594,10 @@
                     </div>
                     <div class="persona-cargo">Seguridad</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -507,7 +609,10 @@
                     </div>
                     <div class="persona-cargo">Técnico AIDC</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -519,7 +624,10 @@
                     </div>
                     <div class="persona-cargo">Especialista RFID</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -531,7 +639,10 @@
                     </div>
                     <div class="persona-cargo">Ingeniero de Datos</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -543,7 +654,10 @@
                     </div>
                     <div class="persona-cargo">Consultora Logística</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -555,7 +669,10 @@
                     </div>
                     <div class="persona-cargo">Soporte Hardware</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -567,7 +684,10 @@
                     </div>
                     <div class="persona-cargo">Auditora de Sistemas</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -590,7 +710,10 @@
                     </div>
                     <div class="persona-cargo">Recepcionista</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -602,7 +725,10 @@
                     </div>
                     <div class="persona-cargo">Seguridad</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -614,7 +740,10 @@
                     </div>
                     <div class="persona-cargo">Ingeniero RF</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -626,7 +755,10 @@
                     </div>
                     <div class="persona-cargo">Ventas Corporativas</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -638,7 +770,10 @@
                     </div>
                     <div class="persona-cargo">Soporte Técnico</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -650,7 +785,10 @@
                     </div>
                     <div class="persona-cargo">Gestor de Cuentas</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -662,7 +800,10 @@
                     </div>
                     <div class="persona-cargo">Técnico de Campo</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
 
             <div class="persona">
@@ -674,7 +815,10 @@
                     </div>
                     <div class="persona-cargo">Coordinadora Logística</div>
                 </div>
-                <div class="circulo-estado"></div>
+                <div class="controles-derecha">
+                    <div class="cuadrado-nuevo"></div>
+                    <div class="circulo-estado"></div>
+                </div>
             </div>
         </div>
     </div>
