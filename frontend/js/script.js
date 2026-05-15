@@ -152,7 +152,7 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // ==========================================
-// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO, PORCENTAJES Y SEMÁFOROS
+// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO, PORCENTAJES Y RAYOS DINÁMICOS
 // ==========================================
 function actualizarEstadoSilencioso() {
     fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
@@ -174,12 +174,18 @@ function actualizarEstadoSilencioso() {
                     
                     // Seleccionamos tus elementos reales del HTML
                     const cuadradoNuevo = persona.querySelector('.cuadrado-nuevo');
-                    const circuloEstado = persona.querySelector('.circulo-estado');
+                    // MODIFICACIÓN: Buscamos el icono del rayo SVG dentro de la persona
+                    const rayoIcon = persona.querySelector('.rayo-icon');
 
                     // Reset inicial por defecto (Apagado / Sin consumo)
                     avatar.classList.remove('encendido');
                     if (cuadradoNuevo) cuadradoNuevo.innerText = "0%";
-                    if (circuloEstado) circuloEstado.style.backgroundColor = "#ccc"; // Gris si está apagado
+                    
+                    // Si hay rayo, lo ponemos en gris por defecto cuando está apagado
+                    if (rayoIcon) {
+                        rayoIcon.style.fill = "#ccc";   
+                        rayoIcon.style.stroke = "#ccc"; 
+                    }
 
                     let estaPrendida = false;
                     let horas = 0;
@@ -211,14 +217,20 @@ function actualizarEstadoSilencioso() {
                             cuadradoNuevo.innerText = `${Math.round(porcentaje)}%`;
                         }
 
-                        // 2. Cambiar el color del círculo único según las horas acumuladas
-                        if (circuloEstado) {
+                        // 2. MODIFICACIÓN: Cambiar el color del RAYO SVG según las horas acumuladas
+                        if (rayoIcon) {
                             if (horas < 4) {
-                                circuloEstado.style.backgroundColor = "#2ecc71"; // Verde (Bajo consumo)
+                                // Verde (Bajo consumo)
+                                rayoIcon.style.fill = "#2ecc71"; 
+                                rayoIcon.style.stroke = "#2ecc71";
                             } else if (horas >= 4 && horas < 8) {
-                                circuloEstado.style.backgroundColor = "#f1c40f"; // Amarillo (Consumo medio)
+                                // Amarillo (Consumo medio)
+                                rayoIcon.style.fill = "#f1c40f"; 
+                                rayoIcon.style.stroke = "#f1c40f";
                             } else { 
-                                circuloEstado.style.backgroundColor = "#e74c3c"; // Rojo (Alto consumo / Límite)
+                                // Rojo (Alto consumo / Límite)
+                                rayoIcon.style.fill = "#e74c3c"; 
+                                rayoIcon.style.stroke = "#e74c3c";
                             }
                         }
                     }
@@ -229,6 +241,7 @@ function actualizarEstadoSilencioso() {
             console.error("❌ Error de red en actualización silenciosa", err);
         });
 }
+
 // ==========================================
 // 7. INICIO DEL SISTEMA
 // ==========================================
