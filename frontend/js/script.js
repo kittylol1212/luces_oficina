@@ -152,7 +152,7 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // ==========================================
-// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO, PORCENTAJES Y RAYOS DINÁMICOS
+// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFORO
 // ==========================================
 function actualizarEstadoSilencioso() {
     fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
@@ -160,86 +160,67 @@ function actualizarEstadoSilencioso() {
         .then(data => {
             if (data.status === 'ok') {
                 const lucesOn = data.encendidas; 
-                
-                console.log("💡 Estado desde Python:", lucesOn);
-                
                 const esListaVieja = Array.isArray(lucesOn);
 
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
+                    const circuloEstado = persona.querySelector('.circulo-estado');
+                    const cuadradoNuevo = persona.querySelector('.cuadrado-nuevo'); // Tu cuadrado con el %
+                    
                     if (!avatar) return;
 
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
-                    // Seleccionamos tus elementos reales del HTML
-                    const cuadradoNuevo = persona.querySelector('.cuadrado-nuevo');
-                    // MODIFICACIÓN: Buscamos el icono del rayo SVG dentro de la persona
-                    const rayoIcon = persona.querySelector('.rayo-icon');
-
-                    // Reset inicial por defecto (Apagado / Sin consumo)
+                    // 1. Apagamos el bombillo visualmente por defecto
                     avatar.classList.remove('encendido');
-                    if (cuadradoNuevo) cuadradoNuevo.innerText = "0%";
-                    
-                    // Si hay rayo, lo ponemos en gris por defecto cuando está apagado
-                    if (rayoIcon) {
-                        rayoIcon.style.fill = "#ccc";   
-                        rayoIcon.style.stroke = "#ccc"; 
-                    }
 
                     let estaPrendida = false;
-                    let horas = 0;
+                    let porcentajeUso = 0; 
 
-                    // Verificamos si la luz está prendida según el formato de Python
+                    // 2. Revisamos si la luz está prendida físicamente
                     if (esListaVieja) {
                         if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
                             estaPrendida = true;
-                            horas = 0; 
                         }
                     } else {
                         if (lucesOn && lucesOn[idLuz] !== undefined) {
                             estaPrendida = true;
-                            horas = parseFloat(lucesOn[idLuz]); 
+                            porcentajeUso = parseFloat(lucesOn[idLuz]); 
                         }
                     }
 
-                    // Si está encendida, hacemos los cálculos visuales
+                    // 💡 TRUCO CLAVE: Si la luz está apagada, leemos el porcentaje directamente 
+                    // de lo que tienes escrito dentro de tu cuadrado gris para no perder el color.
+                    if (cuadradoNuevo && cuadradoNuevo.innerText.trim() !== "") {
+                        const numeroExtraido = parseFloat(cuadradoNuevo.innerText);
+                        if (!isNaN(numeroExtraido)) {
+                            porcentajeUso = numeroExtraido;
+                        }
+                    }
+
+                    // 3. Encendemos el bombillo solo si está prendida la luz física
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
+                    }
 
-                        // Supongamos que la jornada máxima son 8 horas para sacar el porcentaje
-                        const jornadaMaxima = 8;
-                        let porcentaje = (horas / jornadaMaxima) * 100;
-                        if (porcentaje > 100) porcentaje = 100; // Tope máximo 100%
-
-                        // 1. Mostrar el porcentaje en el cuadrado (sin decimales)
-                        if (cuadradoNuevo) {
-                            cuadradoNuevo.innerText = `${Math.round(porcentaje)}%`;
-                        }
-
-                        // 2. MODIFICACIÓN: Cambiar el color del RAYO SVG según las horas acumuladas
-                        if (rayoIcon) {
-                            if (horas < 4) {
-                                // Verde (Bajo consumo)
-                                rayoIcon.style.fill = "#2ecc71"; 
-                                rayoIcon.style.stroke = "#2ecc71";
-                            } else if (horas >= 4 && horas < 8) {
-                                // Amarillo (Consumo medio)
-                                rayoIcon.style.fill = "#f1c40f"; 
-                                rayoIcon.style.stroke = "#f1c40f";
-                            } else { 
-                                // Rojo (Alto consumo / Límite)
-                                rayoIcon.style.fill = "#e74c3c"; 
-                                rayoIcon.style.stroke = "#e74c3c";
-                            }
+                    // 4. PINTAMOS EL CÍRCULO SIEMPRE (basado en el porcentaje de 0% a 100%)
+                    if (circuloEstado) {
+                        if (porcentajeUso <= 33) {
+                            // De 0% a 33% es Bueno / Bajo -> VERDE
+                            circuloEstado.style.backgroundColor = '#32cd32'; 
+                        } else if (porcentajeUso > 33 && porcentajeUso <= 66) {
+                            // De 34% a 66% es Medio -> AMARILLO
+                            circuloEstado.style.backgroundColor = '#ffd700'; 
+                        } else {
+                            // De 67% a 100% es Malo / Muy Alto -> ROJO
+                            circuloEstado.style.backgroundColor = '#ff4500'; 
                         }
                     }
                 });
             }
         })
-        .catch(err => {
-            console.error("❌ Error de red en actualización silenciosa", err);
-        });
+        .catch(err => console.error("❌ Error de red en actualización silenciosa", err));
 }
 
 // ==========================================
