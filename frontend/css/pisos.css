@@ -23,31 +23,17 @@ body {
 }
 
 .header {
-    background-color: #178db3 !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 10px 60px !important; 
-    height: auto !important; 
-    width: 100% !important;
-    max-width: none !important;
-    box-sizing: border-box !important;
+    background: #178db3;
     color: white;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     box-shadow: 0 3px 12px rgba(0,0,0,0.15);
 }
 
-.logo-meltec {
-    height: 90px !important; 
-    width: auto !important;
-    display: block !important;
-    filter: brightness(0) invert(1) !important;
-    max-width: 300px !important; 
-    object-fit: contain;
-    margin: 5px 0;
-}
-
 /* =========================================
-   FORZAMOS EL GRID A 3 COLUMNAS
+   FORZAMOS EL GRID A 3 COLUMNAS (CORREGIDO)
    ========================================= */
 .pisos-grid {
     display: grid !important;
@@ -173,36 +159,29 @@ body {
     display: none !important;
 }
 
+/* =========================================
+   DISEÑO DE LA FILA DE LA PERSONA (CORREGIDO)
+   ========================================= */
 .persona {
     display: flex !important;
     align-items: center !important;
     gap: 12px;
-    padding: 16px 0; 
+    padding: 10px 0;
     border-bottom: 1px solid #f0f0f0;
     width: 100% !important;
     box-sizing: border-box !important;
-    position: relative !important; 
 }
 
 .persona:last-child { border-bottom: none; }
 
 .persona-info {
     flex-grow: 1; 
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
 }
 
 .persona-nombre {
     font-size: 13px;
-    font-weight: 400;
-    color: #555;
-}
-
-.persona-cargo {
-    font-size: 16px;
     font-weight: 600;
-    color: #111;
+    color: #2c3e50;
 }
 
 .nombre-container {
@@ -211,13 +190,13 @@ body {
     gap: 8px;
 }
 
-/* --- AVATAR (BOMBILLO) --- */
+/* --- MODIFICACIÓN DE COLORES DE LUZ (AVATAR) --- */
 .avatar {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: #e74c3c; 
-    border: none; 
+    border: 2px solid #e74c3c; 
     cursor: pointer;
     transition: 0.3s;
     display: flex;
@@ -230,13 +209,15 @@ body {
 
 .avatar.encendido {
     background: #39FF14 !important;
-    box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
+    border-color: #39FF14;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
 }
 
 .avatar:hover {
     transform: scale(1.1);
 }
 
+/* --- OTROS ELEMENTOS --- */
 .btn-editar {
     cursor: pointer;
     font-size: 0.85em;
@@ -250,5 +231,150 @@ body {
     font-size: 0.8em;
     margin-left: 8px;
     display: inline-block;
-    transition: transform 0.
-    }
+    transition: transform 0.3s ease;
+}
+
+.flechita.cerrada {
+    transform: rotate(-90deg);
+}
+
+/* --- ENCABEZADO Y LOGO --- */
+.header {
+    background-color: #178db3 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 60px !important; 
+    height: auto !important; 
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+}
+
+.logo-meltec {
+    height: 90px !important; 
+    width: auto !important;
+    display: block !important;
+    filter: brightness(0) invert(1) !important;
+    max-width: 300px !important; 
+    object-fit: contain;
+    margin: 5px 0;
+}
+
+/* =========================================================================
+   CONTROLES DERECHA (CUADRADO Y BATERÍA ARREGLADOS)
+   ========================================================================= */
+.controles-derecha {
+    display: flex;
+    align-items: center;
+    gap: 12px; 
+    margin-left: auto !important; 
+}
+
+.cuadrado-nuevo {
+    width: 70px !important;  
+    height: 30px !important; 
+    background-color: #d9d9d9 !important; 
+    border-radius: 6px; 
+    display: flex !important; 
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 13px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    flex-shrink: 0; 
+}
+
+.bateria-icono {
+    width: 26px !important;
+    height: auto !important;
+    background-color: #e0e0e0; /* Color gris por defecto */
+    border-radius: 4px;
+    padding: 3px;
+    transition: all 0.3s ease;
+    flex-shrink: 0; 
+}
+
+/* Colores para pintar la batería */
+.bateria-icono.verde {
+    background-color: #32cd32 !important; /* Verde Bueno */
+}
+
+.bateria-icono.amarillo {
+    background-color: #ffd700 !important; /* Amarillo Medio */
+}
+
+.bateria-icono.rojo {
+    background-color: #ff4500 !important; /* Rojo Alerta */
+}
+
+
+/* Menú lateral */
+.menu-hamburguesa {
+    font-size: 30px;
+    color: white; 
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    transition: transform 0.2s ease;
+    z-index: 1001; 
+}
+
+.menu-hamburguesa:hover {
+    transform: scale(1.1); 
+}
+
+#menu-lateral {
+    display: none; 
+    position: absolute;
+    top: 60px; 
+    left: 10px;
+    background-color: white;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3); 
+    border-radius: 8px;
+    z-index: 1000;
+    min-width: 200px;
+    overflow: hidden;
+    text-align: left; 
+}
+
+#menu-lateral.mostrar {
+    display: block;
+    animation: aparecer 0.3s ease;
+}
+
+#menu-lateral ul {
+    list-style: none; 
+    margin: 0;
+    padding: 0;
+}
+
+#menu-lateral ul li {
+    border-bottom: 1px solid #f1f1f1;
+}
+
+#menu-lateral ul li:last-child {
+    border-bottom: none;
+}
+
+#menu-lateral ul li a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none; 
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+#menu-lateral ul li a:hover {
+    background-color: #f1f1f1;
+    color: #008CBA; 
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
