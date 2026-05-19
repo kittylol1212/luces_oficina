@@ -270,7 +270,7 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (BARRA ESTILO progress-bar Y RAYO NEÓN EN SVG)
+   CONTROLES DERECHA (BARRA CORREGIDA Y RE-MAPEO PARA EL SCRIPT)
    ========================================================================= */
 .controles-derecha {
     display: flex;
@@ -279,42 +279,82 @@ body {
     margin-left: auto !important; 
 }
 
-.barra-contenedor {
+/* El contenedor de la barra (Gris claro) vuelve a usar '.cuadrado-nuevo' para revivir tu script */
+.cuadrado-nuevo {
     width: 140px !important;  
     height: 32px !important; 
     background-color: #e0e0e0 !important; 
     border-radius: 6px; 
+    position: relative !important; 
     overflow: hidden;
-    position: relative; /* Permite posicionar el texto encima de forma absoluta */
-    flex-shrink: 0; 
+    display: flex !important; 
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0;
+    cursor: pointer;
 }
 
+/* El relleno gris oscuro dinámico que avanza detrás del texto */
 .barra-llenado {
+    position: absolute !important;
+    top: 0;
+    left: 0;
     height: 100%;
-    background-color: #95a5a6 !important; /* Color gris oscuro de llenado */
+    background-color: #95a5a6 !important; 
     border-radius: 6px; 
     transition: width 0.3s ease;
+    z-index: 1 !important; /* Capa inferior */
 }
 
+/* Texto del porcentaje centrado perfectamente adelante sin romperse */
 .porcentaje-texto {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
     font-size: 13px;
     font-weight: bold;
-    color: #ffffff !important;
-    text-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+    color: #333333 !important; /* Gris oscuro para legibilidad total */
+    white-space: nowrap !important;
+    z-index: 2 !important; /* Capa superior */
     pointer-events: none;
 }
 
-.icono-rayo-svg {
-    width: 24px;
-    height: 30px;
-    color: #00bcd4; /* Color azul brillante del boceto */
-    filter: drop-shadow(0px 0px 6px rgba(0, 188, 212, 0.8)); /* Resplandor neón */
-    flex-shrink: 0;
+/* El Rayo adaptado a '.bateria-icono' para heredar colores dinámicos o quedarse fijo */
+.bateria-icono {
+    width: 24px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    background-color: transparent !important; 
+    border-radius: 0 !important;
+    flex-shrink: 0; 
+    
+    /* Concepto base: Amarillo brillante constante con contorno negro fino */
+    color: #ffd700 !important; 
+    stroke: #111111 !important; 
+    stroke-width: 2;
+    filter: drop-shadow(0px 0px 4px rgba(255, 215, 0, 0.4));
+    transition: all 0.3s ease;
     display: block;
+}
+
+/* --- CLASES DEL SEMÁFORO QUE TU JAVASCRIPT CORRE AUTOMÁTICAMENTE --- */
+.bateria-icono.verde {
+    color: #32cd32 !important; /* Relleno Verde */
+    stroke: #111111 !important;
+    filter: drop-shadow(0px 0px 6px rgba(50, 205, 50, 0.7)) !important;
+}
+
+.bateria-icono.amarillo {
+    color: #ffd700 !important; /* Relleno Amarillo */
+    stroke: #111111 !important;
+    filter: drop-shadow(0px 0px 6px rgba(255, 215, 0, 0.7)) !important;
+}
+
+.bateria-icono.rojo {
+    color: #ff4500 !important; /* Relleno Rojo Alerta */
+    stroke: #111111 !important;
+    filter: drop-shadow(0px 0px 6px rgba(255, 69, 0, 0.7)) !important;
 }
 
 /* Menú lateral */
