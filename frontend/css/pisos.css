@@ -166,10 +166,11 @@ body {
     display: flex !important;
     align-items: center !important;
     gap: 12px;
-    padding: 12px 0;
+    padding: 16px 0; /* Un poco más de aire vertical para el rayo gigante */
     border-bottom: 1px solid #f0f0f0;
     width: 100% !important;
     box-sizing: border-box !important;
+    position: relative !important; /* Contexto para el rayo absoluto */
 }
 
 .persona:last-child { border-bottom: none; }
@@ -270,16 +271,17 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (BARRA CORREGIDA Y RE-MAPEO PARA EL SCRIPT)
+   CONTROLES DERECHA Y SÚPER RAYO GIGANTE
    ========================================================================= */
 .controles-derecha {
     display: flex;
     align-items: center;
-    gap: 8px; 
+    /* Dejamos un margen derecho amplio para que el rayo gigante no tape el texto del % */
+    padding-right: 45px !important; 
     margin-left: auto !important; 
 }
 
-/* El contenedor de la barra (Gris claro) vuelve a usar '.cuadrado-nuevo' para revivir tu script */
+/* El contenedor de la barra (Gris claro) */
 .cuadrado-nuevo {
     width: 140px !important;  
     height: 32px !important; 
@@ -294,7 +296,7 @@ body {
     cursor: pointer;
 }
 
-/* El relleno gris oscuro dinámico que avanza detrás del texto */
+/* El relleno gris oscuro dinámico */
 .barra-llenado {
     position: absolute !important;
     top: 0;
@@ -303,10 +305,10 @@ body {
     background-color: #95a5a6 !important; 
     border-radius: 6px; 
     transition: width 0.3s ease;
-    z-index: 1 !important; /* Capa inferior */
+    z-index: 1 !important;
 }
 
-/* Texto del porcentaje centrado perfectamente adelante sin romperse */
+/* Texto del porcentaje centrado perfectamente */
 .porcentaje-texto {
     position: absolute !important;
     top: 50% !important;
@@ -314,47 +316,54 @@ body {
     transform: translate(-50%, -50%) !important;
     font-size: 13px;
     font-weight: bold;
-    color: #333333 !important; /* Gris oscuro para legibilidad total */
+    color: #333333 !important; 
     white-space: nowrap !important;
-    z-index: 2 !important; /* Capa superior */
+    z-index: 2 !important; 
     pointer-events: none;
 }
 
-/* El Rayo adaptado a '.bateria-icono' para heredar colores dinámicos o quedarse fijo */
+/* --- EL NUEVO SÚPER RAYO GIGANTE POSICIONADO --- */
 .bateria-icono {
-    width: 24px !important;
-    height: 30px !important;
+    position: absolute !important;
+    right: -5px !important; /* Lo empuja hacia el extremo derecho de la tarjeta */
+    top: 50% !important;
+    transform: translateY(-50%) !important; /* Centrado vertical perfecto */
+    
+    /* Dimensiones masivas basadas en tu imagen de referencia */
+    width: 48px !important;
+    height: 56px !important;
+    
     padding: 0 !important;
     background-color: transparent !important; 
     border-radius: 0 !important;
-    flex-shrink: 0; 
+    z-index: 5 !important; /* Por encima de cualquier elemento */
     
-    /* Concepto base: Amarillo brillante constante con contorno negro fino */
+    /* Colores por defecto (Amarillo con delineado negro) */
     color: #ffd700 !important; 
-    stroke: #111111 !important; 
-    stroke-width: 2;
-    filter: drop-shadow(0px 0px 4px rgba(255, 215, 0, 0.4));
+    stroke: #0c1a30 !important; 
+    stroke-width: 1.5;
+    filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 0.6));
     transition: all 0.3s ease;
     display: block;
 }
 
-/* --- CLASES DEL SEMÁFORO QUE TU JAVASCRIPT CORRE AUTOMÁTICAMENTE --- */
+/* --- CLASES DINÁMICAS QUE MANEJA TU SEMÁFORO --- */
 .bateria-icono.verde {
     color: #32cd32 !important; /* Relleno Verde */
-    stroke: #111111 !important;
-    filter: drop-shadow(0px 0px 6px rgba(50, 205, 50, 0.7)) !important;
+    stroke: #0c1a30 !important;
+    filter: drop-shadow(0px 0px 10px rgba(50, 205, 50, 0.8)) !important;
 }
 
 .bateria-icono.amarillo {
     color: #ffd700 !important; /* Relleno Amarillo */
-    stroke: #111111 !important;
-    filter: drop-shadow(0px 0px 6px rgba(255, 215, 0, 0.7)) !important;
+    stroke: #0c1a30 !important;
+    filter: drop-shadow(0px 0px 10px rgba(255, 215, 0, 0.8)) !important;
 }
 
 .bateria-icono.rojo {
-    color: #ff4500 !important; /* Relleno Rojo Alerta */
-    stroke: #111111 !important;
-    filter: drop-shadow(0px 0px 6px rgba(255, 69, 0, 0.7)) !important;
+    color: #ff4500 !important; /* Relleno Rojo */
+    stroke: #0c1a30 !important;
+    filter: drop-shadow(0px 0px 10px rgba(255, 69, 0, 0.8)) !important;
 }
 
 /* Menú lateral */
