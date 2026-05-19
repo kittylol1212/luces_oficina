@@ -37,7 +37,6 @@ body {
    ========================================= */
 .pisos-grid {
     display: grid !important;
-    /* Esto fuerza 3 columnas iguales */
     grid-template-columns: repeat(3, 1fr) !important; 
     gap: 25px;
     width: 100% !important;
@@ -148,11 +147,11 @@ body {
 .piso-numero { font-size: 28px; font-weight: 700; }
 .piso-nombre { font-size: 15px; font-weight: 600; cursor: pointer; }
 
-/* --- ELEMENTOS INTERNOS (PERSONAS Y AVATARES) --- */
+/* --- ELEMENTOS INTERNOS (PERSONAS) --- */
 .piso-body {
     padding: 16px 20px;
     display: flex !important;
-    flex-direction: column !important; /* Fuerza a que sea una lista vertical */
+    flex-direction: column !important; 
     width: 100% !important;
 }
 
@@ -176,7 +175,6 @@ body {
 .persona:last-child { border-bottom: none; }
 
 .persona-info {
-    /* Empuja los controles a la derecha */
     flex-grow: 1; 
 }
 
@@ -206,7 +204,7 @@ body {
     justify-content: center;
     font-size: 18px;
     color: white;
-    flex-shrink: 0; /* Evita que el bombillo se aplaste */
+    flex-shrink: 0; 
 }
 
 .avatar.encendido {
@@ -264,42 +262,55 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (CUADRADO Y CÍRCULO)
+   CONTROLES DERECHA (CUADRADO Y BATERÍA ARREGLADOS)
    ========================================================================= */
 .controles-derecha {
     display: flex;
     align-items: center;
     gap: 12px; 
-    margin-left: auto !important; /* Mantiene esto a la derecha */
+    margin-left: auto !important; 
 }
 
 .cuadrado-nuevo {
-    width: 80px !important;  
+    width: 70px !important;  
     height: 30px !important; 
     background-color: #d9d9d9 !important; 
     border-radius: 6px; 
-    display: flex !important; /* Para centrar el texto del % */
+    display: flex !important; 
     align-items: center !important;
     justify-content: center !important;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
     color: #333;
     cursor: pointer;
-    flex-shrink: 0; /* Evita que se aplaste */
+    flex-shrink: 0; 
 }
 
-.circulo-estado {
-    width: 22px !important;
-    height: 22px !important;
-    border-radius: 50%;
-    background-color: #e0e0e0; /* Color gris apagado por defecto */
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+.bateria-icono {
+    width: 26px !important;
+    height: auto !important;
+    background-color: #e0e0e0; /* Color gris por defecto */
+    border-radius: 4px;
+    padding: 3px;
     transition: all 0.3s ease;
     flex-shrink: 0; 
 }
 
+/* Colores para pintar la batería */
+.bateria-icono.verde {
+    background-color: #32cd32 !important; /* Verde Bueno */
+}
 
-/* El botón de las 3 barritas */
+.bateria-icono.amarillo {
+    background-color: #ffd700 !important; /* Amarillo Medio */
+}
+
+.bateria-icono.rojo {
+    background-color: #ff4500 !important; /* Rojo Alerta */
+}
+
+
+/* Menú lateral */
 .menu-hamburguesa {
     font-size: 30px;
     color: white; 
@@ -315,7 +326,6 @@ body {
     transform: scale(1.1); 
 }
 
-/* El cuadro del menú desplegable */
 #menu-lateral {
     display: none; 
     position: absolute;
