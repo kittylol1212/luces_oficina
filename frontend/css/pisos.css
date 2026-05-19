@@ -1,5 +1,5 @@
 /* --- GENERALES Y FUENTES --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 *, *::before, *::after { 
     box-sizing: border-box; 
@@ -33,7 +33,7 @@ body {
 }
 
 /* =========================================
-   FORZAMOS EL GRID A 3 COLUMNAS (CORREGIDO)
+   FORZAMOS EL GRID A 3 COLUMNAS
    ========================================= */
 .pisos-grid {
     display: grid !important;
@@ -67,7 +67,7 @@ body {
     letter-spacing: 1.5px;
 }
 
-/* --- CONTROLES MAESTROS (BOTONES GENERALES) --- */
+/* --- CONTROLES MAESTROS --- */
 .controles-maestros {
     display: flex;
     gap: 20px;
@@ -103,7 +103,7 @@ body {
     background: white;
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 2px 16 rgba(0,0,0,0.07);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -159,9 +159,6 @@ body {
     display: none !important;
 }
 
-/* =========================================
-   DISEÑO DE LA FILA DE LA PERSONA (CORREGIDO)
-   ========================================= */
 .persona {
     display: flex !important;
     align-items: center !important;
@@ -217,7 +214,6 @@ body {
     transform: scale(1.1);
 }
 
-/* --- OTROS ELEMENTOS --- */
 .btn-editar {
     cursor: pointer;
     font-size: 0.85em;
@@ -238,7 +234,7 @@ body {
     transform: rotate(-90deg);
 }
 
-/* --- ENCABEZADO Y LOGO Meltec --- */
+/* --- ENCABEZADO Y LOGO --- */
 .header {
     background-color: #178db3 !important;
     display: flex !important;
@@ -262,62 +258,62 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (DISEÑO EXACTO AL BOCETO DE Image 1, Semáforo en el Rayo)
+   CONTROLES DERECHA (PÍLDORA GRIS ESTÁTICA Y RAYO SEMÁFORO)
    ========================================================================= */
 .controles-derecha {
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important; 
+    gap: 12px !important; 
     margin-left: auto !important; 
 }
 
-/* El elemento píldora de texto (gris neutral estilo Image 2) */
-.cuadrado-nuevo {
-    width: 70px !important;  
+/* Convertimos el contenedor en una píldora gris unificada */
+.barra-contenedor {
+    width: 65px !important;  
     height: 28px !important; 
-    background-color: #d9d9d9 !important; /* Gris oscuro neutral */
-    border-radius: 5px !important; 
+    background-color: #d9d9d9 !important; /* Gris oscuro neutro */
+    border-radius: 6px !important; 
     display: flex !important; 
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Eliminamos el efecto de llenado de color, solo sirve para centrar el texto */
+.barra-llenado {
+    background-color: transparent !important; 
+    width: 100% !important; /* Ignoramos el style inline del HTML */
+    height: 100% !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     font-size: 13px !important;
     font-weight: bold !important;
-    color: #333 !important; /* Texto gris oscuro neutral */
-    flex-shrink: 0; 
-    position: relative !important;
-    overflow: hidden !important;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1) !important; /* Sombra interior suave */
-    transition: all 0.3s ease;
+    color: #333333 !important; /* Texto oscuro sobre fondo gris claro */
+    white-space: nowrap !important;
+    padding: 0 !important;
 }
 
-/* --- El Rayo Neón Gigante que cambia de color --- */
+/* --- EL RAYO SEMÁFORO --- */
 .icono-rayo {
-    font-size: 20px !important;
+    font-size: 22px !important;
     line-height: 1 !important;
-    /* Color base azul brillante y nítido */
-    color: #00bcd4 !important; 
-    /* Efecto neón/resplandor idéntico al boceto */
-    filter: drop-shadow(0px 0px 4px rgba(0, 188, 212, 0.6)) !important;
+    display: inline-block !important;
     user-select: none !important;
-    transition: all 0.3s ease !important;
-    flex-shrink: 0; 
-    display: block !important;
+    transition: filter 0.3s ease !important;
+    flex-shrink: 0;
 }
 
-/* --- ADAPTACIÓN DE LOS COLORES DEL SEMÁFORO AL SÚPER RAYO --- */
+/* Colores de resplandor Neón según el estado dictado por JavaScript */
 .icono-rayo.verde {
-    color: #32cd32 !important; /* Relleno Verde */
-    filter: drop-shadow(0px 0px 6px rgba(50, 205, 50, 0.9)) !important; /* Resplandor Verde */
+    filter: drop-shadow(0px 0px 8px rgba(50, 205, 50, 1)) !important;
 }
-
 .icono-rayo.amarillo {
-    color: #ffd700 !important; /* Relleno Amarillo */
-    filter: drop-shadow(0px 0px 6px rgba(255, 215, 0, 0.9)) !important; /* Resplandor Amarillo */
+    filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 1)) !important;
 }
-
 .icono-rayo.rojo {
-    color: #ff4500 !important; /* Relleno Rojo Alerta */
-    filter: drop-shadow(0px 0px 6px rgba(255, 69, 0, 0.9)) !important; /* Resplandor Rojo */
+    filter: drop-shadow(0px 0px 8px rgba(255, 69, 0, 1)) !important;
 }
 
 /* Menú lateral */
@@ -342,7 +338,7 @@ body {
     top: 60px; 
     left: 10px;
     background-color: white;
-    box-shadow: 0px 8px 16 rgba(0,0,0,0.3); 
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.3); 
     border-radius: 8px;
     z-index: 1000;
     min-width: 200px;
