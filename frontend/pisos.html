@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control de Iluminación por Pisos</title>
-    <link rel="stylesheet" href="css/pisos.css"> 
+    <link rel="stylesheet" href="css/pisos.css?v=10"> 
 </head>
 <body>
 <header class="header">
@@ -16,12 +16,12 @@
 
        <nav id="menu-lateral" class="menu-oculto">
             <ul style="list-style: none; padding: 0; margin: 0;">
-
-                
+                <li onclick="window.location.href='pisos.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
+                    🏠 Inicio
+                </li>
                 <li onclick="window.location.href='estadisticas.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
                     📊 Estadísticas de Uso
                 </li> 
-                
                 <li style="cursor: pointer; padding: 15px 20px; font-weight: bold;">
                     ⚙️ Configuración
                 </li>
@@ -65,8 +65,8 @@
                     <div class="persona-cargo">Ingeniero</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-   <div class="circulo-estado" style="display: flex; align-items: center; justify-content: center; background: none;"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -80,8 +80,8 @@
                     <div class="persona-cargo">Soporte Técnico</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -95,8 +95,8 @@
                     <div class="persona-cargo">Seguridad</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -110,8 +110,8 @@
                     <div class="persona-cargo">Implementador</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -122,11 +122,11 @@
                         <div class="persona-nombre">Sergio</div>
                         <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
                     </div>
-                        <div class="persona-cargo">Implementador</div>
+                    <div class="persona-cargo">Implementador</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div> 
 
@@ -140,8 +140,8 @@
                     <div class="persona-cargo">Implementador</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -155,8 +155,8 @@
                     <div class="persona-cargo">Implementador</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -170,8 +170,8 @@
                     <div class="persona-cargo">Implementador</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
         </div>
@@ -195,8 +195,8 @@
                     <div class="persona-cargo">Compras</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
             <div class="persona">
@@ -209,8 +209,8 @@
                     <div class="persona-cargo">compras</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
             <div class="persona">
@@ -223,8 +223,8 @@
                     <div class="persona-cargo">Compras</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
             <div class="persona">
@@ -237,8 +237,8 @@
                     <div class="persona-cargo">Compras</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
             <div class="persona">
@@ -251,8 +251,8 @@
                     <div class="persona-cargo">Compras</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div> 
             <div class="persona">
@@ -265,8 +265,8 @@
                     <div class="persona-cargo">Compras</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
             <div class="persona">
@@ -279,8 +279,8 @@
                     <div class="persona-cargo">Compras</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
             <div class="persona">
@@ -293,8 +293,8 @@
                     <div class="persona-cargo">Compras</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
         </div>
@@ -318,8 +318,8 @@
                     <div class="persona-cargo">Dev</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
             
@@ -333,8 +333,8 @@
                     <div class="persona-cargo">Reclutamiento</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -348,8 +348,8 @@
                     <div class="persona-cargo">Analista HR</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -363,8 +363,8 @@
                     <div class="persona-cargo">Bienestar</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -378,8 +378,8 @@
                     <div class="persona-cargo">Nómina</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -393,8 +393,8 @@
                     <div class="persona-cargo">Capacitación</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -408,8 +408,8 @@
                     <div class="persona-cargo">Psicóloga</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -423,8 +423,8 @@
                     <div class="persona-cargo">Asistente</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
         </div> 
@@ -449,8 +449,8 @@
                     <div class="persona-cargo">Director</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -464,8 +464,8 @@
                     <div class="persona-cargo">Ingeniera de Redes</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -479,8 +479,8 @@
                     <div class="persona-cargo">Soporte TI</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -494,8 +494,8 @@
                     <div class="persona-cargo">Gerente de Proyectos</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -509,8 +509,8 @@
                     <div class="persona-cargo">Desarrollador</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -524,8 +524,8 @@
                     <div class="persona-cargo">Analista QA</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -539,8 +539,8 @@
                     <div class="persona-cargo">Especialista Telecom</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -554,8 +554,8 @@
                     <div class="persona-cargo">Scrum Master</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
         </div>
@@ -580,8 +580,8 @@
                     <div class="persona-cargo">Recepcionista</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -595,8 +595,8 @@
                     <div class="persona-cargo">Seguridad</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -610,8 +610,8 @@
                     <div class="persona-cargo">Técnico AIDC</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -625,8 +625,8 @@
                     <div class="persona-cargo">Especialista RFID</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -640,8 +640,8 @@
                     <div class="persona-cargo">Ingeniero de Datos</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -655,8 +655,8 @@
                     <div class="persona-cargo">Consultora Logística</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -670,8 +670,8 @@
                     <div class="persona-cargo">Soporte Hardware</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -685,8 +685,8 @@
                     <div class="persona-cargo">Auditora de Sistemas</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
         </div>
@@ -711,8 +711,8 @@
                     <div class="persona-cargo">Recepcionista</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -726,8 +726,8 @@
                     <div class="persona-cargo">Seguridad</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -741,8 +741,8 @@
                     <div class="persona-cargo">Ingeniero RF</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -756,8 +756,8 @@
                     <div class="persona-cargo">Ventas Corporativas</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -771,8 +771,8 @@
                     <div class="persona-cargo">Soporte Técnico</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -786,8 +786,8 @@
                     <div class="persona-cargo">Gestor de Cuentas</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -801,8 +801,8 @@
                     <div class="persona-cargo">Técnico de Campo</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
 
@@ -816,15 +816,15 @@
                     <div class="persona-cargo">Coordinadora Logística</div>
                 </div>
                 <div class="controles-derecha">
-                    <div class="cuadrado-nuevo"></div>
-                    <div class="circulo-estado"></div>
+                    <div class="cuadrado-nuevo">0%</div>
+                    <img src="bateria_rayo.png" alt="Batería" class="bateria-icono">
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="./js/script.js?v=2"></script>
+<script src="./js/script.js?v=10"></script>
 
 </body>
 </html>
