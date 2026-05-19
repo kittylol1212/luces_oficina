@@ -33,7 +33,7 @@ body {
 }
 
 /* =========================================
-   FORZAMOS EL GRID A 3 COLUMNAS (CORREGIDO)
+   FORZAMOS EL GRID A 3 COLUMNAS
    ========================================= */
 .pisos-grid {
     display: grid !important;
@@ -160,13 +160,13 @@ body {
 }
 
 /* =========================================
-   DISEÑO DE LA FILA DE LA PERSONA (CORREGIDO)
+   DISEÑO DE LA FILA DE LA PERSONA
    ========================================= */
 .persona {
     display: flex !important;
     align-items: center !important;
     gap: 12px;
-    padding: 10px 0;
+    padding: 12px 0;
     border-bottom: 1px solid #f0f0f0;
     width: 100% !important;
     box-sizing: border-box !important;
@@ -176,27 +176,36 @@ body {
 
 .persona-info {
     flex-grow: 1; 
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .persona-nombre {
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #555;
+}
+
+.persona-cargo {
+    font-size: 15px;
     font-weight: 600;
-    color: #2c3e50;
+    color: #111;
 }
 
 .nombre-container {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 /* --- MODIFICACIÓN DE COLORES DE LUZ (AVATAR) --- */
 .avatar {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background: #e74c3c; 
-    border: 2px solid #e74c3c; 
+    border: none; 
     cursor: pointer;
     transition: 0.3s;
     display: flex;
@@ -207,20 +216,20 @@ body {
     flex-shrink: 0; 
 }
 
+/* El estado encendido pasa a ser el color verde brillante */
 .avatar.encendido {
     background: #39FF14 !important;
-    border-color: #39FF14;
-    box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.4);
 }
 
 .avatar:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
 }
 
 /* --- OTROS ELEMENTOS --- */
 .btn-editar {
     cursor: pointer;
-    font-size: 0.85em;
+    font-size: 0.8em;
     opacity: 0.4;
     transition: opacity 0.3s ease;
 }
@@ -262,53 +271,49 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (CUADRADO Y BATERÍA ARREGLADOS)
+   CONTROLES DERECHA (NUEVA BARRA DE PROGRESO Y RAYO AZUL)
    ========================================================================= */
 .controles-derecha {
     display: flex;
     align-items: center;
-    gap: 12px; 
+    gap: 8px; 
     margin-left: auto !important; 
 }
 
-.cuadrado-nuevo {
-    width: 70px !important;  
+/* El fondo gris alargado de la barra */
+.barra-contenedor {
+    width: 110px !important;  
     height: 30px !important; 
-    background-color: #d9d9d9 !important; 
+    background-color: #e0e0e0 !important; 
+    border-radius: 6px; 
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0; 
+}
+
+/* El bloque interno que muestra el porcentaje actual */
+.barra-llenado {
+    height: 100%;
+    background-color: #95a5a6 !important; /* Gris oscuro para el llenado */
     border-radius: 6px; 
     display: flex !important; 
     align-items: center !important;
     justify-content: center !important;
     font-size: 13px;
     font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    flex-shrink: 0; 
+    color: #ffffff !important;
+    transition: width 0.3s ease;
 }
 
-.bateria-icono {
-    width: 26px !important;
-    height: auto !important;
-    background-color: #e0e0e0; /* Color gris por defecto */
-    border-radius: 4px;
-    padding: 3px;
-    transition: all 0.3s ease;
-    flex-shrink: 0; 
+/* Icono del rayo azul neón */
+.icono-rayo {
+    font-size: 24px;
+    color: #00bcd4; /* Color azul brillante */
+    text-shadow: 0 0 8px rgba(0, 188, 212, 0.7); /* Resplandor */
+    user-select: none;
+    flex-shrink: 0;
+    display: inline-block;
 }
-
-/* Colores para pintar la batería */
-.bateria-icono.verde {
-    background-color: #32cd32 !important; /* Verde Bueno */
-}
-
-.bateria-icono.amarillo {
-    background-color: #ffd700 !important; /* Amarillo Medio */
-}
-
-.bateria-icono.rojo {
-    background-color: #ff4500 !important; /* Rojo Alerta */
-}
-
 
 /* Menú lateral */
 .menu-hamburguesa {
