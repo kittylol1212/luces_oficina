@@ -1,5 +1,5 @@
 /* --- GENERALES Y FUENTES --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=400;500;600;700&display=swap');
 
 *, *::before, *::after { 
     box-sizing: border-box; 
@@ -103,7 +103,7 @@ body {
     background: white;
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+    box-shadow: 0 2px 16 rgba(0,0,0,0.07);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -159,6 +159,9 @@ body {
     display: none !important;
 }
 
+/* =========================================
+   DISEÑO DE LA FILA DE LA PERSONA (CORREGIDO)
+   ========================================= */
 .persona {
     display: flex !important;
     align-items: center !important;
@@ -187,7 +190,7 @@ body {
     gap: 8px;
 }
 
-/* --- MODIFICACIÓN DE COLORES DE LUZ (AVATAR) --- */
+/* --- AVATAR (BOMBILLO) --- */
 .avatar {
     width: 40px;
     height: 40px;
@@ -235,7 +238,7 @@ body {
     transform: rotate(-90deg);
 }
 
-/* --- ENCABEZADO Y LOGO --- */
+/* --- ENCABEZADO Y LOGO Meltec --- */
 .header {
     background-color: #178db3 !important;
     display: flex !important;
@@ -259,61 +262,62 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (DISEÑO COMPACTO CLÁSICO RESTAURADO)
+   CONTROLES DERECHA (DISEÑO EXACTO AL BOCETO DE Image 1, Semáforo en el Rayo)
    ========================================================================= */
 .controles-derecha {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important; 
+    gap: 10px !important; 
     margin-left: auto !important; 
 }
 
-/* El fondo gris claro de la barra */
-.barra-contenedor {
-    width: 90px !important;  
-    height: 26px !important; 
-    background-color: #e0e0e0 !important; 
-    border-radius: 4px !important; 
-    overflow: hidden !important;
-    flex-shrink: 0;
-}
-
-/* La barra gris oscura que avanza e incluye el texto blanco */
-.barra-llenado {
-    height: 100% !important;
-    background-color: #95a5a6 !important; 
-    border-radius: 4px !important; 
-    display: flex !important;
+/* El elemento píldora de texto (gris neutral estilo Image 2) */
+.cuadrado-nuevo {
+    width: 70px !important;  
+    height: 28px !important; 
+    background-color: #d9d9d9 !important; /* Gris oscuro neutral */
+    border-radius: 5px !important; 
+    display: flex !important; 
     align-items: center !important;
-    justify-content: flex-start !important;
-    padding-left: 6px !important;
-    font-size: 12px !important;
+    justify-content: center !important;
+    font-size: 13px !important;
     font-weight: bold !important;
-    color: #ffffff !important;
-    white-space: nowrap !important;
-    transition: width 0.3s ease !important;
-    min-width: 35px !important; /* Para que siempre se vea el texto del 0% */
+    color: #333 !important; /* Texto gris oscuro neutral */
+    flex-shrink: 0; 
+    position: relative !important;
+    overflow: hidden !important;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1) !important; /* Sombra interior suave */
+    transition: all 0.3s ease;
 }
 
-/* El emoji del Rayo que brilla */
+/* --- El Rayo Neón Gigante que cambia de color --- */
 .icono-rayo {
     font-size: 20px !important;
     line-height: 1 !important;
-    transition: filter 0.3s ease !important;
-    display: inline-block !important;
+    /* Color base azul brillante y nítido */
+    color: #00bcd4 !important; 
+    /* Efecto neón/resplandor idéntico al boceto */
+    filter: drop-shadow(0px 0px 4px rgba(0, 188, 212, 0.6)) !important;
     user-select: none !important;
-    margin-bottom: 2px;
+    transition: all 0.3s ease !important;
+    flex-shrink: 0; 
+    display: block !important;
 }
 
-/* Semáforo aplicado con resplandor neón al emoji */
+/* --- ADAPTACIÓN DE LOS COLORES DEL SEMÁFORO AL SÚPER RAYO --- */
 .icono-rayo.verde {
-    filter: drop-shadow(0px 0px 6px rgba(50, 205, 50, 0.9)) !important;
+    color: #32cd32 !important; /* Relleno Verde */
+    filter: drop-shadow(0px 0px 6px rgba(50, 205, 50, 0.9)) !important; /* Resplandor Verde */
 }
+
 .icono-rayo.amarillo {
-    filter: drop-shadow(0px 0px 6px rgba(255, 215, 0, 0.9)) !important;
+    color: #ffd700 !important; /* Relleno Amarillo */
+    filter: drop-shadow(0px 0px 6px rgba(255, 215, 0, 0.9)) !important; /* Resplandor Amarillo */
 }
+
 .icono-rayo.rojo {
-    filter: drop-shadow(0px 0px 6px rgba(255, 69, 0, 0.9)) !important;
+    color: #ff4500 !important; /* Relleno Rojo Alerta */
+    filter: drop-shadow(0px 0px 6px rgba(255, 69, 0, 0.9)) !important; /* Resplandor Rojo */
 }
 
 /* Menú lateral */
@@ -338,7 +342,7 @@ body {
     top: 60px; 
     left: 10px;
     background-color: white;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.3); 
+    box-shadow: 0px 8px 16 rgba(0,0,0,0.3); 
     border-radius: 8px;
     z-index: 1000;
     min-width: 200px;

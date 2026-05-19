@@ -1,3 +1,6 @@
+// ==========================================
+// CONFIGURACIÓN Y CONSTANTES
+// ==========================================
 const BASE_URL = "https://keith-acquired-framed-saver.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
 
 // ==========================================
@@ -52,9 +55,9 @@ function toggleTodoElPiso(numeroPiso) {
     }).catch(err => console.error("Error en comando grupal:", err));
 }
 
-// ========================================================================
-// 3. FORZAR VARIOS PISOS A LA VEZ
-// ========================================================================
+// ==========================================
+// 3. FORZAR VARIOS PISOS A LA VEZ (Ej: Botones para Pisos 1, 2 y 3)
+// ==========================================
 function forzarEncendidoPisosGlobal(listaPisos, encender) {
     listaPisos.forEach(numeroPiso => {
         const card = document.querySelector(`.piso-${numeroPiso}`);
@@ -125,6 +128,7 @@ function editarNombre(elemento) {
     }
 }
 
+// Cargar nombres desde LocalStorage
 function cargarNombres() {
     const todasLasPersonas = document.querySelectorAll('.persona');
     todasLasPersonas.forEach((persona, indice) => {
@@ -159,20 +163,25 @@ function actualizarEstadoSilencioso() {
 
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
-                    const rayo = persona.querySelector('.icono-rayo'); // <-- Busca la clase correcta
-                    const barraLlenado = persona.querySelector('.barra-llenado'); // <-- Busca la clase correcta
+                    const rayo = persona.querySelector('.icono-rayo'); // Clase actualizada
+                    const pillStatus = persona.querySelector('.cuadrado-nuevo'); // Clase actualizada
                     
                     if (!avatar || !rayo) return;
 
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
+                    // Apagamos la bombilla y reiniciamos el color del rayo por defecto
                     avatar.classList.remove('encendido');
-                    rayo.classList.remove('verde', 'amarillo', 'rojo');
+                    rayo.classList.remove('verde', 'amarillo', 'rojo'); // Reseteo de semáforo
+
+                    // Forzamos el cuadro neutral de texto para que no se coloree (Image 2)
+                    pillStatus.classList.remove('verde', 'amarillo', 'rojo');
 
                     let estaPrendida = false;
                     let porcentajeUso = 0;
 
+                    // Revisamos el estado que envía Python
                     if (esListaVieja) {
                         if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
                             estaPrendida = true;
@@ -184,31 +193,29 @@ function actualizarEstadoSilencioso() {
                         }
                     }
 
+                    // Sincronizar el texto del botón si Python envía datos numéricos
                     if (!esListaVieja && lucesOn && lucesOn[idLuz] !== undefined) {
-                        if (barraLlenado) barraLlenado.innerText = porcentajeUso + "%";
+                        if (pillStatus) pillStatus.innerText = porcentajeUso + "%";
                     } else {
-                        if (barraLlenado && barraLlenado.innerText.trim() !== "") {
-                            const numExtraido = parseFloat(barraLlenado.innerText);
+                        // Si Python usa el formato viejo, leemos lo que escribiste en el HTML para el semáforo
+                        if (pillStatus && pillStatus.innerText.trim() !== "") {
+                            const numExtraido = parseFloat(pillStatus.innerText);
                             if (!isNaN(numExtraido)) porcentajeUso = numExtraido;
                         }
                     }
 
-                    // --- AJUSTA LA BARRA VISUALMENTE ---
-                    if (barraLlenado) {
-                        barraLlenado.style.width = porcentajeUso + '%';
-                    }
-
+                    // Si está encendido físicamente, encendemos el bombillo en la app
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
                     }
 
-                    // --- PINTA EL RAYO ---
+                    // --- PINTAMOS EL RAYO ESTILO NEÓN GIGANTE DEL BOCETO ---
                     if (porcentajeUso <= 33) {
-                        rayo.classList.add('verde'); 
+                        rayo.classList.add('verde'); // 0% a 33% -> VERDE
                     } else if (porcentajeUso > 33 && porcentajeUso <= 66) {
-                        rayo.classList.add('amarillo'); 
+                        rayo.classList.add('amarillo'); // 34% a 66% -> AMARILLO
                     } else {
-                        rayo.classList.add('rojo'); 
+                        rayo.classList.add('rojo'); // 67% a 100% -> ROJO
                     }
                 });
             }
