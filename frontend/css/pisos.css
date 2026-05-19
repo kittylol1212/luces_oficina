@@ -271,79 +271,82 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (INMUNE CON VARIABLE COMPARTIDA DESDE JAVASCRIPT)
+   CONTROLES DERECHA (ESTILO FINAL COMPLETO - EFECTO BOCETO GARANTIZADO)
    ========================================================================= */
 .controles-derecha {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
     margin-left: auto !important; 
     position: relative !important;
-    padding-right: 52px !important; /* Margen de seguridad para que el rayo no tape el texto */
+    /* Espacio a la derecha calculado para que el súper rayo gigante no tape los números */
+    padding-right: 58px !important; 
+    height: 45px !important; /* Altura de control para alinear el rayo */
 }
 
-/* El contenedor que el script limpia se convierte en la barra completa */
+/* El elemento que el script altera pasa a ser la barra completa con estilo del boceto */
 .cuadrado-nuevo {
-    width: 140px !important;  
-    height: 34px !important; 
-    background-color: #e0e0e0 !important; /* Fondo gris claro */
-    border-radius: 6px; 
+    width: 135px !important;  
+    height: 32px !important; 
+    border-radius: 6px !important; 
     display: flex !important; 
     align-items: center !important;
     justify-content: center !important;
-    font-size: 13px;
-    font-weight: bold;
+    font-size: 13px !important;
+    font-weight: bold !important;
     
-    /* Texto blanco nítido con sombra negra para lectura impecable */
-    color: #ffffff !important; 
-    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7) !important;
+    /* Forzamos el fondo gris claro del contenedor del boceto */
+    background-color: #e0e0e0 !important; 
     
-    flex-shrink: 0;
+    /* Texto gris oscuro centrado para legibilidad impecable en cualquier porcentaje */
+    color: #333333 !important; 
+    white-space: nowrap !important;
     position: relative !important;
-    overflow: hidden;
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+    overflow: hidden !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1) !important;
+    z-index: 2 !important;
 }
 
-/* --- SOLUCIÓN TÉCNICA: La barra oscura se autodibuja detrás del texto usando la variable de JS --- */
+/* --- LA MAGIA: Dibujamos la barra gris oscura interna usando la variable de JS --- */
 .cuadrado-nuevo::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    /* Lee de forma reactiva la variable calculada en tu script JS */
+    content: "" !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100% !important;
+    /* Toma dinámicamente el valor numérico calculado por tu script de JS */
     width: var(--progress-width, 0%) !important; 
-    background-color: #95a5a6 !important; /* Gris oscuro */
-    border-radius: 6px 0 0 6px;
-    z-index: 0 !important;
-    transition: width 0.3s ease;
+    background-color: #95a5a6 !important; /* Gris oscuro del boceto */
+    border-radius: 6px 0 0 6px !important;
+    z-index: -1 !important; /* Se posiciona por detrás del texto para no taparlo */
+    transition: width 0.3s ease !important;
 }
 
-/* --- EL NUEVO SÚPER RAYO VECTORIAL GIGANTE --- */
+/* --- EL SÚPER RAYO GIGANTE SOBRESALIENTE --- */
 .bateria-icono {
     position: absolute !important;
-    right: -5px !important; /* Se apoya de forma elegante sobre el extremo derecho de la fila */
+    right: -2px !important; /* Se apoya en el extremo derecho de la fila, sobresaliendo de la barra */
     top: 50% !important;
-    transform: translateY(-50%) !important;
+    transform: translateY(-50%) !important; /* Centrado vertical geométrico */
     
-    /* Dimensiones masivas de gran impacto, idénticas a tu boceto original */
+    /* Tamaño masivo e imponente idéntico al boceto inicial */
     width: 48px !important;
     height: 56px !important;
     
     padding: 0 !important;
     background-color: transparent !important; 
     border-radius: 0 !important;
-    z-index: 10 !important; /* Capa superior absoluta */
+    z-index: 10 !important; /* Se mantiene al frente de todo */
     
-    /* Estilo base: Relleno amarillo brillante y línea de contorno oscura definida */
+    /* Estilo por defecto: Amarillo brillante con contorno oscuro nítido */
     color: #ffd700 !important; 
     stroke: #0a162b !important; 
-    stroke-width: 1.8;
-    filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 0.6));
-    transition: all 0.3s ease;
-    display: block;
+    stroke-width: 1.8 !important;
+    filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 0.6)) !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
 }
 
-/* --- SINCRONIZACIÓN DE TU SEMÁFORO AUTOMÁTICO SOBRE EL SÚPER RAYO --- */
+/* --- ASIGNACIÓN DE TU SEMÁFORO DE JAVASCRIPT AL SÚPER RAYO --- */
 .bateria-icono.verde {
     color: #32cd32 !important; /* Relleno Verde */
     stroke: #0a162b !important;
@@ -360,73 +363,4 @@ body {
     color: #ff4500 !important; /* Relleno Rojo Alerta */
     stroke: #0a162b !important;
     filter: drop-shadow(0px 0px 12px rgba(255, 69, 0, 0.85)) !important;
-}
-
-/* Menú lateral */
-.menu-hamburguesa {
-    font-size: 30px;
-    color: white; 
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 5px 10px;
-    transition: transform 0.2s ease;
-    z-index: 1001; 
-}
-
-.menu-hamburguesa:hover {
-    transform: scale(1.1); 
-}
-
-#menu-lateral {
-    display: none; 
-    position: absolute;
-    top: 60px; 
-    left: 10px;
-    background-color: white;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.3); 
-    border-radius: 8px;
-    z-index: 1000;
-    min-width: 200px;
-    overflow: hidden;
-    text-align: left; 
-}
-
-#menu-lateral.mostrar {
-    display: block;
-    animation: abrirMenu 0.3s ease;
-}
-
-#menu-lateral ul {
-    list-style: none; 
-    margin: 0;
-    padding: 0;
-}
-
-#menu-lateral ul li {
-    border-bottom: 1px solid #f1f1f1;
-}
-
-#menu-lateral ul li:last-child {
-    border-bottom: none;
-}
-
-#menu-lateral ul li a {
-    display: block;
-    padding: 15px 20px;
-    text-decoration: none; 
-    color: #333;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-#menu-lateral ul li a:hover {
-    background-color: #f1f1f1;
-    color: #008CBA; 
-}
-
-@keyframes abrirMenu {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
 }
