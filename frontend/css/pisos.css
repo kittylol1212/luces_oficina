@@ -159,9 +159,6 @@ body {
     display: none !important;
 }
 
-/* =========================================
-   DISEÑO DE LA FILA DE LA PERSONA (CORREGIDO)
-   ========================================= */
 .persona {
     display: flex !important;
     align-items: center !important;
@@ -262,53 +259,62 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (CUADRADO Y BATERÍA ARREGLADOS)
+   CONTROLES DERECHA (DISEÑO COMPACTO CLÁSICO RESTAURADO)
    ========================================================================= */
 .controles-derecha {
-    display: flex;
-    align-items: center;
-    gap: 12px; 
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important; 
     margin-left: auto !important; 
 }
 
-.cuadrado-nuevo {
-    width: 70px !important;  
-    height: 30px !important; 
-    background-color: #d9d9d9 !important; 
-    border-radius: 6px; 
-    display: flex !important; 
+/* El fondo gris claro de la barra */
+.barra-contenedor {
+    width: 90px !important;  
+    height: 26px !important; 
+    background-color: #e0e0e0 !important; 
+    border-radius: 4px !important; 
+    overflow: hidden !important;
+    flex-shrink: 0;
+}
+
+/* La barra gris oscura que avanza e incluye el texto blanco */
+.barra-llenado {
+    height: 100% !important;
+    background-color: #95a5a6 !important; 
+    border-radius: 4px !important; 
+    display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
-    font-size: 13px;
-    font-weight: bold;
-    color: #333;
-    cursor: pointer;
-    flex-shrink: 0; 
+    justify-content: flex-start !important;
+    padding-left: 6px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    color: #ffffff !important;
+    white-space: nowrap !important;
+    transition: width 0.3s ease !important;
+    min-width: 35px !important; /* Para que siempre se vea el texto del 0% */
 }
 
-.bateria-icono {
-    width: 26px !important;
-    height: auto !important;
-    background-color: #e0e0e0; /* Color gris por defecto */
-    border-radius: 4px;
-    padding: 3px;
-    transition: all 0.3s ease;
-    flex-shrink: 0; 
+/* El emoji del Rayo que brilla */
+.icono-rayo {
+    font-size: 20px !important;
+    line-height: 1 !important;
+    transition: filter 0.3s ease !important;
+    display: inline-block !important;
+    user-select: none !important;
+    margin-bottom: 2px;
 }
 
-/* Colores para pintar la batería */
-.bateria-icono.verde {
-    background-color: #32cd32 !important; /* Verde Bueno */
+/* Semáforo aplicado con resplandor neón al emoji */
+.icono-rayo.verde {
+    filter: drop-shadow(0px 0px 6px rgba(50, 205, 50, 0.9)) !important;
 }
-
-.bateria-icono.amarillo {
-    background-color: #ffd700 !important; /* Amarillo Medio */
+.icono-rayo.amarillo {
+    filter: drop-shadow(0px 0px 6px rgba(255, 215, 0, 0.9)) !important;
 }
-
-.bateria-icono.rojo {
-    background-color: #ff4500 !important; /* Rojo Alerta */
+.icono-rayo.rojo {
+    filter: drop-shadow(0px 0px 6px rgba(255, 69, 0, 0.9)) !important;
 }
-
 
 /* Menú lateral */
 .menu-hamburguesa {

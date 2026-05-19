@@ -53,7 +53,7 @@ function toggleTodoElPiso(numeroPiso) {
 }
 
 // ========================================================================
-// 3. FORZAR VARIOS PISOS A LA VEZ (Ej: Botones para Pisos 1, 2 y 3)
+// 3. FORZAR VARIOS PISOS A LA VEZ
 // ========================================================================
 function forzarEncendidoPisosGlobal(listaPisos, encender) {
     listaPisos.forEach(numeroPiso => {
@@ -125,7 +125,6 @@ function editarNombre(elemento) {
     }
 }
 
-// Cargar nombres desde LocalStorage
 function cargarNombres() {
     const todasLasPersonas = document.querySelectorAll('.persona');
     todasLasPersonas.forEach((persona, indice) => {
@@ -160,22 +159,20 @@ function actualizarEstadoSilencioso() {
 
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
-                    const bateria = persona.querySelector('.bateria-icono');
-                    const cuadradoNuevo = persona.querySelector('.cuadrado-nuevo');
+                    const rayo = persona.querySelector('.icono-rayo'); // <-- Busca la clase correcta
+                    const barraLlenado = persona.querySelector('.barra-llenado'); // <-- Busca la clase correcta
                     
-                    if (!avatar || !bateria) return;
+                    if (!avatar || !rayo) return;
 
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
-                    // Apagamos la bombilla y reiniciamos el color de la batería por defecto
                     avatar.classList.remove('encendido');
-                    bateria.classList.remove('verde', 'amarillo', 'rojo');
+                    rayo.classList.remove('verde', 'amarillo', 'rojo');
 
                     let estaPrendida = false;
                     let porcentajeUso = 0;
 
-                    // Revisamos el estado que envía Python
                     if (esListaVieja) {
                         if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
                             estaPrendida = true;
@@ -187,37 +184,61 @@ function actualizarEstadoSilencioso() {
                         }
                     }
 
-                    // Sincronizar el texto del cuadrado gris si Python envía datos numéricos
                     if (!esListaVieja && lucesOn && lucesOn[idLuz] !== undefined) {
-                        if (cuadradoNuevo) cuadradoNuevo.innerText = porcentajeUso + "%";
+                        if (barraLlenado) barraLlenado.innerText = porcentajeUso + "%";
                     } else {
-                        // Si Python usa el formato viejo, leemos lo que escribiste en el HTML para el semáforo
-                        if (cuadradoNuevo && cuadradoNuevo.innerText.trim() !== "") {
-                            const numExtraido = parseFloat(cuadradoNuevo.innerText);
+                        if (barraLlenado && barraLlenado.innerText.trim() !== "") {
+                            const numExtraido = parseFloat(barraLlenado.innerText);
                             if (!isNaN(numExtraido)) porcentajeUso = numExtraido;
                         }
                     }
 
-                    // [LÍNEA NUEVA]: Le pasamos el porcentaje exacto al CSS en tiempo real para el fondo
-                    if (cuadradoNuevo) {
-                        cuadradoNuevo.style.setProperty('--progress-width', porcentajeUso + '%');
+                    // --- AJUSTA LA BARRA VISUALMENTE ---
+                    if (barraLlenado) {
+                        barraLlenado.style.width = porcentajeUso + '%';
                     }
 
-                    // Si está encendido físicamente, encendemos el bombillo en la app
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
                     }
 
-                    // PINTAMOS LA BATERÍA (Semáforo basado en rango de 0% a 100%)
+                    // --- PINTA EL RAYO ---
                     if (porcentajeUso <= 33) {
-                        bateria.classList.add('verde'); // 0% a 33% -> VERDE
+                        rayo.classList.add('verde'); 
                     } else if (porcentajeUso > 33 && porcentajeUso <= 66) {
-                        bateria.classList.add('amarillo'); // 34% a 66% -> AMARILLO
+                        rayo.classList.add('amarillo'); 
                     } else {
-                        bateria.classList.add('rojo'); // 67% a 100% -> ROJO
+                        rayo.classList.add('rojo'); 
                     }
                 });
             }
         })
         .catch(err => console.error("❌ Error de red en actualización silenciosa", err));
 }
+
+// ==========================================
+// 7. INICIO DEL SISTEMA
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("🚀 Iniciando interfaz...");
+    
+    cargarNombres();
+    actualizarEstadoSilencioso();
+    setInterval(actualizarEstadoSilencioso, 3000); 
+
+    const btnHamburguesa = document.getElementById('btn-hamburguesa');
+    const menuLateral = document.getElementById('menu-lateral');
+
+    if (btnHamburguesa && menuLateral) {
+        btnHamburguesa.addEventListener('click', (evento) => {
+            evento.stopPropagation(); 
+            menuLateral.classList.toggle('mostrar');
+        });
+
+        document.addEventListener('click', (evento) => {
+            if (!menuLateral.contains(evento.target) && evento.target !== btnHamburguesa) {
+                menuLateral.classList.remove('mostrar');
+            }
+        });
+    }
+});
