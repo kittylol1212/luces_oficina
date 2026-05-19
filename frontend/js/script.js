@@ -71,7 +71,7 @@ function forzarEncendidoPisosGlobal(listaPisos, encender) {
             body: JSON.stringify({ 
                 piso: numeroPiso, 
                 estado: encender 
-            })
+                })
         })
         .then(res => res.json())
         .then(data => console.log(`Piso ${numeroPiso} sincronizado`))
@@ -83,12 +83,10 @@ function forzarEncendidoPisosGlobal(listaPisos, encender) {
 // 4. FUNCIÓN INDIVIDUAL: BOMBILLA
 // ==========================================
 function toggleLuz(el) {
-    // 1. Cambio visual instantáneo
     el.classList.toggle("encendido");
     const estaEncendido = el.classList.contains("encendido");
     const idLuz = el.getAttribute('data-luz'); 
 
-    // 2. Notificar al backend (Python)
     fetch(`${BASE_URL}/api/luz`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -100,13 +98,10 @@ function toggleLuz(el) {
     .then(res => {
         if (!res.ok) throw new Error("El servidor no respondió correctamente");
         console.log(`📡 Luz ${idLuz} sincronizada con estado: ${estaEncendido}`);
-        
-        // Hacemos una llamada rápida silenciosa para actualizar el semáforo de inmediato
         actualizarEstadoSilencioso();
     })
     .catch(err => {
         console.error("❌ Error de comunicación con el servidor:", err);
-        // Si hay error en la red, revertimos el color del botón
         el.classList.toggle("encendido", !estaEncendido);
     });
 }
@@ -130,6 +125,7 @@ function editarNombre(elemento) {
     }
 }
 
+// Cargar nombres desde LocalStorage
 function cargarNombres() {
     const todasLasPersonas = document.querySelectorAll('.persona');
     todasLasPersonas.forEach((persona, indice) => {
@@ -152,7 +148,7 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // ==========================================
-// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFORO
+// 6. BUCLE: MANTENER EL ESTADO SINCRONIZADO Y SEMÁFORO DE LA BATERÍA
 // ==========================================
 function actualizarEstadoSilencioso() {
     fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
@@ -164,21 +160,22 @@ function actualizarEstadoSilencioso() {
 
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
-                    const circuloEstado = persona.querySelector('.circulo-estado');
-                    const cuadradoNuevo = persona.querySelector('.cuadrado-nuevo'); // Tu cuadrado con el %
+                    const bateria = persona.querySelector('.bateria-icono');
+                    const cuadradoNuevo = persona.querySelector('.cuadrado-nuevo');
                     
-                    if (!avatar) return;
+                    if (!avatar || !bateria) return;
 
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
-                    // 1. Apagamos el bombillo visualmente por defecto
+                    // Apagamos la bombilla y reiniciamos el color de la batería por defecto
                     avatar.classList.remove('encendido');
+                    bateria.classList.remove('verde', 'amarillo', 'rojo');
 
                     let estaPrendida = false;
-                    let porcentajeUso = 0; 
+                    let porcentajeUso = 0;
 
-                    // 2. Revisamos si la luz está prendida físicamente
+                    // Revisamos el estado que envía Python
                     if (esListaVieja) {
                         if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
                             estaPrendida = true;
@@ -190,32 +187,29 @@ function actualizarEstadoSilencioso() {
                         }
                     }
 
-                    // 💡 TRUCO CLAVE: Si la luz está apagada, leemos el porcentaje directamente 
-                    // de lo que tienes escrito dentro de tu cuadrado gris para no perder el color.
-                    if (cuadradoNuevo && cuadradoNuevo.innerText.trim() !== "") {
-                        const numeroExtraido = parseFloat(cuadradoNuevo.innerText);
-                        if (!isNaN(numeroExtraido)) {
-                            porcentajeUso = numeroExtraido;
+                    // Sincronizar el texto del cuadrado gris si Python envía datos numéricos
+                    if (!esListaVieja && lucesOn && lucesOn[idLuz] !== undefined) {
+                        if (cuadradoNuevo) cuadradoNuevo.innerText = porcentajeUso + "%";
+                    } else {
+                        // Si Python usa el formato viejo, leemos lo que escribiste en el HTML para el semáforo
+                        if (cuadradoNuevo && cuadradoNuevo.innerText.trim() !== "") {
+                            const numExtraido = parseFloat(cuadradoNuevo.innerText);
+                            if (!isNaN(numExtraido)) porcentajeUso = numExtraido;
                         }
                     }
 
-                    // 3. Encendemos el bombillo solo si está prendida la luz física
+                    // Si está encendido físicamente, encendemos el bombillo en la app
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
                     }
 
-                    // 4. PINTAMOS EL CÍRCULO SIEMPRE (basado en el porcentaje de 0% a 100%)
-                    if (circuloEstado) {
-                        if (porcentajeUso <= 33) {
-                            // De 0% a 33% es Bueno / Bajo -> VERDE
-                            circuloEstado.style.backgroundColor = '#32cd32'; 
-                        } else if (porcentajeUso > 33 && porcentajeUso <= 66) {
-                            // De 34% a 66% es Medio -> AMARILLO
-                            circuloEstado.style.backgroundColor = '#ffd700'; 
-                        } else {
-                            // De 67% a 100% es Malo / Muy Alto -> ROJO
-                            circuloEstado.style.backgroundColor = '#ff4500'; 
-                        }
+                    // PINTAMOS LA BATERÍA (Semáforo basado en rango de 0% a 100%)
+                    if (porcentajeUso <= 33) {
+                        bateria.classList.add('verde'); // 0% a 33% -> VERDE
+                    } else if (porcentajeUso > 33 && porcentajeUso <= 66) {
+                        bateria.classList.add('amarillo'); // 34% a 66% -> AMARILLO
+                    } else {
+                        bateria.classList.add('rojo'); // 67% a 100% -> ROJO
                     }
                 });
             }
@@ -238,13 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuLateral = document.getElementById('menu-lateral');
 
     if (btnHamburguesa && menuLateral) {
-        // Abrir/Cerrar menú al hacer clic en las barritas
         btnHamburguesa.addEventListener('click', (evento) => {
             evento.stopPropagation(); 
             menuLateral.classList.toggle('mostrar');
         });
 
-        // Cerrar el menú si hacemos clic afuera
         document.addEventListener('click', (evento) => {
             if (!menuLateral.contains(evento.target) && evento.target !== btnHamburguesa) {
                 menuLateral.classList.remove('mostrar');
