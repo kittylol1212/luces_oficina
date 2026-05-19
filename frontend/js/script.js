@@ -198,6 +198,11 @@ function actualizarEstadoSilencioso() {
                         }
                     }
 
+                    // [LÍNEA NUEVA]: Le pasamos el porcentaje exacto al CSS en tiempo real para el fondo
+                    if (cuadradoNuevo) {
+                        cuadradoNuevo.style.setProperty('--progress-width', porcentajeUso + '%');
+                    }
+
                     // Si está encendido físicamente, encendemos el bombillo en la app
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
@@ -216,31 +221,3 @@ function actualizarEstadoSilencioso() {
         })
         .catch(err => console.error("❌ Error de red en actualización silenciosa", err));
 }
-
-// ==========================================
-// 7. INICIO DEL SISTEMA
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 Iniciando interfaz...");
-    
-    cargarNombres();
-    actualizarEstadoSilencioso();
-    setInterval(actualizarEstadoSilencioso, 3000); 
-
-    // --- LÓGICA DEL MENÚ HAMBURGUESA ---
-    const btnHamburguesa = document.getElementById('btn-hamburguesa');
-    const menuLateral = document.getElementById('menu-lateral');
-
-    if (btnHamburguesa && menuLateral) {
-        btnHamburguesa.addEventListener('click', (evento) => {
-            evento.stopPropagation(); 
-            menuLateral.classList.toggle('mostrar');
-        });
-
-        document.addEventListener('click', (evento) => {
-            if (!menuLateral.contains(evento.target) && evento.target !== btnHamburguesa) {
-                menuLateral.classList.remove('mostrar');
-            }
-        });
-    }
-});
