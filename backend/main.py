@@ -89,30 +89,37 @@ def recibir_piso():
     cursor.close()
     db.close()
     
-    msg = "Edificio completo actualizado" if numero_piso == 0 else f"Piso {numero_piso} actualizado"
+    msg = "Edificio completo actualizado" if numero_piso == 0 else f"Piso {numero_piso} updated"
     return jsonify({"status": "ok", "mensaje": msg})
 
-# ==========================================
-# 🔍 CONSULTAR ESTADO Y HORAS (SOLO HOY)
-# ==========================================
+# =========================================================================
+# 🔍 CONSULTAR ESTADO Y HORAS TOTALES ACUMULADAS (SOPORTA PRENDER/APAGAR)
+# =========================================================================
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
     try:
         db = obtener_conexion()
         cursor = db.cursor()
         
-        # Esta consulta es la clave: 
-        # 1. Filtra solo las luces que NO tienen hora de apagado.
-        # 2. Solo toma sesiones que ocurrieron HOY (CURDATE()).
-        # 3. Calcula la diferencia entre (el inicio o la medianoche) y el momento actual.
-        
+        # NUEVA CONSULTA MAESTRA:
+        # Suma los minutos de las sesiones ya terminadas hoy + los minutos de la sesión activa (si está prendida)
         sql = """
-            SELECT luz_id, 
-            TIMESTAMPDIFF(MINUTE, GREATEST(hora_encendido, CURDATE()), NOW()) / 60.0 
-            FROM sesiones_luz 
-            WHERE hora_apagado IS NULL 
-            AND luz_id IS NOT NULL 
-            AND (DATE(hora_encendido) = CURDATE() OR hora_encendido < CURDATE())
+            SELECT l.id AS luz_id,
+                   COALESCE(SUM(
+                       CASE 
+                           # 1. Sesión terminada: Calculamos diferencia entre encendido y apagado
+                           WHEN s.hora_apagado IS NOT NULL 
+                           THEN TIMESTAMPDIFF(MINUTE, GREATEST(s.hora_encendido, CURDATE()), s.hora_apagado)
+                           
+                           # 2. Sesión activa: Calculamos diferencia entre encendido y el momento actual (NOW())
+                           ELSE TIMESTAMPDIFF(MINUTE, GREATEST(s.hora_encendido, CURDATE()), NOW())
+                       END
+                   ), 0) / 60.0 AS horas_totales
+            FROM luces l
+            LEFT JOIN sesiones_luz s ON l.id = s.luz_id 
+                AND (DATE(s.hora_encendido) = CURDATE() OR s.hora_encendido < CURDATE())
+                AND (s.hora_apagado IS NULL OR DATE(s.hora_apagado) = CURDATE())
+            GROUP BY l.id;
         """
         
         cursor.execute(sql)
@@ -121,28 +128,24 @@ def obtener_estado():
         dict_encendidas = {}
         for fila in resultados:
             id_str = str(fila[0]).strip()
-            # Si la luz se prendió ayer, GREATEST hará que empiece a contar desde las 0:00 de hoy
             tiempo_hoy = float(fila[1]) if fila[1] is not None else 0.0
-            dict_encendidas[id_str] = tiempo_hoy
+            
+            # NOTA DE DISEÑO: Aquí multiplicamos las horas por un factor para volverlo % si lo requieres,
+            # o dejamos el valor directo que lee tu JavaScript. Actualmente tu script lee este valor de horas 
+            # y lo procesa. Conservamos el formato original redondeado a 2 decimales.
+            dict_encendidas[id_str] = round(tiempo_hoy, 2)
         
         cursor.close()
         db.close()
         
-        print(f"📅 Sincronizado para el día: {len(dict_encendidas)} luces activas hoy.")
+        print(f"📅 Sincronización Acumulada: Calculados consumos históricos para {len(dict_encendidas)} luces.")
         return jsonify({"status": "ok", "encendidas": dict_encendidas})
         
     except Exception as e:
-        print(f"❌ Error en GET estado: {str(e)}")
+        print(f"❌ Error en GET estado acumulado: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)})
 
 # 🚨 ESTO SIEMPRE AL FINAL 🚨
 if __name__ == '__main__':
-    print("🚀 Servidor Reiniciable Iniciado...")
+    print("🚀 Servidor Reiniciable Iniciado con Memoria Corregida...")
     app.run(port=5000, debug=True)
-
-
-
-
-
-
- 
