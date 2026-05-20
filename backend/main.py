@@ -29,71 +29,79 @@ def enviar_a_nodered(datos_json):
 def inicio():
     return "¡Servidor funcionando perfectamente!"
 
-# 🔵 CONTROL INDIVIDUAL
+# 🔵 CONTROL INDIVIDUAL (AHORA BLINDADO)
 @app.route('/api/luz', methods=['POST'])
 def recibir_luz():
-    datos = request.json
-    id_luz = datos.get('luz_id') 
-    estado = datos.get('estado')
+    try:
+        datos = request.json
+        id_luz = datos.get('luz_id') 
+        estado = datos.get('estado')
 
-    print(f"📡 Luz {id_luz} -> {'ON' if estado else 'OFF'}")
+        print(f"📡 Luz {id_luz} -> {'ON' if estado else 'OFF'}")
 
-    db = obtener_conexion()
-    cursor = db.cursor()
+        db = obtener_conexion()
+        cursor = db.cursor()
 
-    if estado:
-        cursor.execute("SELECT id FROM sesiones_luz WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
-        if not cursor.fetchone():
-            cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
-    else:
-        cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
-
-    db.commit()
-    cursor.close()
-    db.close()
-
-    enviar_a_nodered({"luz_id": id_luz, "estado": estado})
-    return jsonify({"status": "ok"})
-
-# 🏢 CONTROL POR PISO / MAESTRO (PISO 0)
-@app.route('/api/luz/piso', methods=['POST'])
-def recibir_piso():
-    datos = request.json
-    numero_piso = datos.get('piso')
-    estado = datos.get('estado')
-
-    db = obtener_conexion()
-    cursor = db.cursor()
-
-    if numero_piso == 0:
-        print(f"🚨 COMANDO MAESTRO -> {'ENCENDER' if estado else 'APAGAR'}")
-        cursor.execute("SELECT id FROM luces")
-    else:
-        print(f"📡 Piso {numero_piso} -> {'ON' if estado else 'OFF'}")
-        cursor.execute("SELECT id FROM luces WHERE piso = %s", (numero_piso,))
-    
-    luces_a_procesar = cursor.fetchall() 
-
-    for luz in luces_a_procesar:
-        id_luz = luz[0]
         if estado:
             cursor.execute("SELECT id FROM sesiones_luz WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
             if not cursor.fetchone():
                 cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
         else:
             cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
-        
-        enviar_a_nodered({"luz_id": id_luz, "estado": estado})
 
-    db.commit()
-    cursor.close()
-    db.close()
-    
-    msg = "Edificio completo actualizado" if numero_piso == 0 else f"Piso {numero_piso} updated"
-    return jsonify({"status": "ok", "mensaje": msg})
+        db.commit()
+        cursor.close()
+        db.close()
+
+        enviar_a_nodered({"luz_id": id_luz, "estado": estado})
+        return jsonify({"status": "ok"})
+    except Exception as e:
+        print(f"❌ ERROR CRÍTICO EN POST /api/luz: {str(e)}")
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
+
+# 🏢 CONTROL POR PISO / MAESTRO (AHORA BLINDADO)
+@app.route('/api/luz/piso', methods=['POST'])
+def recibir_piso():
+    try:
+        datos = request.json
+        numero_piso = datos.get('piso')
+        estado = datos.get('estado')
+
+        db = obtener_conexion()
+        cursor = db.cursor()
+
+        if numero_piso == 0:
+            print(f"🚨 COMANDO MAESTRO -> {'ENCENDER' if estado else 'APAGAR'}")
+            cursor.execute("SELECT id FROM luces")
+        else:
+            print(f"📡 Piso {numero_piso} -> {'ON' if estado else 'OFF'}")
+            cursor.execute("SELECT id FROM luces WHERE piso = %s", (numero_piso,))
+        
+        luces_a_procesar = cursor.fetchall() 
+
+        for luz in luces_a_procesar:
+            id_luz = luz[0]
+            if estado:
+                cursor.execute("SELECT id FROM sesiones_luz WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
+                if not cursor.fetchone():
+                    cursor.execute("INSERT INTO sesiones_luz (luz_id, hora_encendido) VALUES (%s, NOW())", (id_luz,))
+            else:
+                cursor.execute("UPDATE sesiones_luz SET hora_apagado = NOW() WHERE luz_id = %s AND hora_apagado IS NULL", (id_luz,))
+            
+            enviar_a_nodered({"luz_id": id_luz, "estado": estado})
+
+        db.commit()
+        cursor.close()
+        db.close()
+        
+        msg = "Edificio completo actualizado" if numero_piso == 0 else f"Piso {numero_piso} updated"
+        return jsonify({"status": "ok", "mensaje": msg})
+    except Exception as e:
+        print(f"❌ ERROR CRÍTICO EN POST /api/luz/piso: {str(e)}")
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
 
 # =========================================================================
-# 🔍 CONSULTAR ESTADO REAL Y HORAS TOTALES ACUMULADAS (CORREGIDO)
+# 🔍 CONSULTAR ESTADO REAL Y HORAS TOTALES ACUMULADAS 
 # =========================================================================
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
