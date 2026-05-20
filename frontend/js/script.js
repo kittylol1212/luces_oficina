@@ -147,53 +147,61 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // ==========================================
-// 6. BUCLE: SEMÁFORO EN EL RAYO
+// 6. BUCLE: SEMÁFORO EN EL RAYO (CORREGIDO PARA SEPARAR ESTADO DE % )
 // ==========================================
 function actualizarEstadoSilencioso() {
     fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
         .then(res => res.json())
         .then(data => {
             if (data.status === 'ok') {
-                const lucesOn = data.encendidas; 
+                // Ahora leemos los dos paquetes enviados por Python
+                const lucesOn = data.encendidas;           // Los porcentajes (historial)
+                const estadoReal = data.estado_real || []; // Quién está prendido físicamente
                 const esListaVieja = Array.isArray(lucesOn);
 
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
-                    const rayo = persona.querySelector('.icono-rayo'); // Apuntamos al rayo
-                    const barraLlenado = persona.querySelector('.barra-llenado'); // Apuntamos al texto
+                    const rayo = persona.querySelector('.icono-rayo'); 
+                    const barraLlenado = persona.querySelector('.barra-llenado'); 
                     
                     if (!avatar || !rayo) return;
 
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
+                    // Apagamos la luz y reiniciamos el rayo por defecto
                     avatar.classList.remove('encendido');
-                    rayo.classList.remove('verde', 'amarillo', 'rojo'); // Reseteamos colores del rayo
+                    rayo.classList.remove('verde', 'amarillo', 'rojo'); 
 
                     let estaPrendida = false;
                     let porcentajeUso = 0;
 
-                    if (esListaVieja) {
-                        if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
-                            estaPrendida = true;
-                        }
-                    } else {
-                        if (lucesOn && lucesOn[idLuz] !== undefined) {
-                            estaPrendida = true;
-                            porcentajeUso = parseFloat(lucesOn[idLuz]); 
-                        }
-                    }
-
-                    // Extraer el porcentaje correcto leyendo la etiqueta HTML actual
+                    // --- 1. LEER LOS PORCENTAJES (Para la cajita y el semáforo) ---
                     if (!esListaVieja && lucesOn && lucesOn[idLuz] !== undefined) {
+                        porcentajeUso = parseFloat(lucesOn[idLuz]); 
                         if (barraLlenado) barraLlenado.innerText = porcentajeUso + "%";
                     } else {
+                        // Si falla la red, intenta leer lo que ya está en el HTML
                         if (barraLlenado && barraLlenado.innerText.trim() !== "") {
                             const numExtraido = parseFloat(barraLlenado.innerText);
                             if (!isNaN(numExtraido)) porcentajeUso = numExtraido;
                         }
                     }
 
+                    // --- 2. LEER EL ESTADO REAL FÍSICO (Para el bombillo Verde/Rojo) ---
+                    if (esListaVieja) {
+                        // Compatibilidad por si la API antigua responde
+                        if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
+                            estaPrendida = true;
+                        }
+                    } else {
+                        // Comprobamos la lista estricta del estado actual
+                        if (estadoReal.includes(idLuz)) {
+                            estaPrendida = true;
+                        }
+                    }
+
+                    // Solo encendemos el bombillo si de verdad está prendida en la base de datos
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
                     }
