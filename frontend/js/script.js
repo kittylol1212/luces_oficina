@@ -1,4 +1,4 @@
-const BASE_URL = "https://fish-slide-round-pack.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
+const BASE_URL = "https://peers-showed-perspectives-improve.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
