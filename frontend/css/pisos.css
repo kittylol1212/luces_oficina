@@ -1,5 +1,5 @@
 /* --- GENERALES Y FUENTES --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=400;500;600;700&display=swap');
 
 *, *::before, *::after { 
     box-sizing: border-box; 
@@ -165,7 +165,8 @@ body {
     gap: 12px;
     padding: 10px 0;
     border-bottom: 1px solid #f0f0f0;
-    width: 100% !important;
+    /* CORRECCIÓN DE ANCHO: 'auto' obliga a la fila a respetar el margen interno de la tarjeta */
+    width: auto !important; 
     box-sizing: border-box !important;
 }
 
@@ -258,20 +259,22 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (PÍLDORA GRIS ESTÁTICA Y RAYO SEMÁFORO)
+   CONTROLES DERECHA (PÍLDORA NEUTRAL Y SÚPER RAYO VECTORIAL VISIBLE)
    ========================================================================= */
 .controles-derecha {
     display: flex !important;
     align-items: center !important;
     gap: 12px !important; 
     margin-left: auto !important; 
+    /* MARGEN DE SEGURIDAD: Separa el rayo del borde para que nunca se corte */
+    padding-right: 4px !important; 
 }
 
-/* Convertimos el contenedor en una píldora gris unificada */
+/* Píldora de texto neutral gris */
 .barra-contenedor {
     width: 65px !important;  
     height: 28px !important; 
-    background-color: #d9d9d9 !important; /* Gris oscuro neutro */
+    background-color: #d9d9d9 !important; 
     border-radius: 6px !important; 
     display: flex !important; 
     align-items: center !important;
@@ -280,43 +283,50 @@ body {
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* Eliminamos el efecto de llenado de color, solo sirve para centrar el texto */
 .barra-llenado {
     background-color: transparent !important; 
-    width: 100% !important; /* Ignoramos el style inline del HTML */
+    width: 100% !important; 
     height: 100% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     font-size: 13px !important;
     font-weight: bold !important;
-    color: #333333 !important; /* Texto oscuro sobre fondo gris claro */
+    color: #333333 !important; 
     white-space: nowrap !important;
     padding: 0 !important;
 }
 
-/* --- EL RAYO SEMÁFORO --- */
+/* --- EL NUEVO SÚPER RAYO VECTORIAL --- */
 .icono-rayo {
-    font-size: 22px !important;
-    line-height: 1 !important;
-    display: inline-block !important;
-    user-select: none !important;
-    transition: filter 0.3s ease !important;
+    width: 20px !important;
+    height: 24px !important;
+    color: #00bcd4 !important; 
+    filter: drop-shadow(0px 0px 4px rgba(0, 188, 212, 0.6)) !important;
+    transition: all 0.3s ease !important;
     flex-shrink: 0;
+    display: block !important;
 }
 
-/* Colores de resplandor Neón según el estado dictado por JavaScript */
+/* --- CONFIGURACIÓN DE COLORES DINÁMICOS DEL SEMÁFORO DEL RAYO --- */
 .icono-rayo.verde {
-    filter: drop-shadow(0px 0px 8px rgba(50, 205, 50, 1)) !important;
-}
-.icono-rayo.amarillo {
-    filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 1)) !important;
-}
-.icono-rayo.rojo {
-    filter: drop-shadow(0px 0px 8px rgba(255, 69, 0, 1)) !important;
+    color: #32cd32 !important; /* Relleno Verde */
+    filter: drop-shadow(0px 0px 8px rgba(50, 205, 50, 1)) !important; 
 }
 
-/* Menú lateral */
+.icono-rayo.amarillo {
+    color: #ffd700 !important; /* Relleno Amarillo */
+    filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 1)) !important; 
+}
+
+.icono-rayo.rojo {
+    color: #ff4500 !important; /* Relleno Rojo Alerta */
+    filter: drop-shadow(0px 0px 8px rgba(255, 69, 0, 1)) !important; 
+}
+
+/* =========================================================================
+   MENÚ LATERAL 
+   ========================================================================= */
 .menu-hamburguesa {
     font-size: 30px;
     color: white; 
