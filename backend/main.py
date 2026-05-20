@@ -93,7 +93,7 @@ def recibir_piso():
     return jsonify({"status": "ok", "mensaje": msg})
 
 # =========================================================================
-# 🔍 CONSULTAR ESTADO Y HORAS TOTALES ACUMULADAS (SOPORTA PRENDER/APAGAR)
+# 🔍 CONSULTAR ESTADO REAL Y HORAS TOTALES ACUMULADAS (CORREGIDO)
 # =========================================================================
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
@@ -101,17 +101,13 @@ def obtener_estado():
         db = obtener_conexion()
         cursor = db.cursor()
         
-        # NUEVA CONSULTA MAESTRA:
-        # Suma los minutos de las sesiones ya terminadas hoy + los minutos de la sesión activa (si está prendida)
-        sql = """
+        # 1. CONSULTA PARA OBTENER PORCENTAJES/HORAS ACUMULADAS DE TODAS LAS LUCES
+        sql_horas = """
             SELECT l.id AS luz_id,
                    COALESCE(SUM(
                        CASE 
-                           # 1. Sesión terminada: Calculamos diferencia entre encendido y apagado
                            WHEN s.hora_apagado IS NOT NULL 
                            THEN TIMESTAMPDIFF(MINUTE, GREATEST(s.hora_encendido, CURDATE()), s.hora_apagado)
-                           
-                           # 2. Sesión activa: Calculamos diferencia entre encendido y el momento actual (NOW())
                            ELSE TIMESTAMPDIFF(MINUTE, GREATEST(s.hora_encendido, CURDATE()), NOW())
                        END
                    ), 0) / 60.0 AS horas_totales
@@ -121,25 +117,32 @@ def obtener_estado():
                 AND (s.hora_apagado IS NULL OR DATE(s.hora_apagado) = CURDATE())
             GROUP BY l.id;
         """
-        
-        cursor.execute(sql)
-        resultados = cursor.fetchall()
+        cursor.execute(sql_horas)
+        resultados_horas = cursor.fetchall()
         
         dict_encendidas = {}
-        for fila in resultados:
+        for fila in resultados_horas:
             id_str = str(fila[0]).strip()
             tiempo_hoy = float(fila[1]) if fila[1] is not None else 0.0
-            
-            # NOTA DE DISEÑO: Aquí multiplicamos las horas por un factor para volverlo % si lo requieres,
-            # o dejamos el valor directo que lee tu JavaScript. Actualmente tu script lee este valor de horas 
-            # y lo procesa. Conservamos el formato original redondeado a 2 decimales.
             dict_encendidas[id_str] = round(tiempo_hoy, 2)
+
+        # 2. CONSULTA PARA OBTENER QUÉ LUCES ESTÁN PRENDIDAS FÍSICAMENTE EN ESTE MOMENTO
+        sql_estado = "SELECT DISTINCT luz_id FROM sesiones_luz WHERE hora_apagado IS NULL"
+        cursor.execute(sql_estado)
+        resultados_estado = cursor.fetchall()
+        luces_prendidas_ahora = [str(fila[0]).strip() for fila in resultados_estado]
         
         cursor.close()
         db.close()
         
-        print(f"📅 Sincronización Acumulada: Calculados consumos históricos para {len(dict_encendidas)} luces.")
-        return jsonify({"status": "ok", "encendidas": dict_encendidas})
+        print(f"📅 Sincronización Acumulada: {len(dict_encendidas)} calculadas, {len(luces_prendidas_ahora)} encendidas físicamente.")
+        
+        # ENVIAMOS AMBOS PAQUETES JUNTOS EN LA RESPUESTA
+        return jsonify({
+            "status": "ok", 
+            "encendidas": dict_encendidas,       # Para las cajas de porcentaje
+            "estado_real": luces_prendidas_ahora # Para que los círculos se pongan verdes
+        })
         
     except Exception as e:
         print(f"❌ Error en GET estado acumulado: {str(e)}")
