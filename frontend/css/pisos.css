@@ -1,5 +1,5 @@
 /* --- GENERALES Y FUENTES --- */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght=400;500;600;700&display=swap');
 
 *, *::before, *::after { 
     box-sizing: border-box; 
@@ -159,11 +159,15 @@ body {
     display: none !important;
 }
 
+/* =========================================================================
+   DISEÑO DE LA FILA DE LA PERSONA (BLINDADO Y EXPANDIDO VERTICALMENTE)
+   ========================================================================= */
 .persona {
     display: flex !important;
     align-items: center !important;
     gap: 12px;
-    padding: 10px 15px !important; /* Añadido aire a los lados */
+    /* Aumentado padding vertical de 10px a 14px para dar espacio al rayo gigante */
+    padding: 14px 15px !important; 
     border-bottom: 1px solid #f0f0f0;
     width: 100% !important; 
     box-sizing: border-box !important;
@@ -173,7 +177,7 @@ body {
 
 .persona-info {
     flex: 1 1 auto !important; 
-    min-width: 0 !important; /* Evita que los nombres empujen al rayo */
+    min-width: 0 !important; /* Evita que los nombres o cargos empujen al rayo fuera */
 }
 
 .persona-nombre {
@@ -259,15 +263,15 @@ body {
 }
 
 /* =========================================================================
-   CONTROLES DERECHA (PÍLDORA NEUTRAL Y SÚPER RAYO VECTORIAL VISIBLE)
+   CONTROLES DERECHA (PÍLDORA NEUTRAL Y SÚPER RAYO GIGANTE INAMOVIBLE)
    ========================================================================= */
 .controles-derecha {
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important; 
+    gap: 16px !important; /* Mayor separación para que encaje el súper rayo */
     margin-left: auto !important; 
     padding-right: 4px !important; 
-    flex: 0 0 auto !important; /* Prohíbe que el navegador intente encoger esta sección */
+    flex: 0 0 auto !important; /* Prohíbe que flexbox intente encoger esta sección */
 }
 
 /* Píldora de texto neutral gris */
@@ -297,32 +301,33 @@ body {
     padding: 0 !important;
 }
 
-/* --- EL NUEVO SÚPER RAYO VECTORIAL --- */
+/* --- EL NUEVO SÚPER RAYO VECTORIAL AGRANDADO AL DOBLE Y BLINDADO --- */
 .icono-rayo {
-    width: 22px !important;
-    height: 26px !important;
-    min-width: 22px !important; /* Candado estricto: Impide que se comprima a 1px */
+    width: 44px !important;  /* Aumentado de 22px a 44px */
+    height: 52px !important; /* Aumentado de 26px a 52px */
+    min-width: 44px !important; /* Candado absoluto: ¡Imposible de aplastar! */
+    
     color: #00bcd4 !important; 
-    filter: drop-shadow(0px 0px 4px rgba(0, 188, 212, 0.6)) !important;
+    filter: drop-shadow(0px 0px 6px rgba(0, 188, 212, 0.6)) !important; /* Resplandor base mejorado */
     transition: all 0.3s ease !important;
-    flex-shrink: 0 !important; /* Le reitera al sistema flex que no lo encoja */
+    flex-shrink: 0 !important; /* Prohíbe totalmente que flexbox lo apriete */
     display: block !important;
 }
 
-/* --- CONFIGURACIÓN DE COLORES DINÁMICOS DEL SEMÁFORO DEL RAYO --- */
+/* --- ALERTA SEMÁFORO: COLORES DE RELLENO Y GRAN RESPLANDOR NEÓN --- */
 .icono-rayo.verde {
     color: #32cd32 !important; /* Relleno Verde */
-    filter: drop-shadow(0px 0px 8px rgba(50, 205, 50, 1)) !important; 
+    filter: drop-shadow(0px 0px 16px rgba(50, 205, 50, 1)) !important; /* Resplandor neón masivo */
 }
 
 .icono-rayo.amarillo {
     color: #ffd700 !important; /* Relleno Amarillo */
-    filter: drop-shadow(0px 0px 8px rgba(255, 215, 0, 1)) !important; 
+    filter: drop-shadow(0px 0px 16px rgba(255, 215, 0, 1)) !important; /* Resplandor neón masivo */
 }
 
 .icono-rayo.rojo {
     color: #ff4500 !important; /* Relleno Rojo Alerta */
-    filter: drop-shadow(0px 0px 8px rgba(255, 69, 0, 1)) !important; 
+    filter: drop-shadow(0px 0px 16px rgba(255, 69, 0, 1)) !important; /* Resplandor neón masivo */
 }
 
 /* =========================================================================
