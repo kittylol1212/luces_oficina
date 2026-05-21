@@ -29,7 +29,7 @@ def enviar_a_nodered(datos_json):
 def inicio():
     return "¡Servidor funcionando perfectamente!"
 
-# 🔵 CONTROL INDIVIDUAL (AHORA BLINDADO)
+# 🔵 CONTROL INDIVIDUAL
 @app.route('/api/luz', methods=['POST'])
 def recibir_luz():
     try:
@@ -59,7 +59,7 @@ def recibir_luz():
         print(f"❌ ERROR CRÍTICO EN POST /api/luz: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)}), 500
 
-# 🏢 CONTROL POR PISO / MAESTRO (AHORA BLINDADO)
+# 🏢 CONTROL POR PISO / MAESTRO
 @app.route('/api/luz/piso', methods=['POST'])
 def recibir_piso():
     try:
@@ -100,16 +100,13 @@ def recibir_piso():
         print(f"❌ ERROR CRÍTICO EN POST /api/luz/piso: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)}), 500
 
-# =========================================================================
-# 🔍 CONSULTAR ESTADO REAL Y HORAS TOTALES ACUMULADAS 
-# =========================================================================
+# 🔍 CONSULTAR ESTADO REAL (Para el mapa de pisos)
 @app.route('/api/estado_luces', methods=['GET'])
 def obtener_estado():
     try:
         db = obtener_conexion()
         cursor = db.cursor()
         
-        # 1. CONSULTA PARA OBTENER PORCENTAJES/HORAS ACUMULADAS DE TODAS LAS LUCES
         sql_horas = """
             SELECT l.id AS luz_id,
                    COALESCE(SUM(
@@ -134,7 +131,6 @@ def obtener_estado():
             tiempo_hoy = float(fila[1]) if fila[1] is not None else 0.0
             dict_encendidas[id_str] = round(tiempo_hoy, 2)
 
-        # 2. CONSULTA PARA OBTENER QUÉ LUCES ESTÁN PRENDIDAS FÍSICAMENTE EN ESTE MOMENTO
         sql_estado = "SELECT DISTINCT luz_id FROM sesiones_luz WHERE hora_apagado IS NULL"
         cursor.execute(sql_estado)
         resultados_estado = cursor.fetchall()
@@ -143,20 +139,74 @@ def obtener_estado():
         cursor.close()
         db.close()
         
-        print(f"📅 Sincronización Acumulada: {len(dict_encendidas)} calculadas, {len(luces_prendidas_ahora)} encendidas físicamente.")
-        
-        # ENVIAMOS AMBOS PAQUETES JUNTOS EN LA RESPUESTA
         return jsonify({
             "status": "ok", 
-            "encendidas": dict_encendidas,       # Para las cajas de porcentaje
-            "estado_real": luces_prendidas_ahora # Para que los círculos se pongan verdes
+            "encendidas": dict_encendidas,       
+            "estado_real": whites_prendidas_ahora
         })
-        
     except Exception as e:
         print(f"❌ Error en GET estado acumulado: {str(e)}")
         return jsonify({"status": "error", "mensaje": str(e)})
 
-# 🚨 ESTO SIEMPRE AL FINAL 🚨
+
+# =========================================================================
+# 📊 NUEVA RUTA: EXTRAER DATOS PARA LA TABLA Y LA GRÁFICA HISTÓRICA
+# =========================================================================
+@app.route('/api/datos_reporte', methods=['GET'])
+def obtener_datos_reporte():
+    try:
+        db = obtener_conexion()
+        cursor = db.cursor()
+
+        # 1. CONSULTA PARA LA TABLA: Trae el consumo del día de hoy por empleado
+        sql_tabla = """
+            SELECT e.id_luz, e.nombre, COALESCE(hc.horas_totales, 0.0) as horas
+            FROM empleados e
+            LEFT JOIN historial_consumo hc ON e.id_luz = hc.id_luz AND hc.fecha = CURDATE()
+            ORDER BY horas DESC, e.id_luz ASC;
+        """
+        cursor.execute(sql_tabla)
+        filas_tabla = cursor.fetchall()
+        
+        lista_tabla = []
+        for fila in filas_tabla:
+            lista_tabla.append({
+                "id_luz": fila[0],
+                "empleado": fila[1],
+                "horas": round(float(fila[2]), 2)
+            })
+
+        # 2. CONSULTA PARA LA GRÁFICA: Consumo general diario del edificio (Últimos 7 días)
+        sql_grafica = """
+            SELECT fecha, ROUND(SUM(horas_totales), 2) as total_dia
+            FROM historial_consumo
+            GROUP BY fecha
+            ORDER BY fecha DESC
+            LIMIT 7;
+        """
+        cursor.execute(sql_grafica)
+        filas_grafica = cursor.fetchall()
+        filas_grafica.reverse() # Invertir para que vaya de pasado a presente cronológicamente
+
+        fechas = [str(f[0]) for f in filas_grafica]
+        consumos = [float(f[1]) for f in filas_grafica]
+
+        cursor.close()
+        db.close()
+
+        return jsonify({
+            "status": "ok",
+            "tabla": lista_tabla,
+            "grafica": {
+                "eje_x": fechas,
+                "eje_y": consumos
+            }
+        })
+    except Exception as e:
+        print(f"❌ Error en api/datos_reporte: {str(e)}")
+        return jsonify({"status": "error", "mensaje": str(e)}), 500
+
+# 🚨 INICIO
 if __name__ == '__main__':
-    print("🚀 Servidor Reiniciable Iniciado con Memoria Corregida...")
+    print("🚀 Servidor de Monitoreo Corriendo en Puerto 5000...")
     app.run(port=5000, debug=True)

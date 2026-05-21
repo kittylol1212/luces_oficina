@@ -146,17 +146,19 @@ function toggleDesplegable(event, numeroPiso) {
     flecha.classList.toggle('cerrada', body.classList.contains('oculto'));
 }
 
-// ==========================================
-// 6. BUCLE: SEMÁFORO EN EL RAYO (CORREGIDO PARA SEPARAR ESTADO DE % )
-// ==========================================
+// =======================================================================================
+// 6. BUCLE: SEMÁFORO EN EL RAYO (CORREGIDO PARA ADAPTARSE AL FORMATO DE HORAS DE LA BD)
+// =======================================================================================
 function actualizarEstadoSilencioso() {
+    // La jornada máxima son 10 horas diarias (8:00 AM a 6:00 PM) para calcular el porcentaje
+    const JORNADA_MAXIMA = 10.0;
+
     fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
         .then(res => res.json())
         .then(data => {
             if (data.status === 'ok') {
-                // Ahora leemos los dos paquetes enviados por Python
-                const lucesOn = data.encendidas;           // Los porcentajes (historial)
-                const estadoReal = data.estado_real || []; // Quién está prendido físicamente
+                const lucesOn = data.encendidas;           // Las horas crudas enviadas por la consulta de Python
+                const estadoReal = data.estado_real || []; // Quién está prendido físicamente en este segundo
                 const esListaVieja = Array.isArray(lucesOn);
 
                 document.querySelectorAll('.persona').forEach(persona => {
@@ -169,47 +171,57 @@ function actualizarEstadoSilencioso() {
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
-                    // Apagamos la luz y reiniciamos el rayo por defecto
+                    // Reiniciamos clases visuales antes de actualizar
                     avatar.classList.remove('encendido');
                     rayo.classList.remove('verde', 'amarillo', 'rojo'); 
 
                     let estaPrendida = false;
-                    let porcentajeUso = 0;
+                    let horasUso = 0;
+                    let porcentajeDisplay = 0;
 
-                    // --- 1. LEER LOS PORCENTAJES (Para la cajita y el semáforo) ---
+                    // --- 1. LEER LAS HORAS ACUMULADAS Y CALCULAR EL % DE JORNADA ---
                     if (!esListaVieja && lucesOn && lucesOn[idLuz] !== undefined) {
-                        porcentajeUso = parseFloat(lucesOn[idLuz]); 
-                        if (barraLlenado) barraLlenado.innerText = porcentajeUso + "%";
+                        horasUso = parseFloat(lucesOn[idLuz]); 
+                        
+                        // Convertimos las horas acumuladas en un porcentaje real sobre el día (máx 10 hrs)
+                        porcentajeDisplay = (horasUso / JORNADA_MAXIMA) * 100;
+                        if (porcentajeDisplay > 100) porcentajeDisplay = 100; // Tope máximo por si hacen horas extra
+                        
+                        // Modificamos el texto interno de la barra para que se lea amigable con el símbolo de %
+                        if (barraLlenado) {
+                            barraLlenado.innerText = porcentajeDisplay.toFixed(0) + "%";
+                            
+                            // Ajustamos dinámicamente el ancho físico de la barra gris
+                            barraLlenado.style.width = porcentajeDisplay.toFixed(0) + "%";
+                        }
                     } else {
-                        // Si falla la red, intenta leer lo que ya está en el HTML
                         if (barraLlenado && barraLlenado.innerText.trim() !== "") {
                             const numExtraido = parseFloat(barraLlenado.innerText);
-                            if (!isNaN(numExtraido)) porcentajeUso = numExtraido;
+                            if (!isNaN(numExtraido)) porcentajeDisplay = numExtraido;
                         }
                     }
 
-                    // --- 2. LEER EL ESTADO REAL FÍSICO (Para el bombillo Verde/Rojo) ---
+                    // --- 2. LEER EL ESTADO REAL FÍSICO (Para encender/apagar el círculo del bombillo) ---
                     if (esListaVieja) {
-                        // Compatibilidad por si la API antigua responde
                         if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
                             estaPrendida = true;
                         }
                     } else {
-                        // Comprobamos la lista estricta del estado actual
                         if (estadoReal.includes(idLuz)) {
                             estaPrendida = true;
                         }
                     }
 
-                    // Solo encendemos el bombillo si de verdad está prendida en la base de datos
+                    // Encendemos el círculo si la luz está activa en este momento
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
                     }
 
-                    // --- AQUÍ OCURRE LA MAGIA DEL SEMÁFORO SOLO PARA EL RAYO ---
-                    if (porcentajeUso <= 33) {
+                    // --- 3. LOGICA ASIGNACIÓN DE COLOR AL SEMÁFORO (RAYO) ---
+                    // El color del rayo reacciona proporcionalmente a la porción de jornada consumida
+                    if (porcentajeDisplay <= 33) {
                         rayo.classList.add('verde'); 
-                    } else if (porcentajeUso > 33 && porcentajeUso <= 66) {
+                    } else if (porcentajeDisplay > 33 && porcentajeDisplay <= 66) {
                         rayo.classList.add('amarillo'); 
                     } else {
                         rayo.classList.add('rojo'); 
@@ -241,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.addEventListener('click', (evento) => {
             if (!menuLateral.contains(evento.target) && evento.target !== btnHamburguesa) {
-                menuLateral.classList.remove('mostrar');
+                menuLateral.removeProperty ? menuLateral.removeProperty('mostrar') : menuLateral.classList.remove('mostrar');
             }
         });
     }
