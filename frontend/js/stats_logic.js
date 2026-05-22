@@ -1,4 +1,4 @@
-const BASE_URL = "https://entities-scored-read-optimum.trycloudflare.com"; 
+const BASE_URL = "https://recommendations-bugs-economic-diagnostic.trycloudflare.com"; 
 
 document.addEventListener("DOMContentLoaded", function () {
     const JORNADA_MAXIMA = 10.0;
