@@ -30,22 +30,70 @@ body {
     padding: 20px;
 }
 
+/* NUEVOS ESTILOS PARA ADAPTAR EL DESPLEGABLE */
+
+/* Quitamos el padding interno de la tarjeta para que el encabezado azul llegue al borde */
+.card-tabla {
+    padding: 0;
+}
+
+/* Ocultamos la flecha por defecto fea que pone el navegador */
+.panel-desplegable summary {
+    list-style: none;
+    cursor: pointer;
+}
+.panel-desplegable summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Diseño de la barra azul (Sustituye al TH antiguo) */
+.encabezado-desplegable {
+    background: #008CBA;
+    color: white;
+    display: flex; /* Alinea los títulos en fila */
+    padding: 15px;
+    font-weight: bold;
+    user-select: none; /* Evita que se seleccione el texto al hacer doble clic */
+    transition: background 0.2s ease;
+}
+
+.encabezado-desplegable:hover {
+    background: #007B9E; /* Un tono un poco más oscuro al pasar el mouse */
+}
+
+/* Repartimos el espacio del encabezado en 3 columnas iguales */
+.header-col {
+    flex: 1;
+    text-align: left;
+}
+
+/* Configuración de la tabla para encajar con el flexbox del botón */
 .tabla-stats {
     width: 100%;
     border-collapse: collapse;
-}
-
-.tabla-stats th {
-    background: #008CBA;
-    color: white;
-    padding: 15px;
-    text-align: left;
+    table-layout: fixed; /* Obliga a que las celdas midan exactamente lo mismo */
 }
 
 .tabla-stats td {
     padding: 15px;
     border-bottom: 1px solid #eee;
+    width: 33.33%; /* 3 columnas idénticas */
+    word-wrap: break-word; /* Evita desbordamientos de texto */
 }
+
+/* Animación y diseño de la flechita lateral */
+.icono-flecha {
+    float: right;
+    transition: transform 0.3s ease;
+    margin-right: 15px;
+}
+
+/* Cuando el usuario abre el menú, la flecha gira hacia arriba */
+details[open] .icono-flecha {
+    transform: rotate(180deg);
+}
+
+/* TUS ESTILOS ORIGINALES DE LAS BARRAS DE PROGRESO Y GRÁFICAS */
 
 .barra-consumo {
     background: #e0e0e0;
