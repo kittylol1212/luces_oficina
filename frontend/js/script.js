@@ -1,4 +1,4 @@
-const BASE_URL = "https://attributes-hierarchy-hwy-agreements.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
+const BASE_URL = "https://missing-prayer-seed-screensavers.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
