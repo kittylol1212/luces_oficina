@@ -110,3 +110,22 @@ details[open] .icono-flecha {
     margin-top: 0;
     color: #444;
 }
+
+/* =========================================
+   CONTROL DE TAMAÑO PARA LA GRÁFICA 
+========================================= */
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-height: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#canvasGrafico {
+    max-height: 350px !important;
+    width: 100% !important;
+    object-fit: contain;
+}
