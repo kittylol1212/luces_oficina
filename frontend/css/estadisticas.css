@@ -30,22 +30,67 @@ body {
     padding: 20px;
 }
 
+/* =========================================
+   NUEVOS ESTILOS PARA LA TABLA DESPLEGABLE 
+========================================= */
+
+.card-tabla {
+    padding: 0;
+}
+
+.panel-desplegable summary {
+    list-style: none;
+    cursor: pointer;
+}
+.panel-desplegable summary::-webkit-details-marker {
+    display: none;
+}
+
+.encabezado-desplegable {
+    background: #008CBA;
+    color: white;
+    display: flex;
+    padding: 15px;
+    font-weight: bold;
+    user-select: none;
+    transition: background 0.2s ease;
+}
+
+.encabezado-desplegable:hover {
+    background: #007B9E;
+}
+
+.header-col {
+    flex: 1;
+    text-align: left;
+}
+
 .tabla-stats {
     width: 100%;
     border-collapse: collapse;
-}
-
-.tabla-stats th {
-    background: #008CBA;
-    color: white;
-    padding: 15px;
-    text-align: left;
+    table-layout: fixed;
 }
 
 .tabla-stats td {
     padding: 15px;
     border-bottom: 1px solid #eee;
+    width: 33.33%;
+    word-wrap: break-word;
 }
+
+.icono-flecha {
+    float: right;
+    transition: transform 0.3s ease;
+    margin-right: 15px;
+}
+
+details[open] .icono-flecha {
+    transform: rotate(180deg);
+}
+
+/* =========================================
+   TUS ESTILOS DE BARRAS DE PROGRESO 
+========================================= */
 
 .barra-consumo {
     background: #e0e0e0;
