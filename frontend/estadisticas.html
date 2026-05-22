@@ -17,18 +17,23 @@
             <p>Monitoreo de horas acumuladas y tendencias de consumo.</p>
         </header>
 
-        <div class="card">
-            <table class="tabla-stats">
-                <thead>
-                    <tr>
-                        <th>ID Luz</th>
-                        <th>Horas Totales</th>
-                        <th>Nivel de Uso (24h)</th>
-                    </tr>
-                </thead>
-                <tbody id="cuerpo-tabla">
-                    </tbody>
-            </table>
+        <div class="card card-tabla">
+            <details class="panel-desplegable">
+                
+                <summary class="encabezado-desplegable">
+                    <div class="header-col">ID Luz</div>
+                    <div class="header-col">Horas Totales</div>
+                    <div class="header-col">Nivel de Uso (24h) <span class="icono-flecha">▼</span></div>
+                </summary>
+
+                <div class="contenido-desplegable">
+                    <table class="tabla-stats">
+                        <tbody id="cuerpo-tabla">
+                            </tbody>
+                    </table>
+                </div>
+
+            </details>
         </div>
 
         <div class="card chart-container">
