@@ -1,4 +1,4 @@
-const BASE_URL = "https://missing-prayer-seed-screensavers.trycloudflare.com"; 
+const BASE_URL = "https://operates-measuring-mhz-saturday.trycloudflare.com"; 
 
 document.addEventListener("DOMContentLoaded", function () {
     const JORNADA_MAXIMA = 10.0;
