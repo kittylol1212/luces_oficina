@@ -147,7 +147,7 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // =======================================================================================
-// 6. BUCLE: SEMÁFORO EN EL RAYO (CORREGIDO PARA INYECTAR COLOR DIRECTO)
+// 6. BUCLE: ACTUALIZACIÓN DE BOMBILLOS Y RAYOS
 // =======================================================================================
 function actualizarEstadoSilencioso() {
     // La jornada máxima son 10 horas diarias (8:00 AM a 6:00 PM) para calcular el porcentaje
@@ -170,9 +170,6 @@ function actualizarEstadoSilencioso() {
 
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
-                    
-                    // Reiniciamos la clase del bombillo antes de actualizar
-                    avatar.classList.remove('encendido');
 
                     let estaPrendida = false;
                     let horasUso = 0;
@@ -186,11 +183,9 @@ function actualizarEstadoSilencioso() {
                         porcentajeDisplay = (horasUso / JORNADA_MAXIMA) * 100;
                         if (porcentajeDisplay > 100) porcentajeDisplay = 100; // Tope máximo por si hacen horas extra
                         
-                        // Modificamos el texto interno de la barra para que se lea amigable con el símbolo de %
+                        // Modificamos el texto interno de la barra
                         if (barraLlenado) {
                             barraLlenado.innerText = porcentajeDisplay.toFixed(0) + "%";
-                            
-                            // Ajustamos dinámicamente el ancho físico de la barra gris
                             barraLlenado.style.width = porcentajeDisplay.toFixed(0) + "%";
                         }
                     } else {
@@ -200,7 +195,7 @@ function actualizarEstadoSilencioso() {
                         }
                     }
 
-                    // --- 2. LEER EL ESTADO REAL FÍSICO (Para encender/apagar el círculo del bombillo) ---
+                    // --- 2. LEER EL ESTADO REAL FÍSICO (Para el BOMBILLO) ---
                     if (esListaVieja) {
                         if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
                             estaPrendida = true;
@@ -211,19 +206,33 @@ function actualizarEstadoSilencioso() {
                         }
                     }
 
-                    // Encendemos el círculo si la luz está activa en este momento
+                    // Regla del Bombillo: Prendido = Verde, Apagado = Rojo
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
+                        avatar.style.backgroundColor = "#39ff14"; // Fondo Verde
+                        avatar.style.borderColor = "#2eb80d"; 
+                    } else {
+                        avatar.classList.remove('encendido');
+                        avatar.style.backgroundColor = "#ff4c4c"; // Fondo Rojo
+                        avatar.style.borderColor = "#c90000";
                     }
 
                     // --- 3. LÓGICA ASIGNACIÓN DE COLOR AL SEMÁFORO (RAYO) ---
-                    // Se inyecta el color directamente al SVG dependiendo del % consumido
+                    const trazoRayo = rayo.querySelector('path'); 
+                    
+                    let colorSemaforo = "";
                     if (porcentajeDisplay <= 33) {
-                        rayo.style.color = "#39ff14"; // Verde Neón
+                        colorSemaforo = "#39ff14"; // Verde Neón (Bajo)
                     } else if (porcentajeDisplay > 33 && porcentajeDisplay <= 66) {
-                        rayo.style.color = "#ffd700"; // Amarillo
+                        colorSemaforo = "#ffd700"; // Amarillo (Medio)
                     } else {
-                        rayo.style.color = "#ff4c4c"; // Rojo
+                        colorSemaforo = "#ff4c4c"; // Rojo (Alto)
+                    }
+
+                    // Le inyectamos el color exacto al dibujo del rayo
+                    rayo.style.color = colorSemaforo;
+                    if (trazoRayo) {
+                        trazoRayo.setAttribute('fill', colorSemaforo);
                     }
                 });
             }
