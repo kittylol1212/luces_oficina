@@ -147,7 +147,7 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // =======================================================================================
-// 6. BUCLE: SEMÁFORO EN EL RAYO (CORREGIDO PARA ADAPTARSE AL FORMATO DE HORAS DE LA BD)
+// 6. BUCLE: SEMÁFORO EN EL RAYO (CORREGIDO PARA INYECTAR COLOR DIRECTO)
 // =======================================================================================
 function actualizarEstadoSilencioso() {
     // La jornada máxima son 10 horas diarias (8:00 AM a 6:00 PM) para calcular el porcentaje
@@ -171,9 +171,8 @@ function actualizarEstadoSilencioso() {
                     const idLuz = String(avatar.getAttribute('data-luz')); 
                     const idLuzNumero = parseInt(idLuz);
                     
-                    // Reiniciamos clases visuales antes de actualizar
+                    // Reiniciamos la clase del bombillo antes de actualizar
                     avatar.classList.remove('encendido');
-                    rayo.classList.remove('verde', 'amarillo', 'rojo'); 
 
                     let estaPrendida = false;
                     let horasUso = 0;
@@ -217,14 +216,14 @@ function actualizarEstadoSilencioso() {
                         avatar.classList.add('encendido'); 
                     }
 
-                    // --- 3. LOGICA ASIGNACIÓN DE COLOR AL SEMÁFORO (RAYO) ---
-                    // El color del rayo reacciona proporcionalmente a la porción de jornada consumida
+                    // --- 3. LÓGICA ASIGNACIÓN DE COLOR AL SEMÁFORO (RAYO) ---
+                    // Se inyecta el color directamente al SVG dependiendo del % consumido
                     if (porcentajeDisplay <= 33) {
-                        rayo.classList.add('verde'); 
+                        rayo.style.color = "#39ff14"; // Verde Neón
                     } else if (porcentajeDisplay > 33 && porcentajeDisplay <= 66) {
-                        rayo.classList.add('amarillo'); 
+                        rayo.style.color = "#ffd700"; // Amarillo
                     } else {
-                        rayo.classList.add('rojo'); 
+                        rayo.style.color = "#ff4c4c"; // Rojo
                     }
                 });
             }
