@@ -134,6 +134,8 @@ def obtener_estado():
         sql_estado = "SELECT DISTINCT luz_id FROM sesiones_luz WHERE hora_apagado IS NULL"
         cursor.execute(sql_estado)
         resultados_estado = cursor.fetchall()
+        
+        # Aquí se mantiene la variable original
         luces_prendidas_ahora = [str(fila[0]).strip() for fila in resultados_estado]
         
         cursor.close()
@@ -142,7 +144,7 @@ def obtener_estado():
         return jsonify({
             "status": "ok", 
             "encendidas": dict_encendidas,       
-            "estado_real": whites_prendidas_ahora
+            "estado_real": luces_prendidas_ahora  # <--- MODIFICADO: Ahora coincide con la variable de arriba
         })
     except Exception as e:
         print(f"❌ Error en GET estado acumulado: {str(e)}")
