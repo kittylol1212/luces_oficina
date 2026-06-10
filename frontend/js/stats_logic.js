@@ -1,4 +1,4 @@
-const BASE_URL = "https://lectures-understand-brisbane-sufficient.trycloudflare.com"; 
+const BASE_URL = "https://casual-mph-php-exposed.trycloudflare.com"; 
 
 document.addEventListener("DOMContentLoaded", function () {
     const JORNADA_MAXIMA = 10.0;
