@@ -268,29 +268,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-// ==========================================
-// 7. INICIO DEL SISTEMA
-// ==========================================
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("🚀 Iniciando interfaz...");
-    
-    cargarNombres();
-    actualizarEstadoSilencioso();
-    setInterval(actualizarEstadoSilencioso, 3000); // <--- AQUÍ ESTÁ VIAJANDO CADA 3 SEGUNDOS
-
-    const btnHamburguesa = document.getElementById('btn-hamburguesa');
-    // ... el resto del código sigue hacia abajo
-
-    if (btnHamburguesa && menuLateral) {
-        btnHamburguesa.addEventListener('click', (evento) => {
-            evento.stopPropagation(); 
-            menuLateral.classList.toggle('mostrar');
-        });
-
-        document.addEventListener('click', (evento) => {
-            if (!menuLateral.contains(evento.target) && evento.target !== btnHamburguesa) {
-                menuLateral.removeProperty ? menuLateral.removeProperty('mostrar') : menuLateral.classList.remove('mostrar');
-            }
-        });
-    }
-});
