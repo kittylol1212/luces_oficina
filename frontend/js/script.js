@@ -248,10 +248,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     cargarNombres();
     actualizarEstadoSilencioso();
-    setInterval(actualizarEstadoSilencioso, 3000); 
+    setInterval(actualizarEstadoSilencioso, 3000); // <--- AQUÍ ESTÁ VIAJANDO CADA 3 SEGUNDOS
 
     const btnHamburguesa = document.getElementById('btn-hamburguesa');
-    const menuLateral = document.getElementById('menu-lateral');
+    // ... el resto del código sigue hacia abajo
 
     if (btnHamburguesa && menuLateral) {
         btnHamburguesa.addEventListener('click', (evento) => {
