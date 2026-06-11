@@ -147,19 +147,26 @@ function toggleDesplegable(event, numeroPiso) {
 }
 
 // =======================================================================================
-// 6. BUCLE: ACTUALIZACIÓN DE BOMBILLOS Y RAYOS
+// 6. BUCLE: ACTUALIZACIÓN DE BOMBILLOS Y RAYOS (CÓDIGO CORREGIDO PARA TIEMPO REAL)
 // =======================================================================================
+let actualizandoSemaforo = false; // Evita que las peticiones se pisen entre sí si el internet va lento
+
 function actualizarEstadoSilencioso() {
-    // La jornada máxima son 10 horas diarias (8:00 AM a 6:00 PM) para calcular el porcentaje
+    if (actualizandoSemaforo) return; 
+    actualizandoSemaforo = true;
+
     const JORNADA_MAXIMA = 10.0;
 
     fetch(`${BASE_URL}/api/estado_luces?t=${new Date().getTime()}`)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) throw new Error("Error en respuesta del servidor");
+            return res.json();
+        })
         .then(data => {
             if (data.status === 'ok') {
-                const lucesOn = data.encendidas;           // Las horas crudas enviadas por la consulta de Python
-                const estadoReal = data.estado_real || []; // Quién está prendido físicamente en este segundo
-                const esListaVieja = Array.isArray(lucesOn);
+                const lucesOn = data.encendidas;           
+                // Aseguramos que todos los IDs del estado real sean Strings limpios para evitar fallos de tipos (ej. "1" vs 1)
+                const estadoReal = (data.estado_real || []).map(id => String(id).trim()); 
 
                 document.querySelectorAll('.persona').forEach(persona => {
                     const avatar = persona.querySelector('.avatar');
@@ -168,48 +175,38 @@ function actualizarEstadoSilencioso() {
                     
                     if (!avatar || !rayo) return;
 
-                    const idLuz = String(avatar.getAttribute('data-luz')); 
-                    const idLuzNumero = parseInt(idLuz);
+                    // Convertimos a String y limpiamos espacios para asegurar coincidencia exacta con Python
+                    const idLuz = String(avatar.getAttribute('data-luz')).trim(); 
 
                     let estaPrendida = false;
                     let horasUso = 0;
                     let porcentajeDisplay = 0;
 
                     // --- 1. LEER LAS HORAS ACUMULADAS Y CALCULAR EL % DE JORNADA ---
-                    if (!esListaVieja && lucesOn && lucesOn[idLuz] !== undefined) {
+                    if (lucesOn && lucesOn[idLuz] !== undefined) {
                         horasUso = parseFloat(lucesOn[idLuz]); 
-                        
-                        // Convertimos las horas acumuladas en un porcentaje real sobre el día (máx 10 hrs)
                         porcentajeDisplay = (horasUso / JORNADA_MAXIMA) * 100;
-                        if (porcentajeDisplay > 100) porcentajeDisplay = 100; // Tope máximo por si hacen horas extra
+                        if (porcentajeDisplay > 100) porcentajeDisplay = 100; 
                         
-                        // Modificamos el texto interno de la barra
                         if (barraLlenado) {
                             barraLlenado.innerText = porcentajeDisplay.toFixed(0) + "%";
                             barraLlenado.style.width = porcentajeDisplay.toFixed(0) + "%";
                         }
-                    } else {
-                        if (barraLlenado && barraLlenado.innerText.trim() !== "") {
-                            const numExtraido = parseFloat(barraLlenado.innerText);
-                            if (!isNaN(numExtraido)) porcentajeDisplay = numExtraido;
-                        }
+                    } else if (barraLlenado && barraLlenado.innerText.trim() !== "") {
+                        const numExtraido = parseFloat(barraLlenado.innerText);
+                        if (!isNaN(numExtraido)) porcentajeDisplay = numExtraido;
                     }
 
-                    // --- 2. LEER EL ESTADO REAL FÍSICO (Para el BOMBILLO) ---
-                    if (esListaVieja) {
-                        if (lucesOn.includes(idLuzNumero) || lucesOn.includes(idLuz)) {
-                            estaPrendida = true;
-                        }
-                    } else {
-                        if (estadoReal.includes(idLuz)) {
-                            estaPrendida = true;
-                        }
+                    // --- 2. LEER EL ESTADO REAL FÍSICO (BOMBILLO) ---
+                    // Validación estricta: revisa si el ID de la luz está en el arreglo estado_real de Python
+                    if (estadoReal.includes(idLuz)) {
+                        estaPrendida = true;
                     }
 
-                    // Regla del Bombillo: Prendido = Verde, Apagado = Rojo
+                    // Forzar el cambio visual en tiempo real de forma estricta
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
-                        avatar.style.backgroundColor = "#39ff14"; // Fondo Verde
+                        avatar.style.backgroundColor = "#39ff14"; // Fondo Verde Neón
                         avatar.style.borderColor = "#2eb80d"; 
                     } else {
                         avatar.classList.remove('encendido');
@@ -219,17 +216,15 @@ function actualizarEstadoSilencioso() {
 
                     // --- 3. LÓGICA ASIGNACIÓN DE COLOR AL SEMÁFORO (RAYO) ---
                     const trazoRayo = rayo.querySelector('path'); 
-                    
                     let colorSemaforo = "";
                     if (porcentajeDisplay <= 33) {
-                        colorSemaforo = "#39ff14"; // Verde Neón (Bajo)
+                        colorSemaforo = "#39ff14"; // Verde Neón
                     } else if (porcentajeDisplay > 33 && porcentajeDisplay <= 66) {
-                        colorSemaforo = "#ffd700"; // Amarillo (Medio)
+                        colorSemaforo = "#ffd700"; // Amarillo
                     } else {
-                        colorSemaforo = "#ff4c4c"; // Rojo (Alto)
+                        colorSemaforo = "#ff4c4c"; // Rojo
                     }
 
-                    // Le inyectamos el color exacto al dibujo del rayo
                     rayo.style.color = colorSemaforo;
                     if (trazoRayo) {
                         trazoRayo.setAttribute('fill', colorSemaforo);
@@ -237,9 +232,42 @@ function actualizarEstadoSilencioso() {
                 });
             }
         })
-        .catch(err => console.error("❌ Error de red en actualización silenciosa", err));
+        .catch(err => console.error("❌ Error de red en actualización silenciosa:", err))
+        .finally(() => {
+            actualizandoSemaforo = false; // Libera el bloqueo para la siguiente actualización
+        });
 }
 
+// ==========================================
+// 7. INICIO DEL SISTEMA
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("🚀 Iniciando interfaz...");
+    
+    cargarNombres();
+    actualizarEstadoSilencioso();
+    setInterval(actualizarEstadoSilencioso, 3000); 
+
+    const btnHamburguesa = document.getElementById('btn-hamburguesa');
+    const menuLateral = document.getElementById('menu-lateral');
+
+    if (btnHamburguesa && menuLateral) {
+        btnHamburguesa.addEventListener('click', (evento) => {
+            evento.stopPropagation(); 
+            menuLateral.classList.toggle('mostrar');
+        });
+
+        document.addEventListener('click', (evento) => {
+            if (!menuLateral.contains(evento.target) && evento.target !== btnHamburguesa) {
+                if (menuLateral.removeProperty) {
+                    menuLateral.removeProperty('mostrar');
+                } else {
+                    menuLateral.classList.remove('mostrar');
+                }
+            }
+        });
+    }
+});
 // ==========================================
 // 7. INICIO DEL SISTEMA
 // ==========================================
