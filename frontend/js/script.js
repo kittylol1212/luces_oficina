@@ -1,4 +1,4 @@
-const BASE_URL = "https://casual-mph-php-exposed.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
+const BASE_URL = "https://uncle-doe-engaged-mazda.trycloudflare.com "; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)

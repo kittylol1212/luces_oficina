@@ -1,4 +1,4 @@
-const BASE_URL = "https://casual-mph-php-exposed.trycloudflare.com"; 
+const BASE_URL = "https://uncle-doe-engaged-mazda.trycloudflare.com"; 
 
 document.addEventListener("DOMContentLoaded", function () {
     const JORNADA_MAXIMA = 10.0;
