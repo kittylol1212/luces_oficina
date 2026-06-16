@@ -1,4 +1,4 @@
-const BASE_URL = "https://advise-lewis-crest-harbour.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
+const BASE_URL = "https://flu-cabin-evening-superior.trycloudflare.com"; // <-- ⚠️ Recuerda actualizar este link si reinicias Cloudflare
 
 // ==========================================
 // 1. FUNCIÓN MAESTRA: TODO EL EDIFICIO (PISO 0)
