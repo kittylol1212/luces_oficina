@@ -1,4 +1,4 @@
-const BASE_URL = "https://advise-lewis-crest-harbour.trycloudflare.com"; 
+const BASE_URL = "https://flu-cabin-evening-superior.trycloudflare.com"; 
 
 document.addEventListener("DOMContentLoaded", function () {
     const JORNADA_MAXIMA = 10.0;
