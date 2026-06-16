@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const JORNADA_MAXIMA = 10.0;
     const cuerpoTabla = document.getElementById("cuerpo-tabla");
 
-    fetch(`${BASE_URL}/api/datos_reporte`)
+    // Agregamos parámetro de tiempo para evitar problemas de caché
+    fetch(`${BASE_URL}/api/datos_reporte?t=${new Date().getTime()}`)
         .then(response => response.json())
         .then(data => {
             if (data.status === "ok") {

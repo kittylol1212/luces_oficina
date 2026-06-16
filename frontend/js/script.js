@@ -16,7 +16,7 @@ function toggleTodoElEdificio(encender) {
         }
     });
 
-    fetch(`${BASE_URL}/api/luz/piso`, { 
+    fetch(`${BASE_URL}/api/luz/piso`,{ 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -149,7 +149,7 @@ function toggleDesplegable(event, numeroPiso) {
 // =======================================================================================
 // 6. BUCLE: ACTUALIZACIÓN DE BOMBILLOS Y RAYOS (CÓDIGO CORREGIDO PARA TIEMPO REAL)
 // =======================================================================================
-let actualizandoSemaforo = false; // Evita que las peticiones se pisen entre sí si el internet va lento
+let actualizandoSemaforo = false; 
 
 function actualizarEstadoSilencioso() {
     if (actualizandoSemaforo) return; 
@@ -165,7 +165,6 @@ function actualizarEstadoSilencioso() {
         .then(data => {
             if (data.status === 'ok') {
                 const lucesOn = data.encendidas;           
-                // Aseguramos que todos los IDs del estado real sean Strings limpios para evitar fallos de tipos (ej. "1" vs 1)
                 const estadoReal = (data.estado_real || []).map(id => String(id).trim()); 
 
                 document.querySelectorAll('.persona').forEach(persona => {
@@ -175,14 +174,12 @@ function actualizarEstadoSilencioso() {
                     
                     if (!avatar || !rayo) return;
 
-                    // Convertimos a String y limpiamos espacios para asegurar coincidencia exacta con Python
                     const idLuz = String(avatar.getAttribute('data-luz')).trim(); 
 
                     let estaPrendida = false;
                     let horasUso = 0;
                     let porcentajeDisplay = 0;
 
-                    // --- 1. LEER LAS HORAS ACUMULADAS Y CALCULAR EL % DE JORNADA ---
                     if (lucesOn && lucesOn[idLuz] !== undefined) {
                         horasUso = parseFloat(lucesOn[idLuz]); 
                         porcentajeDisplay = (horasUso / JORNADA_MAXIMA) * 100;
@@ -197,32 +194,28 @@ function actualizarEstadoSilencioso() {
                         if (!isNaN(numExtraido)) porcentajeDisplay = numExtraido;
                     }
 
-                    // --- 2. LEER EL ESTADO REAL FÍSICO (BOMBILLO) ---
-                    // Validación estricta: revisa si el ID de la luz está en el arreglo estado_real de Python
                     if (estadoReal.includes(idLuz)) {
                         estaPrendida = true;
                     }
 
-                    // Forzar el cambio visual en tiempo real de forma estricta
                     if (estaPrendida) {
                         avatar.classList.add('encendido'); 
-                        avatar.style.backgroundColor = "#39ff14"; // Fondo Verde Neón
+                        avatar.style.backgroundColor = "#39ff14"; 
                         avatar.style.borderColor = "#2eb80d"; 
                     } else {
                         avatar.classList.remove('encendido');
-                        avatar.style.backgroundColor = "#ff4c4c"; // Fondo Rojo
+                        avatar.style.backgroundColor = "#ff4c4c"; 
                         avatar.style.borderColor = "#c90000";
                     }
 
-                    // --- 3. LÓGICA ASIGNACIÓN DE COLOR AL SEMÁFORO (RAYO) ---
                     const trazoRayo = rayo.querySelector('path'); 
                     let colorSemaforo = "";
                     if (porcentajeDisplay <= 33) {
-                        colorSemaforo = "#39ff14"; // Verde Neón
+                        colorSemaforo = "#39ff14"; 
                     } else if (porcentajeDisplay > 33 && porcentajeDisplay <= 66) {
-                        colorSemaforo = "#ffd700"; // Amarillo
+                        colorSemaforo = "#ffd700"; 
                     } else {
-                        colorSemaforo = "#ff4c4c"; // Rojo
+                        colorSemaforo = "#ff4c4c"; 
                     }
 
                     rayo.style.color = colorSemaforo;
@@ -234,7 +227,7 @@ function actualizarEstadoSilencioso() {
         })
         .catch(err => console.error("❌ Error de red en actualización silenciosa:", err))
         .finally(() => {
-            actualizandoSemaforo = false; // Libera el bloqueo para la siguiente actualización
+            actualizandoSemaforo = false; 
         });
 }
 
@@ -259,11 +252,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.addEventListener('click', (evento) => {
             if (!menuLateral.contains(evento.target) && evento.target !== btnHamburguesa) {
-                if (menuLateral.removeProperty) {
-                    menuLateral.removeProperty('mostrar');
-                } else {
-                    menuLateral.classList.remove('mostrar');
-                }
+                menuLateral.classList.remove('mostrar');
+            }
+        });
+    }
+
+    // ========================================================================
+    // LOGICA INTERRUPTOR MODO OSCURO / MODO CLARO
+    // ========================================================================
+    const themeToggleBtn = document.getElementById("theme-toggle");
+    if (themeToggleBtn) {
+        const themeIcon = document.getElementById("theme-icon");
+        const themeText = document.getElementById("theme-text");
+        
+        // Cargar preferencia guardada
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark-mode");
+            if(themeIcon) themeIcon.textContent = "☀️";
+            if(themeText) themeText.textContent = "Modo Claro";
+        }
+
+        themeToggleBtn.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            
+            if (document.body.classList.contains("dark-mode")) {
+                if(themeIcon) themeIcon.textContent = "☀️";
+                if(themeText) themeText.textContent = "Modo Claro";
+                localStorage.setItem("theme", "dark");
+            } else {
+                if(themeIcon) themeIcon.textContent = "🌙";
+                if(themeText) themeText.textContent = "Modo Oscuro";
+                localStorage.setItem("theme", "light");
             }
         });
     }
