@@ -185,9 +185,10 @@ body {
 }
 
 .persona-nombre {
-    font-size: 14px !important;
+    font-size: 15px !important; /* <--- AQUÍ MODIFICAS EL TAMAÑO */
     font-weight: 600 !important;
     color: #2c3e50 !important;
+    line-height: 1.2 !important;
 }
 
 .avatar {
