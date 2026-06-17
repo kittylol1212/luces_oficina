@@ -11,7 +11,6 @@ body {
     font-family: 'Poppins', sans-serif;
     background: #f0f4f8;
     min-height: 100vh;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* --- CONFIGURACIÓN DE CONTENEDOR Y GRID --- */
@@ -23,34 +22,18 @@ body {
     display: block;
 }
 
-/* --- ENCABEZADO Y LOGO --- */
 .header {
-    background: #178db3 !important;
+    background: #178db3;
     color: white;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 10px 60px !important; 
-    height: auto !important; 
-    width: 100% !important;
-    max-width: none !important;
-    box-sizing: border-box !important;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     box-shadow: 0 3px 12px rgba(0,0,0,0.15);
-    position: relative;
-}
-
-.logo-meltec {
-    height: 90px !important; 
-    width: auto !important;
-    display: block !important;
-    filter: brightness(0) invert(1) !important;
-    max-width: 300px !important; 
-    object-fit: contain;
-    margin: 5px 0;
 }
 
 /* =========================================
-   FORZAMOS EL GRID A 3 COLUMNAS
+    FORZAMOS EL GRID A 3 COLUMNAS
    ========================================= */
 .pisos-grid {
     display: grid !important;
@@ -94,7 +77,6 @@ body {
     border-radius: 12px;
     margin-bottom: 30px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: background-color 0.3s ease;
 }
 
 .btn-maestro {
@@ -122,7 +104,7 @@ body {
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .piso-card:hover {
@@ -177,6 +159,9 @@ body {
     display: none !important;
 }
 
+/* =========================================================================
+    DISEÑO DE LA FILA DE LA PERSONA (BLINDADO Y EXPANDIDO VERTICALMENTE)
+   ========================================================================= */
 .persona {
     display: flex !important;
     align-items: center !important;
@@ -185,7 +170,6 @@ body {
     border-bottom: 1px solid #f0f0f0;
     width: 100% !important; 
     box-sizing: border-box !important;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .persona:last-child { border-bottom: none; }
@@ -199,7 +183,6 @@ body {
     font-size: 13px;
     font-weight: 600;
     color: #2c3e50;
-    transition: color 0.3s ease;
 }
 
 .nombre-container {
@@ -255,8 +238,31 @@ body {
     transform: rotate(-90deg);
 }
 
+/* --- ENCABEZADO Y LOGO --- */
+.header {
+    background-color: #178db3 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 10px 60px !important; 
+    height: auto !important; 
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+}
+
+.logo-meltec {
+    height: 90px !important; 
+    width: auto !important;
+    display: block !important;
+    filter: brightness(0) invert(1) !important;
+    max-width: 300px !important; 
+    object-fit: contain;
+    margin: 5px 0;
+}
+
 /* =========================================================================
-   CONTROLES DERECHA Y ADAPTACIONES DEL RAYO
+    CONTROLES DERECHA
    ========================================================================= */
 .controles-derecha {
     display: flex !important;
@@ -267,6 +273,7 @@ body {
     flex: 0 0 auto !important; 
 }
 
+/* Píldora de texto neutral gris */
 .barra-contenedor {
     width: 65px !important;  
     height: 28px !important; 
@@ -293,18 +300,7 @@ body {
     padding: 0 !important;
 }
 
-.icono-rayo {
-    width: 44px !important;  
-    height: 52px !important; 
-    min-width: 44px !important; 
-    color: #00bcd4 !important; 
-    filter: drop-shadow(0px 0px 6px rgba(0, 188, 212, 0.6)) !important; 
-    transition: all 0.3s ease !important;
-    flex-shrink: 0 !important; 
-    display: block !important;
-    margin-left: 10px;
-}
-
+/* --- ALERTA SEMÁFORO: COLORES DE RELLENO Y GRAN RESPLANDOR NEÓN --- */
 .icono-rayo.verde {
     color: #32cd32 !important; 
     filter: drop-shadow(0px 0px 16px rgba(50, 205, 50, 1)) !important; 
@@ -321,7 +317,7 @@ body {
 }
 
 /* =========================================================================
-   MENÚ LATERAL (BLINDADO CON FIXED PARA QUE NUNCA EMPUJE EL GRID)
+    MENÚ LATERAL - COMPLETAMENTE AISLADO Y DESACOPLADO DEL FLUJO (ARREGLADO)
    ========================================================================= */
 .menu-hamburguesa {
     font-size: 30px;
@@ -331,7 +327,7 @@ body {
     cursor: pointer;
     padding: 5px 10px;
     transition: transform 0.2s ease;
-    z-index: 1002; 
+    z-index: 9999 !important; 
 }
 
 .menu-hamburguesa:hover {
@@ -340,20 +336,25 @@ body {
 
 #menu-lateral {
     display: none !important; 
-    position: fixed !important; /* Fixed absoluto fuera del layout para que no desacomode nada */
-    top: 110px !important; /* Aparece justo debajo de tu Header alto de 90px */
-    left: 60px !important;
-    background-color: white !important;
+    /* El truco maestro: 'fixed' rompe cualquier encierro HTML de clases padre */
+    position: fixed !important; 
+    top: 115px !important; 
+    left: 30px !important;
+    background-color: #ffffff !important;
     box-shadow: 0px 8px 24px rgba(0,0,0,0.3) !important; 
     border-radius: 8px !important;
-    z-index: 1001 !important;
-    min-width: 220px !important;
+    z-index: 9998 !important; 
+    width: 250px !important;
+    min-width: 250px !important;
     overflow: hidden !important;
     text-align: left !important; 
+    /* Anula cualquier flexbox que intente estirarlo en horizontal */
+    flex-direction: column !important;
+    height: auto !important;
 }
 
 #menu-lateral.mostrar {
-    display: block !important;
+    display: flex !important; /* Cambiado a flex vertical controlado */
     animation: aparecer 0.3s ease;
 }
 
@@ -361,31 +362,32 @@ body {
     list-style: none !important; 
     margin: 0 !important;
     padding: 0 !important;
+    width: 100% !important;
+    display: block !important;
 }
 
 #menu-lateral ul li {
     border-bottom: 1px solid #f1f1f1 !important;
-    padding: 0 !important;
+    width: 100% !important;
+    display: block !important;
 }
 
 #menu-lateral ul li:last-child {
     border-bottom: none !important;
 }
 
-#menu-lateral ul li a,
-#menu-lateral ul li#theme-toggle {
+#menu-lateral ul li a {
     display: block !important;
     padding: 15px 20px !important;
     text-decoration: none !important; 
     color: #333 !important;
-    font-size: 15px !important;
+    font-size: 16px !important;
     font-weight: bold !important;
-    transition: background 0.3s, color 0.3s !important;
-    cursor: pointer !important;
+    transition: background 0.3s;
+    width: 100% !important;
 }
 
-#menu-lateral ul li a:hover,
-#menu-lateral ul li#theme-toggle:hover {
+#menu-lateral ul li a:hover {
     background-color: #f1f1f1 !important;
     color: #008CBA !important; 
 }
@@ -395,8 +397,22 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* =========================================
+    CONTROL DE TAMAÑO FIJO PARA LOS ÍCONOS SVG (RAYO)
+   ========================================= */
+.icono-rayo {
+    width: 24px !important; 
+    height: 24px !important; 
+    min-width: 24px !important; 
+    max-width: 24px !important;
+    margin-left: 10px !important; 
+    color: #444 !important; 
+    display: inline-block !important;
+    flex-shrink: 0 !important;
+}
+
 /* ==========================================
-   SOPORTE COMPLETO PARA MODO OSCURO
+    ESTILOS PARA MODO OSCURO 
    ========================================== */
 
 body.dark-mode {
@@ -404,29 +420,13 @@ body.dark-mode {
     color: #e2e8f0 !important;
 }
 
-body.dark-mode .controles-maestros {
-    background-color: #1e293b !important;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
-
 body.dark-mode #menu-lateral {
     background-color: #1e293b !important;
-    box-shadow: 0px 8px 24px rgba(0,0,0,0.6) !important;
+    color: #f8fafc !important;
 }
 
 body.dark-mode #menu-lateral li {
     border-bottom: 1px solid #334155 !important;
-}
-
-body.dark-mode #menu-lateral ul li a,
-body.dark-mode #menu-lateral ul li#theme-toggle {
-    color: #f8fafc !important;
-}
-
-body.dark-mode #menu-lateral ul li a:hover,
-body.dark-mode #menu-lateral ul li#theme-toggle:hover {
-    background-color: #334155 !important;
-    color: #39FF14 !important;
 }
 
 body.dark-mode .section-title {
@@ -436,7 +436,7 @@ body.dark-mode .section-title {
 body.dark-mode .piso-card {
     background-color: #1e293b !important;
     border: 1px solid #334155 !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
 }
 
 body.dark-mode .piso-header, 
@@ -444,7 +444,15 @@ body.dark-mode .persona-nombre {
     color: #ffffff !important;
 }
 
+body.dark-mode .persona-cargo {
+    color: #94a3b8 !important;
+}
+
 body.dark-mode .persona {
     background-color: #1a2333 !important;
     border-bottom: 1px solid #334155 !important;
+}
+
+body, .piso-card, #menu-lateral, .persona {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
