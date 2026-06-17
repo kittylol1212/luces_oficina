@@ -1,0 +1,88 @@
+/* =========================================================================
+   11. ESTILOS EXCLUSIVOS PARA LA PÁGINA DE AYUDA (ayuda.html)
+   ========================================================================= */
+.manual-body {
+    background: #f0f4f8 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    padding: 20px !important;
+    font-family: 'Poppins', sans-serif !important;
+}
+
+.manual-container {
+    max-width: 750px !important;
+    width: 100% !important;
+    background: white !important;
+    padding: 40px !important;
+    border-radius: 14px !important;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.06) !important;
+}
+
+.manual-titulo {
+    font-size: 26px !important;
+    color: #2c3e50 !important;
+    margin-top: 15px !important;
+    font-weight: 700 !important;
+}
+
+.manual-subtitulo {
+    color: #888 !important;
+    font-size: 15px !important;
+    margin-bottom: 35px !important;
+}
+
+.btn-regresar {
+    background-color: #178db3 !important;
+    color: white !important;
+    padding: 12px 24px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    font-size: 14px !important;
+    display: inline-block !important;
+    text-decoration: none !important;
+    transition: background 0.3s ease !important;
+}
+
+.btn-regresar:hover {
+    background-color: #126e8d !important;
+}
+
+.seccion-explicativa {
+    margin-bottom: 25px !important;
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.seccion-explicativa:last-child {
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.seccion-explicativa h3 {
+    color: #178db3 !important;
+    font-size: 17px !important;
+    margin-bottom: 8px !important;
+    font-weight: 600 !important;
+}
+
+.seccion-explicativa p {
+    color: #555 !important;
+    font-size: 14.5px !important;
+    line-height: 1.6 !important;
+}
+
+.seccion-explicativa ul {
+    margin-top: 8px !important;
+    padding-left: 20px !important;
+}
+
+.seccion-explicativa li {
+    font-size: 14px !important;
+    color: #555 !important;
+    margin-bottom: 6px !important;
+}
