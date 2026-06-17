@@ -1062,6 +1062,51 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 1. Buscamos el botón de Ayuda dentro del menú lateral
+        const enlacesMenu = document.querySelectorAll("#menu-lateral a");
+        let btnAyuda = null;
+
+        // Buscamos cuál de todos los enlaces dice "Ayuda"
+        enlacesMenu.forEach(enlace => {
+            if (enlace.textContent.includes("Ayuda")) {
+                btnAyuda = enlace;
+            }
+        });
+
+        // 2. Buscamos los elementos de la ventana emergente
+        const modal = document.getElementById("modal-ayuda");
+        const btnCerrar = document.getElementById("cerrar-ayuda");
+
+        // 3. Si encontramos el botón, le programamos el clic para abrir
+        if (btnAyuda && modal) {
+            btnAyuda.addEventListener("click", function(event) {
+                event.preventDefault(); // Evita que la página se recargue
+                modal.classList.add("activo"); // Muestra la ventana
+                
+                // Opcional: Si tienes una función para cerrar el menú lateral al hacer clic, la pones aquí
+                const menuLateral = document.getElementById("menu-lateral");
+                if (menuLateral) menuLateral.classList.remove("mostrar");
+            });
+        }
+
+        // 4. Programamos el botón de la "X" para cerrar la ventana
+        if (btnCerrar && modal) {
+            btnCerrar.addEventListener("click", function() {
+                modal.classList.remove("activo"); // Oculta la ventana
+            });
+        }
+
+        // 5. Cerrar también si el usuario hace clic afuera de la tarjeta blanca
+        window.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                modal.classList.remove("activo");
+            }
+        });
+    });
+</script>
+
 <script src="./js/script.js?v=15"></script>
 </body>
 </html>
