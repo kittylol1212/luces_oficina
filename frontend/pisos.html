@@ -1,19 +1,81 @@
-<nav id="menu-lateral" class="menu-oculto">
-    <ul style="list-style: none; padding: 0; margin: 0;">
-        <li onclick="window.location.href='pisos.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
-            🏠 Inicio
-        </li>
-        <li onclick="window.location.href='estadisticas.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
-            📊 Estadísticas de Uso
-        </li> 
-        <li style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
-            ⚙️ Configuración
-        </li>
-        <li id="theme-toggle" style="cursor: pointer; padding: 15px 20px; font-weight: bold; background-color: rgba(0,0,0,0.05);">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control de Iluminación por Pisos</title>
+    <link rel="stylesheet" href="css/pisos.css?v=15"> 
+</head>
+<body>
+<header class="header">
+    <div class="header-left" style="display: flex; align-items: center; position: relative;">
+        <button id="btn-hamburguesa" class="menu-hamburguesa" onclick="abrirMenu(event)">&#9776;</button>
+        
+        <span class="header-icon"></span>
+        <h1 style="margin-left: 10px;">Directorio por Pisos</h1>
+
+       <nav id="menu-lateral" class="menu-oculto">
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li onclick="window.location.href='pisos.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
+                    🏠 Inicio
+                </li>
+                <li onclick="window.location.href='estadisticas.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
+                    📊 Estadísticas de Uso
+                </li> 
+                <li style="cursor: pointer; padding: 15px 20px; font-weight: bold;">
+                    ⚙️ Configuración
+                </li>
+                <li id="theme-toggle" style="cursor: pointer; padding: 15px 20px; font-weight: bold; background-color: rgba(0,0,0,0.05);">
             🌙 Modo Oscuro
         </li>
-    </ul>
-</nav>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="header-right">
+        <img src="logo_meltec.png" alt="Logo Meltec" style="height: 90px; width: auto; filter: none; object-fit: contain;">
+    </div>
+</header>
+
+<div class="controles-maestros">
+    <button class="btn-maestro on" onclick="forzarEncendidoPisosGlobal([1, 2, 3, 4, 5, 6], true)">
+        <span>🌟</span> Encender Pisos 
+    </button>
+    <button class="btn-maestro off" onclick="forzarEncendidoPisosGlobal([1, 2, 3, 4, 5, 6], false)">
+        <span>🌑</span> Apagar Pisos 
+    </button>
+</div>
+
+<p class="section-title">Personal asignado por piso</p>
+
+<div class="pisos-grid">
+
+    <div class="piso-card piso-1">
+        <div class="piso-header" id="header-piso-1" onclick="toggleTodoElPiso(1)" role="button" tabindex="0">
+            <div class="piso-numero">1</div>
+            <div class="piso-nombre" onclick="toggleDesplegable(event, 1)">
+                Mercadeo <span class="flechita">🔽</span>
+            </div>
+        </div>
+        <div class="piso-body">
+            <div class="persona">
+                <div class="avatar" data-luz="1" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
+                <div class="persona-info">
+                    <div class="nombre-container">
+                        <div class="persona-nombre">Luis</div>
+                        <div class="btn-editar" onclick="editarNombre(this)">✏️</div>
+                    </div>
+                    <div class="persona-cargo">Ingeniero</div>
+                </div>
+                <div class="controles-derecha">
+                    <div class="barra-contenedor">
+                        <div class="barra-llenado" style="width: 14.76%;">14.76%</div>
+                    </div>
+                    <svg class="icono-rayo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" fill="currentColor" stroke="#111" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
 
             <div class="persona">
                 <div class="avatar" data-luz="2" onclick="toggleLuz(this); event.stopPropagation();">💡</div>
