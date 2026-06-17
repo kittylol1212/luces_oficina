@@ -1064,41 +1064,46 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // 1. Buscamos el botón de Ayuda dentro del menú lateral
+        // 1. Buscamos el botón de Ayuda por su texto o por su ID si lo cambiaste
         const enlacesMenu = document.querySelectorAll("#menu-lateral a");
-        let btnAyuda = null;
+        let btnAyuda = document.getElementById("btn-abrir-ayuda"); // Intenta buscar por ID primero
 
-        // Buscamos cuál de todos los enlaces dice "Ayuda"
-        enlacesMenu.forEach(enlace => {
-            if (enlace.textContent.includes("Ayuda")) {
-                btnAyuda = enlace;
-            }
-        });
+        if (!btnAyuda) {
+            // Si no tiene ID asignado aún, búscalo por el texto "Ayuda"
+            enlacesMenu.forEach(enlace => {
+                if (enlace.textContent.includes("Ayuda")) {
+                    btnAyuda = enlace;
+                }
+            });
+        }
 
-        // 2. Buscamos los elementos de la ventana emergente
         const modal = document.getElementById("modal-ayuda");
         const btnCerrar = document.getElementById("cerrar-ayuda");
 
-        // 3. Si encontramos el botón, le programamos el clic para abrir
+        // 2. Evento para abrir el modal
         if (btnAyuda && modal) {
             btnAyuda.addEventListener("click", function(event) {
-                event.preventDefault(); // Evita que la página se recargue
-                modal.classList.add("activo"); // Muestra la ventana
+                event.preventDefault(); // Detiene cualquier recarga o redirección del href
+                modal.classList.add("activo");
                 
-                // Opcional: Si tienes una función para cerrar el menú lateral al hacer clic, la pones aquí
+                // Cierra el menú lateral automáticamente para limpiar la pantalla
                 const menuLateral = document.getElementById("menu-lateral");
-                if (menuLateral) menuLateral.classList.remove("mostrar");
+                if (menuLateral) {
+                    menuLateral.classList.remove("mostrar");
+                    // Si usas display manual en tu menú, descomenta la línea de abajo:
+                    // menuLateral.style.display = "none";
+                }
             });
         }
 
-        // 4. Programamos el botón de la "X" para cerrar la ventana
+        // 3. Evento para cerrar el modal desde la equis (X)
         if (btnCerrar && modal) {
             btnCerrar.addEventListener("click", function() {
-                modal.classList.remove("activo"); // Oculta la ventana
+                modal.classList.remove("activo");
             });
         }
 
-        // 5. Cerrar también si el usuario hace clic afuera de la tarjeta blanca
+        // 4. Cerrar haciendo clic afuera de la caja del manual
         window.addEventListener("click", function(event) {
             if (event.target === modal) {
                 modal.classList.remove("activo");
