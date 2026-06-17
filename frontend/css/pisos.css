@@ -164,43 +164,41 @@ body {
 }
 
 /* =========================================================================
-   6. SECCIÓN DE PERSONAS E ÍCONOS
+   6. SECCIÓN DE PERSONAS (ALINEACIÓN EN COLUMNAS RECTAS)
    ========================================================================= */
 .persona {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
-    gap: 12px !important;
-    padding: 14px 15px !important; 
+    gap: 15px !important;
+    padding: 12px 5px !important; 
     border-bottom: 1px solid #f0f0f0 !important;
     width: 100% !important; 
 }
 
 .persona:last-child { border-bottom: none !important; }
 
+/* Contenedor principal de la izquierda */
 .persona-info {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 15px !important;
+    flex: 1 !important;
 }
 
-.persona-nombre {
-    font-size: 15px !important; /* <--- AQUÍ MODIFICAS EL TAMAÑO */
-    font-weight: 600 !important;
-    color: #2c3e50 !important;
-    line-height: 1.2 !important;
-}
-
+/* ÍCONO DEL BOMBILLO */
 .avatar {
-    width: 40px !important;
-    height: 40px !important;
+    width: 38px !important;
+    height: 38px !important;
     border-radius: 50% !important;
     background: #e74c3c !important; 
     border: 2px solid #e74c3c !important; 
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 18px !important;
+    font-size: 16px !important;
     color: white !important;
     flex-shrink: 0 !important; 
 }
@@ -210,6 +208,49 @@ body {
     border-color: #39FF14 !important;
 }
 
+/* ¡AQUÍ ESTÁ EL TRUCO DE ALINEACIÓN!
+   Convertimos el bloque de texto en un Grid invisible de 2 columnas fijas:
+   Columna 1: El Nombre (le damos 110px fijos para que nadie empuje al lápiz)
+   Columna 2: El Cargo/Rol
+*/
+.nombre-container {
+    display: grid !important;
+    grid-template-columns: 110px 1fr !important; /* El nombre tiene su carril fijo */
+    align-items: center !important;              /* Centra el texto verticalmente */
+    gap: 15px !important;                         /* Separación recta entre nombre y cargo */
+    flex: 1 !important;
+}
+
+/* NOMBRE ALINEADO */
+.persona-nombre {
+    font-size: 15px !important; 
+    font-weight: 600 !important;
+    color: #2c3e50 !important;
+    white-space: nowrap !important;       /* Evita que el nombre se parta en dos renglones */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;   /* Si el nombre es extremadamente largo pone ... */
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;                  /* Separa el texto del lápiz */
+}
+
+/* CARGO ALINEADO EN SU PROPIA COLUMNA RECTA */
+.persona-cargo {
+    font-size: 13px !important;
+    color: #7f8c8d !important;
+    font-weight: 400 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* LÁPIZ DE EDICIÓN */
+.btn-editar {
+    font-size: 14px !important;
+    opacity: 0.6;
+    cursor: pointer;
+    display: inline-block !important;
+}
 /* =========================================================================
    7. CONTROLES DERECHA (BARRA Y RAYO PEQUEÑO)
    ========================================================================= */
