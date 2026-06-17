@@ -11,6 +11,7 @@ body {
     font-family: 'Poppins', sans-serif;
     background: #f0f4f8;
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* --- CONFIGURACIÓN DE CONTENEDOR Y GRID --- */
@@ -35,7 +36,7 @@ body {
     max-width: none !important;
     box-sizing: border-box !important;
     box-shadow: 0 3px 12px rgba(0,0,0,0.15);
-    position: relative; /* Base de posicionamiento para el menú */
+    position: relative;
 }
 
 .logo-meltec {
@@ -93,6 +94,7 @@ body {
     border-radius: 12px;
     margin-bottom: 30px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: background-color 0.3s ease;
 }
 
 .btn-maestro {
@@ -120,7 +122,7 @@ body {
     border-radius: 14px;
     overflow: hidden;
     box-shadow: 0 2px 16px rgba(0,0,0,0.07);
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .piso-card:hover {
@@ -175,9 +177,6 @@ body {
     display: none !important;
 }
 
-/* =========================================================================
-    DISEÑO DE LA FILA DE LA PERSONA (BLINDADO Y EXPANDIDO VERTICALMENTE)
-   ========================================================================= */
 .persona {
     display: flex !important;
     align-items: center !important;
@@ -186,6 +185,7 @@ body {
     border-bottom: 1px solid #f0f0f0;
     width: 100% !important; 
     box-sizing: border-box !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .persona:last-child { border-bottom: none; }
@@ -199,6 +199,7 @@ body {
     font-size: 13px;
     font-weight: 600;
     color: #2c3e50;
+    transition: color 0.3s ease;
 }
 
 .nombre-container {
@@ -255,7 +256,7 @@ body {
 }
 
 /* =========================================================================
-    CONTROLES DERECHA (PÍLDORA NEUTRAL Y SÚPER RAYO GIGANTE INAMOVIBLE)
+   CONTROLES DERECHA Y ADAPTACIONES DEL RAYO
    ========================================================================= */
 .controles-derecha {
     display: flex !important;
@@ -266,7 +267,6 @@ body {
     flex: 0 0 auto !important; 
 }
 
-/* Píldora de texto neutral gris */
 .barra-contenedor {
     width: 65px !important;  
     height: 28px !important; 
@@ -293,7 +293,6 @@ body {
     padding: 0 !important;
 }
 
-/* --- EL NUEVO SÚPER RAYO VECTORIAL AGRANDADO --- */
 .icono-rayo {
     width: 44px !important;  
     height: 52px !important; 
@@ -306,7 +305,6 @@ body {
     margin-left: 10px;
 }
 
-/* --- ALERTA SEMÁFORO --- */
 .icono-rayo.verde {
     color: #32cd32 !important; 
     filter: drop-shadow(0px 0px 16px rgba(50, 205, 50, 1)) !important; 
@@ -323,7 +321,7 @@ body {
 }
 
 /* =========================================================================
-    MENÚ LATERAL (ARREGLADO COMO TARJETA FLOTANTE Y DROPDOWN REAL)
+   MENÚ LATERAL (BLINDADO CON FIXED PARA QUE NUNCA EMPUJE EL GRID)
    ========================================================================= */
 .menu-hamburguesa {
     font-size: 30px;
@@ -333,7 +331,7 @@ body {
     cursor: pointer;
     padding: 5px 10px;
     transition: transform 0.2s ease;
-    z-index: 1001; 
+    z-index: 1002; 
 }
 
 .menu-hamburguesa:hover {
@@ -341,21 +339,21 @@ body {
 }
 
 #menu-lateral {
-    display: none !important; /* Totalmente oculto por defecto */
-    position: absolute !important; /* Flota sobre los demás elementos */
-    top: 100% !important; /* Se posiciona justo abajo del encabezado */
-    left: 60px !important; /* Alineado de forma limpia con los márgenes del header */
+    display: none !important; 
+    position: fixed !important; /* Fixed absoluto fuera del layout para que no desacomode nada */
+    top: 110px !important; /* Aparece justo debajo de tu Header alto de 90px */
+    left: 60px !important;
     background-color: white !important;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.3) !important; 
+    box-shadow: 0px 8px 24px rgba(0,0,0,0.3) !important; 
     border-radius: 8px !important;
-    z-index: 1000 !important;
+    z-index: 1001 !important;
     min-width: 220px !important;
     overflow: hidden !important;
     text-align: left !important; 
 }
 
 #menu-lateral.mostrar {
-    display: block !important; /* Solo se dibuja cuando JS activa la clase */
+    display: block !important;
     animation: aparecer 0.3s ease;
 }
 
@@ -374,8 +372,7 @@ body {
     border-bottom: none !important;
 }
 
-/* Estilo para los enlaces y el botón del tema */
-#menu-lateral ul li a, 
+#menu-lateral ul li a,
 #menu-lateral ul li#theme-toggle {
     display: block !important;
     padding: 15px 20px !important;
@@ -385,10 +382,9 @@ body {
     font-weight: bold !important;
     transition: background 0.3s, color 0.3s !important;
     cursor: pointer !important;
-    user-select: none;
 }
 
-#menu-lateral ul li a:hover, 
+#menu-lateral ul li a:hover,
 #menu-lateral ul li#theme-toggle:hover {
     background-color: #f1f1f1 !important;
     color: #008CBA !important; 
@@ -400,7 +396,7 @@ body {
 }
 
 /* ==========================================
-    ESTILOS DEFINITIVOS PARA MODO OSCURO 
+   SOPORTE COMPLETO PARA MODO OSCURO
    ========================================== */
 
 body.dark-mode {
@@ -408,7 +404,11 @@ body.dark-mode {
     color: #e2e8f0 !important;
 }
 
-/* Tarjeta flotante del menú en modo oscuro */
+body.dark-mode .controles-maestros {
+    background-color: #1e293b !important;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
 body.dark-mode #menu-lateral {
     background-color: #1e293b !important;
     box-shadow: 0px 8px 24px rgba(0,0,0,0.6) !important;
@@ -418,42 +418,33 @@ body.dark-mode #menu-lateral li {
     border-bottom: 1px solid #334155 !important;
 }
 
-body.dark-mode #menu-lateral ul li a, 
+body.dark-mode #menu-lateral ul li a,
 body.dark-mode #menu-lateral ul li#theme-toggle {
     color: #f8fafc !important;
 }
 
-body.dark-mode #menu-lateral ul li a:hover, 
+body.dark-mode #menu-lateral ul li a:hover,
 body.dark-mode #menu-lateral ul li#theme-toggle:hover {
     background-color: #334155 !important;
     color: #39FF14 !important;
 }
 
-/* Título de sección */
 body.dark-mode .section-title {
     color: #94a3b8 !important;
 }
 
-/* Tarjetas de los pisos */
 body.dark-mode .piso-card {
     background-color: #1e293b !important;
     border: 1px solid #334155 !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Títulos y fuentes dentro de pisos */
 body.dark-mode .piso-header, 
 body.dark-mode .persona-nombre {
     color: #ffffff !important;
 }
 
-/* Filas del personal */
 body.dark-mode .persona {
     background-color: #1a2333 !important;
     border-bottom: 1px solid #334155 !important;
-}
-
-/* Transición global fluida */
-body, .piso-card, #menu-lateral, .persona, #menu-lateral ul li a, #menu-lateral ul li#theme-toggle {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
