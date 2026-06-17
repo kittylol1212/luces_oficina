@@ -412,3 +412,56 @@ body {
     margin-left: 10px; /* Le da un pequeño espacio para separarlo de la barra de porcentaje */
     color: #444; /* Le da un tono gris oscuro al rayo (puedes cambiarlo si quieres) */
 }
+
+/* ==========================================
+   ESTILOS PARA MODO OSCURO 
+   ========================================== */
+
+/* Fondo general de la página y textos principales */
+body.dark-mode {
+    background-color: #121824 !important;
+    color: #e2e8f0 !important;
+}
+
+/* El menú lateral en modo oscuro */
+body.dark-mode #menu-lateral {
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+body.dark-mode #menu-lateral li {
+    border-bottom: 1px solid #334155 !important;
+}
+
+/* Título de sección */
+body.dark-mode .section-title {
+    color: #94a3b8 !important;
+}
+
+/* Tarjetas de los pisos */
+body.dark-mode .piso-card {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Encabezados de los pisos y nombres de personas */
+body.dark-mode .piso-header, 
+body.dark-mode .persona-nombre {
+    color: #ffffff !important;
+}
+
+/* Cargos del personal */
+body.dark-mode .persona-cargo {
+    color: #94a3b8 !important;
+}
+
+/* Fondo de las filas de personas (si tienen fondo blanco) */
+body.dark-mode .persona {
+    background-color: #1a2333 !important;
+    border-bottom: 1px solid #334155 !important;
+}
+
+/* Transición suave para que no parpadee al cambiar */
+body, .piso-card, #menu-lateral, .persona {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+}
