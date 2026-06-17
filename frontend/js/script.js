@@ -232,7 +232,7 @@ function actualizarEstadoSilencioso() {
 }
 
 // ==========================================
-// 7. INICIO DEL SISTEMA
+// 7. INICIO DEL SISTEMA (Modificado para Modo Oscuro y Menú)
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     console.log("🚀 Iniciando interfaz...");
@@ -243,7 +243,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const btnHamburguesa = document.getElementById('btn-hamburguesa');
     const menuLateral = document.getElementById('menu-lateral');
+    const themeToggleBtn = document.getElementById('theme-toggle');
 
+    // --- 7A. GESTIÓN DEL MENÚ LATERAL ---
     if (btnHamburguesa && menuLateral) {
         btnHamburguesa.addEventListener('click', (evento) => {
             evento.stopPropagation(); 
@@ -257,31 +259,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ========================================================================
-    // LOGICA INTERRUPTOR MODO OSCURO / MODO CLARO
-    // ========================================================================
-    const themeToggleBtn = document.getElementById("theme-toggle");
+    // --- 7B. GESTIÓN INTEGRADA DEL MODO OSCURO ---
     if (themeToggleBtn) {
-        const themeIcon = document.getElementById("theme-icon");
-        const themeText = document.getElementById("theme-text");
-        
-        // Cargar preferencia guardada
+        // Comprobar preferencia guardada al cargar la página
         if (localStorage.getItem("theme") === "dark") {
             document.body.classList.add("dark-mode");
-            if(themeIcon) themeIcon.textContent = "☀️";
-            if(themeText) themeText.textContent = "Modo Claro";
+            themeToggleBtn.innerHTML = "☀️ Modo Claro";
+        } else {
+            themeToggleBtn.innerHTML = "🌙 Modo Oscuro";
         }
 
-        themeToggleBtn.addEventListener("click", () => {
+        // Evento clic para cambiar entre modos
+        themeToggleBtn.addEventListener("click", (evento) => {
+            evento.stopPropagation(); // Evita que se cierre el menú lateral al hacer clic
+            
             document.body.classList.toggle("dark-mode");
             
             if (document.body.classList.contains("dark-mode")) {
-                if(themeIcon) themeIcon.textContent = "☀️";
-                if(themeText) themeText.textContent = "Modo Claro";
+                themeToggleBtn.innerHTML = "☀️ Modo Claro";
                 localStorage.setItem("theme", "dark");
             } else {
-                if(themeIcon) themeIcon.textContent = "🌙";
-                if(themeText) themeText.textContent = "Modo Oscuro";
+                themeToggleBtn.innerHTML = "🌙 Modo Oscuro";
                 localStorage.setItem("theme", "light");
             }
         });
