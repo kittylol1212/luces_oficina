@@ -1016,6 +1016,52 @@
     </div>
 </div>
 
+<div id="modal-ayuda" class="modal-ayuda-overlay">
+    <div class="modal-ayuda-contenido">
+        <div class="modal-ayuda-header">
+            <h2>Manual de Operación del Panel</h2>
+            <button id="cerrar-ayuda" class="btn-cerrar-ayuda">&times;</button>
+        </div>
+        <div class="modal-ayuda-body">
+            <p class="ayuda-intro">Este panel permite monitorear y controlar en tiempo real el estado de la iluminación de las oficinas de Meltec.</p>
+            
+            <div class="ayuda-seccion">
+                <h3>🕹️ Controles Maestros</h3>
+                <p>Ubicados en la parte superior. Permiten encender o apagar **todas** las luces de la oficina con un solo clic.</p>
+            </div>
+
+            <div class="ayuda-seccion">
+                <h3>🏢 Tarjetas de Pisos</h3>
+                <p>Al hacer clic sobre el encabezado de cualquier piso, este se desplegará mostrando la lista de personas asignadas a esa área.</p>
+            </div>
+
+            <div class="ayuda-seccion">
+                <h3>💡 Estado de Bombillos (Avatares)</h3>
+                <p>Representan el estado de la luz de cada puesto:</p>
+                <ul>
+                    <li><span class="punto-ayuda rojo"></span> <strong>Rojo:</strong> La luz está apagada.</li>
+                    <li><span class="punto-ayuda verde"></span> <strong>Verde Neón:</strong> La luz está encendida en este momento.</li>
+                </ul>
+            </div>
+
+            <div class="ayuda-seccion">
+                <h3>⚡ Semáforo de Consumo (Rayo)</h3>
+                <p>Muestra visualmente la carga energética total de la oficina:</p>
+                <ul>
+                    <li><strong>Verde:</strong> Consumo óptimo (pocas luces encendidas).</li>
+                    <li><strong>Amarillo:</strong> Consumo moderado.</li>
+                    <li><strong>Rojo con brillo:</strong> Alerta de alto consumo (demasiadas luces encendidas).</li>
+                </ul>
+            </div>
+
+            <div class="ayuda-seccion">
+                <h3>✏️ Botón de Edición (Lápiz)</h3>
+                <p>Permite modificar el nombre o cargo asignado a esa ranura en tiempo real.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="./js/script.js?v=15"></script>
 </body>
 </html>
