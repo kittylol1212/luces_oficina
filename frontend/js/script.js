@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             document.body.classList.toggle("dark-mode");
             
-            if (document.body.classList.contains("dark-mode")) {
+            if (document.body.classList.contsins("dark-mode")) {
                 themeToggleBtn.innerHTML = "☀️ Modo Claro";
                 localStorage.setItem("theme", "dark");
             } else {
