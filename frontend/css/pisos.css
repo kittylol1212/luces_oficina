@@ -60,43 +60,87 @@ body {
 }
 
 /* =========================================================================
-   3. ENCABEZADO / HEADER (REDISEÑADO INTEGRADO)
+   3. ENCABEZADO / HEADER (AJUSTE DE CENTRADO ABSOLUTO)
    ========================================================================= */
 .header {
     background-color: #178db3 !important;
     color: white !important;
     display: flex !important;
-    justify-content: space-between !important;
+    justify-content: space-between !important; /* Reparte los 3 bloques en Izquierda, Centro y Derecha */
     align-items: center !important;
     padding: 10px 40px !important; 
-    height: 75px !important; /* Altura fija elegante para contener los elementos */
+    height: 75px !important; 
     width: 100% !important;
     max-width: none !important;
     box-shadow: 0 3px 12px rgba(0,0,0,0.15) !important;
 }
 
-/* Agrupador de icono de menú y título en línea */
+/* Carril Izquierdo (Título e ícono) */
 .header-izq {
     display: flex !important;
     align-items: center !important;
     gap: 15px !important;
+    flex: 1 !important; /* Toma el espacio izquierdo proporcionalmente */
 }
 
 .header-titulo {
     font-size: 22px !important;
     font-weight: 600 !important;
     margin: 0 !important;
+    white-space: nowrap !important; /* Evita que el título se rompa */
+}
+
+/* 🎯 Carril Central (¡AQUÍ ESTÁ EL TRUCO PARA EL CENTRADO ABSOLUTO!) */
+.controles-header-centro {
+    display: flex !important;
+    gap: 15px !important;
+    align-items: center !important;
+    justify-content: center !important; /* Fuerza a los botones a quedarse en el centro exacto */
+    flex: 2 !important; /* Le da prioridad de espacio al centro */
+}
+
+/* Estilo de los botones (Se mantienen como los tenías) */
+.controles-header-centro .btn-maestro {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 20px !important; 
+    font-size: 13.5px !important;
+    font-weight: bold !important;
+    border: none !important;
+    border-radius: 25px !important;
+    cursor: pointer !important;
+    color: white !important;
+    font-family: 'Poppins', sans-serif !important;
+    transition: transform 0.2s ease !important;
+}
+
+.controles-header-centro .btn-maestro.on { background-color: #39FF14 !important; color: #1c3d11 !important; } 
+.controles-header-centro .btn-maestro.off { background-color: #e74c3c !important; color: white !important; } 
+
+.punto-boton {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    display: inline-block !important;
+}
+.punto-boton.amarillo { background-color: #f1c40f !important; }
+.punto-boton.morado { background-color: #9b59b6 !important; }
+
+/* Carril Derecho (Logo) */
+.header-der {
+    display: flex !important;
+    justify-content: flex-end !important; /* Alinea el logo totalmente a la derecha */
+    flex: 1 !important; /* Toma el espacio derecho proporcionalmente */
 }
 
 .logo-meltec {
-    height: 40px !important; /* Reducido para que calce perfecto en los 75px del header */
+    height: 40px !important;
     width: auto !important;
     display: block !important;
     filter: brightness(0) invert(1) !important;
-    max-width: 300px !important; 
     object-fit: contain;
 }
-
 /* =========================================================================
    4. CONTROLES MAESTROS (MUDADOS AL HEADER - ESTILO PÍLDORA)
    ========================================================================= */
@@ -154,11 +198,7 @@ body {
     display: none !important;
 }
 
-.container {
-    display: flex;
-    justify-content: left;
 
-}
 
 /* =========================================================================
    5. TARJETAS DE LOS PISOS
