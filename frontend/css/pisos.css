@@ -60,7 +60,7 @@ body {
 }
 
 /* =========================================================================
-   3. ENCABEZADO / HEADER
+   3. ENCABEZADO / HEADER (REDISEÑADO INTEGRADO)
    ========================================================================= */
 .header {
     background-color: #178db3 !important;
@@ -68,54 +68,90 @@ body {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 10px 60px !important; 
-    height: auto !important; 
+    padding: 10px 40px !important; 
+    height: 75px !important; /* Altura fija elegante para contener los elementos */
     width: 100% !important;
     max-width: none !important;
     box-shadow: 0 3px 12px rgba(0,0,0,0.15) !important;
 }
 
+/* Agrupador de icono de menú y título en línea */
+.header-izq {
+    display: flex !important;
+    align-items: center !important;
+    gap: 15px !important;
+}
+
+.header-titulo {
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+}
+
 .logo-meltec {
-    height: 90px !important; 
+    height: 40px !important; /* Reducido para que calce perfecto en los 75px del header */
     width: auto !important;
     display: block !important;
     filter: brightness(0) invert(1) !important;
     max-width: 300px !important; 
     object-fit: contain;
-    margin: 5px 0;
 }
 
 /* =========================================================================
-   4. CONTROLES MAESTROS
+   4. CONTROLES MAESTROS (MUDADOS AL HEADER - ESTILO PÍLDORA)
    ========================================================================= */
+/* Contenedor centrado dentro de la franja azul */
+.controles-header-centro {
+    display: flex !important;
+    gap: 15px !important;
+    align-items: center !important;
+}
+
+/* Estilo de los botones maestros como píldoras compactas */
+.controles-header-centro .btn-maestro {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 20px !important; 
+    font-size: 13.5px !important;
+    font-weight: bold !important;
+    border: none !important;
+    border-radius: 25px !important; /* Forma de píldora redondeada */
+    cursor: pointer !important;
+    color: white !important;
+    font-family: 'Poppins', sans-serif !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+}
+
+/* Colores exactos de los fondos y textos de los botones */
+.controles-header-centro .btn-maestro.on { 
+    background-color: #39FF14 !important; 
+    color: #1c3d11 !important; 
+} 
+.controles-header-centro .btn-maestro.off { 
+    background-color: #e74c3c !important; 
+    color: white !important; 
+} 
+
+.controles-header-centro .btn-maestro:hover {
+    transform: scale(1.04) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+}
+
+/* Pequeñas esferas internas de color (Indicadores circulares) */
+.punto-boton {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    display: inline-block !important;
+}
+.punto-boton.amarillo { background-color: #f1c40f !important; }
+.punto-boton.morado { background-color: #9b59b6 !important; }
+
+/* Desactivamos el contenedor antiguo de la franja blanca */
 .controles-maestros {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    padding: 20px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-.btn-maestro {
-    padding: 15px 30px;
-    font-size: 16px;
-    font-weight: bold;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    color: white;
-    transition: all 0.3s ease;
-}
-
-.btn-maestro.on { background-color: #39FF14; } 
-.btn-maestro.off { background-color: #e74c3c; } 
-
-.btn-maestro:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    display: none !important;
 }
 
 /* =========================================================================
