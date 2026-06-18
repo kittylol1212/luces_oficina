@@ -7,20 +7,20 @@
     <link rel="stylesheet" href="css/pisos.css">
 <header class="header">
 
-    <div class="header-izq">
+    <div class="header-left" style="display: flex; align-items: center; position: relative;">
         <button id="btn-hamburguesa" class="menu-hamburguesa" onclick="abrirMenu(event)">&#9776;</button>
         <span class="header-icon"></span>
-        <h1 style="margin-left: 10px; display: inline-block;">Directorio por Pisos</h1>
+        <h1 style="margin-left: 10px;">Directorio por Pisos</h1>
 
         <nav id="menu-lateral" class="menu-oculto">
             <ul style="list-style: none; padding: 0; margin: 0;">
-                <li onclick="window.location.href='pisos.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
+                <li onclick="window.location.href='frontend/pisos.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
                     🏠 Inicio
                 </li>
-                <li onclick="window.location.href='estadisticas.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
+                <li onclick="window.location.href='frontend/estadisticas.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
                     📊 Estadísticas de Uso
                 </li> 
-                <li onclick="window.location.href='ayuda.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
+                <li onclick="window.location.href='frontend/ayuda.html'" style="cursor: pointer; padding: 15px 20px; border-bottom: 1px solid #f1f1f1; font-weight: bold;">
                     ⚙️ Configuración
                 </li>
                 <li id="theme-toggle" style="cursor: pointer; padding: 15px 20px; font-weight: bold; background-color: rgba(0,0,0,0.05);">
@@ -28,7 +28,9 @@
                 </li>
             </ul>
         </nav>
-    </div> <div class="controles-header-centro">
+    </div>
+
+    <div class="controles-header-centro">
         <button class="btn-maestro on" onclick="encenderTodosLosPisos()">
             <span class="punto-boton amarillo"></span> Encender Pisos
         </button>
@@ -37,12 +39,11 @@
         </button>
     </div>
 
-    <div class="header-der">
-        <img src="logo_meltec.png" alt="Logo Meltec" style="height: 40px; width: auto; object-fit: contain;">
+    <div class="header-right">
+        <img src="logo_meltec.png" alt="Logo Meltec" style="height: 80px; width: auto; filter: none; object-fit: contain;">
     </div>
 
 </header>
-
 <div class="controles-maestros">
     <button class="btn-maestro on" onclick="forzarEncendidoPisosGlobal([1, 2, 3, 4, 5, 6], true)">
         <span>🌟</span> Encender Pisos 
