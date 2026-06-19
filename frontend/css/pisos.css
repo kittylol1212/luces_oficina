@@ -60,7 +60,7 @@ body {
 }
 
 /* =========================================================================
-   3. ENCABEZADO / HEADER (AJUSTE DE CENTRADO ABSOLUTO)
+   3. ENCABEZADO / HEADER (AJUSTE DE CENTRADO ABSOLUTO Y ANCHO AMPLIADO)
    ========================================================================= */
 .header {
     background-color: #178db3 !important;
@@ -69,14 +69,17 @@ body {
     justify-content: space-between !important; /* Reparte los 3 bloques en Izquierda, Centro y Derecha */
     align-items: center !important;
     padding: 10px 40px !important; 
-    height: 75px !important; 
+    
+    /* 📏 MODIFICADO: Ensanchamos la franja de 75px a 110px para que se vea con más espacio */
+    height: 110px !important; 
+    
     width: 100% !important;
     max-width: none !important;
     box-shadow: 0 3px 12px rgba(0,0,0,0.15) !important;
 }
 
-/* Carril Izquierdo (Título e ícono) */
-.header-izq {
+/* Carril Izquierdo (Título e ícono) - Sincronizado con tu .header-left */
+.header-left {
     display: flex !important;
     align-items: center !important;
     gap: 15px !important;
@@ -96,7 +99,7 @@ body {
     gap: 15px !important;
     align-items: center !important;
     justify-content: center !important; /* Fuerza a los botones a quedarse en el centro exacto */
-    flex: 2 !important; /* Le da prioridad de espacio al centro */
+    flex: 1 !important; /* Equilibrio perfecto de espacio con los laterales */
 }
 
 /* Estilo de los botones (Se mantienen como los tenías) */
@@ -127,18 +130,18 @@ body {
 .punto-boton.amarillo { background-color: #f1c40f !important; }
 .punto-boton.morado { background-color: #9b59b6 !important; }
 
-/* Carril Derecho (Logo) */
-.header-der {
+/* Carril Derecho (Logo) - Sincronizado con tu .header-right */
+.header-right {
     display: flex !important;
     justify-content: flex-end !important; /* Alinea el logo totalmente a la derecha */
     flex: 1 !important; /* Toma el espacio derecho proporcionalmente */
 }
 
 .logo-meltec {
-    height: 40px !important;
+    height: 80px !important; /* Mantenemos tu tamaño original de 80px como querías */
     width: auto !important;
     display: block !important;
-    filter: brightness(0) invert(1) !important;
+    filter: none !important; /* Eliminamos el filtro para mantenerlo original */
     object-fit: contain;
 }
 /* =========================================================================
