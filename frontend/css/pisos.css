@@ -60,7 +60,7 @@ body {
 }
 
 /* =========================================================================
-   3. ENCABEZADO / HEADER (AJUSTE DE CENTRADO ABSOLUTO Y ANCHO AMPLIADO)
+   3. ENCABEZADO / HEADER (CENTRADOS, ANCHO AMPLIADO A 110PX Y LOGO)
    ========================================================================= */
 .header {
     background-color: #178db3 !important;
@@ -93,7 +93,7 @@ body {
     white-space: nowrap !important; /* Evita que el título se rompa */
 }
 
-/* 🎯 Carril Central (¡AQUÍ ESTÁ EL TRUCO PARA EL CENTRADO ABSOLUTO!) */
+/* 🎯 Carril Central (Alineación matemática perfecta para centrado absoluto) */
 .controles-header-centro {
     display: flex !important;
     gap: 15px !important;
@@ -101,34 +101,6 @@ body {
     justify-content: center !important; /* Fuerza a los botones a quedarse en el centro exacto */
     flex: 1 !important; /* Equilibrio perfecto de espacio con los laterales */
 }
-
-/* Estilo de los botones (Se mantienen como los tenías) */
-.controles-header-centro .btn-maestro {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-    padding: 8px 20px !important; 
-    font-size: 13.5px !important;
-    font-weight: bold !important;
-    border: none !important;
-    border-radius: 25px !important;
-    cursor: pointer !important;
-    color: white !important;
-    font-family: 'Poppins', sans-serif !important;
-    transition: transform 0.2s ease !important;
-}
-
-.controles-header-centro .btn-maestro.on { background-color: #39FF14 !important; color: #1c3d11 !important; } 
-.controles-header-centro .btn-maestro.off { background-color: #e74c3c !important; color: white !important; } 
-
-.punto-boton {
-    width: 10px !important;
-    height: 10px !important;
-    border-radius: 50% !important;
-    display: inline-block !important;
-}
-.punto-boton.amarillo { background-color: #f1c40f !important; }
-.punto-boton.morado { background-color: #9b59b6 !important; }
 
 /* Carril Derecho (Logo) - Sincronizado con tu .header-right */
 .header-right {
@@ -144,18 +116,12 @@ body {
     filter: none !important; /* Eliminamos el filtro para mantenerlo original */
     object-fit: contain;
 }
-/* =========================================================================
-   4. CONTROLES MAESTROS (MUDADOS AL HEADER - ESTILO PÍLDORA)
-   ========================================================================= */
-/* Contenedor centrado dentro de la franja azul */
-.controles-header-centro {
-    display: flex !important;
-    gap: 15px !important;
-    align-items: center !important;
-}
 
-/* Estilo de los botones maestros como píldoras compactas */
-.controles-header-centro .btn-maestro {
+/* =========================================================================
+   4. ESTILO DE LOS BOTONES MAESTROS (INDEPENDIENTES PARA REDIRECCIÓN JS)
+   ========================================================================= */
+/* Quitamos el prefijo de la caja central para que tu JS los detecte de forma global */
+.btn-maestro {
     display: inline-flex !important;
     align-items: center !important;
     gap: 8px !important;
@@ -171,17 +137,17 @@ body {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
 }
 
-/* Colores exactos de los fondos y textos de los botones */
-.controles-header-centro .btn-maestro.on { 
+/* Estados de color que lee y modifica tu script de encendido/apagado */
+.btn-maestro.on { 
     background-color: #39FF14 !important; 
     color: #1c3d11 !important; 
 } 
-.controles-header-centro .btn-maestro.off { 
+.btn-maestro.off { 
     background-color: #e74c3c !important; 
     color: white !important; 
 } 
 
-.controles-header-centro .btn-maestro:hover {
+.btn-maestro:hover {
     transform: scale(1.04) !important;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
 }
@@ -200,7 +166,6 @@ body {
 .controles-maestros {
     display: none !important;
 }
-
 
 
 /* =========================================================================
