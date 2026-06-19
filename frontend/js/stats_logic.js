@@ -1,4 +1,4 @@
-const BASE_URL = "https://flu-cabin-evening-superior.trycloudflare.com"; 
+const BASE_URL = "https://netscape-pst-forums-advance.trycloudflare.com"; 
 
 document.addEventListener("DOMContentLoaded", function () {
     const JORNADA_MAXIMA = 10.0;
