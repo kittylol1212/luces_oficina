@@ -29,15 +29,14 @@
             </ul>
         </nav>
     </div>
-
-    <div class="controles-header-centro">
-        <button class="btn-maestro on" onclick="encenderTodosLosPisos()">
-            <span class="punto-boton amarillo"></span> Encender Pisos
-        </button>
-        <button class="btn-maestro off" onclick="apagarTodosLosPisos()">
-            <span class="punto-boton morado"></span> Apagar Pisos
-        </button>
-    </div>
+<div class="controles-header-centro">
+    <button class="btn-maestro on" onclick="forzarEncendidoPisosGlobal([1, 2, 3, 4, 5, 6], true)">
+        <span class="punto-boton amarillo"></span> Encender Pisos
+    </button>
+    <button class="btn-maestro off" onclick="forzarEncendidoPisosGlobal([1, 2, 3, 4, 5, 6], false)">
+        <span class="punto-boton morado"></span> Apagar Pisos
+    </button>
+</div>
 
     <div class="header-right">
         <img src="logo_meltec.png" alt="Logo Meltec" style="height: 80px; width: auto; filter: none; object-fit: contain;">
