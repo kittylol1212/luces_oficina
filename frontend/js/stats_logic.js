@@ -1,4 +1,4 @@
-const BASE_URL = "https://portland-copied-pray-caused.trycloudflare.com"; 
+const BASE_URL = "https://garcia-thumbnails-plans-inspection.trycloudflare.com"; 
 
 document.addEventListener("DOMContentLoaded", function () {
     const JORNADA_MAXIMA = 10.0;
